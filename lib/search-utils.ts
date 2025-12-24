@@ -17,6 +17,7 @@ export type SearchType =
   | { type: "cue"; value: string }
   | { type: "predio"; value: string }
   | { type: "codigo_organismo"; value: string } // Added for JR/JD codes
+  | { type: "nivel_numero"; nivel: string; numero: string }
   | { type: "school_number"; schoolType: string; number: string }
   | { type: "school_level"; schoolType: string }
   | { type: "text"; value: string }
@@ -36,13 +37,24 @@ export function detectSearchType(input: string): SearchType {
     if (trimmed.length === 6) {
       return { type: "predio", value: trimmed }
     }
-    // 1-4 dígitos como número de escuela (sin tipo especificado)
     if (trimmed.length >= 1 && trimmed.length <= 4) {
       return { type: "school_number", schoolType: "", number: trimmed }
     }
   }
 
-  // Búsqueda tipo "secundaria 8", "tecnica 5", etc.
+  // Soporta niveles educativos estándar de Buenos Aires
+  const nivelNumeroPattern =
+    /^(primaria?|secundaria?|inicial|jardin|jardín|tecnica?|técnica?|especial|adultos?|superior|formaci[oó]n\s+profesional)\s+n?°?\s*(\d{1,4})$/i
+
+  const matchNivelNumero = trimmed.match(nivelNumeroPattern)
+
+  if (matchNivelNumero) {
+    const nivel = normalizeText(matchNivelNumero[1])
+    const numero = matchNivelNumero[2]
+    return { type: "nivel_numero", nivel, numero }
+  }
+
+  // Búsqueda tipo "secundaria 8", "tecnica 5", etc. (patrón anterior mantenido como fallback)
   const schoolTypeWithNumberPattern =
     /^(secundaria|primaria|tecnica|técnica|jardin|jardín|infantes|especial|adultos|cfp|centro|ep|ees|ji|eee|cea|cens|tec)\s+(\d{1,4})$/i
   const matchWithNumber = trimmed.match(schoolTypeWithNumberPattern)
@@ -117,4 +129,44 @@ export function getSchoolTypeSynonyms(type: string): string[] {
 export function buildNumberTokenRegex(number: string): string {
   // Word boundary para números: debe estar al inicio, fin, o rodeado de no-dígitos
   return `(^|[^0-9])${number}([^0-9]|$)`
+}
+
+/**
+ * Mapea el nivel detectado en la búsqueda a los valores usados en la base de datos
+ */
+export function mapNivelToDB(nivelInput: string): string[] {
+  const normalized = normalizeText(nivelInput)
+
+  const nivelMap: Record<string, string[]> = {
+    // Nivel Primario
+    primaria: ["Nivel Primario", "Primaria"],
+    primario: ["Nivel Primario", "Primaria"],
+
+    // Nivel Secundario
+    secundaria: ["Nivel Secundario", "Secundaria"],
+    secundario: ["Nivel Secundario", "Secundaria"],
+
+    // Nivel Inicial
+    inicial: ["Nivel Inicial", "Inicial"],
+    jardin: ["Nivel Inicial", "Inicial", "Jardín"],
+
+    // Técnica
+    tecnica: ["Nivel Secundario", "Secundaria", "Técnica"],
+
+    // Especial
+    especial: ["Nivel Especial", "Especial"],
+
+    // Adultos
+    adultos: ["Adultos", "Nivel Adultos"],
+    adulto: ["Adultos", "Nivel Adultos"],
+
+    // Superior
+    superior: ["Nivel Superior", "Superior"],
+
+    // Formación Profesional
+    "formacion profesional": ["Formación Profesional", "CFP"],
+    formacion: ["Formación Profesional", "CFP"],
+  }
+
+  return nivelMap[normalized] || [nivelInput]
 }
