@@ -30,6 +30,7 @@ type SearchResult = {
 }
 
 export function DashboardHome({ metrics }: { metrics: Metrics }) {
+  const [mounted, setMounted] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [results, setResults] = useState<SearchResult[]>([])
   const [isSearching, setIsSearching] = useState(false)
@@ -39,8 +40,7 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
   const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
-    // Only access sessionStorage on the client side
-    if (typeof window === "undefined") return
+    setMounted(true)
 
     const savedSearchTerm = sessionStorage.getItem("searchTerm")
     const savedResults = sessionStorage.getItem("searchResults")
@@ -62,34 +62,34 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
   }, [])
 
   useEffect(() => {
-    if (typeof window === "undefined") return
+    if (!mounted) return
 
     if (searchTerm) {
       sessionStorage.setItem("searchTerm", searchTerm)
     } else {
       sessionStorage.removeItem("searchTerm")
     }
-  }, [searchTerm])
+  }, [searchTerm, mounted])
 
   useEffect(() => {
-    if (typeof window === "undefined") return
+    if (!mounted) return
 
     if (results.length > 0) {
       sessionStorage.setItem("searchResults", JSON.stringify(results))
     } else {
       sessionStorage.removeItem("searchResults")
     }
-  }, [results])
+  }, [results, mounted])
 
   useEffect(() => {
-    if (typeof window === "undefined") return
+    if (!mounted) return
 
     if (hasSearched) {
       sessionStorage.setItem("hasSearched", "true")
     } else {
       sessionStorage.removeItem("hasSearched")
     }
-  }, [hasSearched])
+  }, [hasSearched, mounted])
 
   const handleSearch = async (term?: string) => {
     const searchValue = term !== undefined ? term : searchTerm
@@ -143,7 +143,7 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
     if (debounceTimeout) {
       clearTimeout(debounceTimeout)
     }
-    if (typeof window !== "undefined") {
+    if (mounted) {
       sessionStorage.removeItem("searchTerm")
       sessionStorage.removeItem("searchResults")
       sessionStorage.removeItem("hasSearched")
@@ -152,7 +152,6 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
 
   return (
     <div className="flex min-h-screen flex-col">
-      {/* Header */}
       <header className="border-b border-blue-200 bg-gradient-to-r from-[#417099] to-[#00AEC3] shadow-lg">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
@@ -183,7 +182,6 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
             <p className="text-sm text-slate-600">Resumen estadístico del sistema</p>
           </div>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {/* Total Establecimientos */}
             <Card className="relative overflow-hidden border border-slate-200/60 shadow-md hover:shadow-lg transition-shadow bg-white">
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#00AEC3] to-[#417099]" />
               <CardHeader className="pb-3">
@@ -214,7 +212,6 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
               </CardContent>
             </Card>
 
-            {/* Distritos */}
             <Card className="relative overflow-hidden border border-slate-200/60 shadow-md hover:shadow-lg transition-shadow bg-white">
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#417099] to-[#00AEC3]" />
               <CardHeader className="pb-3">
@@ -230,7 +227,6 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
               </CardContent>
             </Card>
 
-            {/* Matrícula Total */}
             <Card className="relative overflow-hidden border border-slate-200/60 shadow-md hover:shadow-lg transition-shadow bg-white">
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#e81f76] to-[#417099]" />
               <CardHeader className="pb-3">
