@@ -66,30 +66,35 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
 
       console.log("[v0] Nivel+Numero search:", { nivel, numero, nivelesDB })
 
-      // Construir condición OR para los niveles mapeados
-      const nivelConditions = nivelesDB.map((n) => `nivel.ilike.%${n}%`).join(",")
-
+      // Buscar establecimientos que tengan exactamente uno de los niveles mapeados
+      // Y luego filtrar por el número exacto en el nombre/alias
       const { data, error } = await supabase
         .from("establecimientos")
         .select(
           "id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, predio, direccion, fed_a_cargo, es_establecimiento_educativo, contactos!inner(nombre, apellido, telefono, correo)",
         )
-        .or(nivelConditions)
-        .ilike("nombre", `%${numero}%`)
-        .order("nombre", { ascending: true })
-        .limit(50)
+        .in("nivel", nivelesDB)
+        .limit(200)
 
       if (error) {
         console.error("[v0] Error in nivel_numero search:", error)
         return []
       }
 
-      return (
-        data?.map((e) => ({
-          ...e,
-          entity_type: "establecimiento" as const,
-        })) || []
-      )
+      // Filtrado en cliente para buscar exactamente el número como token separado
+      const numberRegex = buildNumberTokenRegex(numero)
+      const regex = new RegExp(numberRegex, "i")
+
+      const filtered = (data || []).filter((establishment) => {
+        const nombreNorm = normalizeText(establishment.nombre || "")
+        const aliasNorm = normalizeText(establishment.alias || "")
+        return regex.test(nombreNorm) || regex.test(aliasNorm)
+      })
+
+      return filtered.slice(0, 50).map((e) => ({
+        ...e,
+        entity_type: "establecimiento" as const,
+      }))
     }
 
     if (searchType.type === "codigo_organismo") {

@@ -37,8 +37,6 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
   const [hasSearched, setHasSearched] = useState(false)
   const router = useRouter()
 
-  const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(null)
-
   useEffect(() => {
     setMounted(true)
 
@@ -112,16 +110,8 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
     const value = e.target.value
     setSearchTerm(value)
 
-    if (debounceTimeout) {
-      clearTimeout(debounceTimeout)
-    }
-
-    if (value.trim()) {
-      const timeout = setTimeout(() => {
-        handleSearch(value)
-      }, 1000)
-      setDebounceTimeout(timeout)
-    } else {
+    // Solo actualizar el término, no ejecutar búsqueda automática
+    if (!value.trim()) {
       setHasSearched(false)
       setResults([])
     }
@@ -129,9 +119,6 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      if (debounceTimeout) {
-        clearTimeout(debounceTimeout)
-      }
       handleSearch()
     }
   }
@@ -140,9 +127,6 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
     setSearchTerm("")
     setResults([])
     setHasSearched(false)
-    if (debounceTimeout) {
-      clearTimeout(debounceTimeout)
-    }
     if (mounted) {
       sessionStorage.removeItem("searchTerm")
       sessionStorage.removeItem("searchResults")
