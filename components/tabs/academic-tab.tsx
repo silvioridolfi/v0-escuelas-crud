@@ -9,12 +9,12 @@ import { useRouter } from "next/navigation"
 
 type Establecimiento = {
   id: string
-  nivel: string
-  modalidad: string
-  matricula: number
-  varones: number
-  mujeres: number
-  secciones: number
+  nivel: string | null
+  modalidad: string | null
+  matricula: number | null
+  varones: number | null
+  mujeres: number | null
+  secciones: number | null
   turnos: string | null
   [key: string]: unknown
 }
@@ -22,13 +22,13 @@ type Establecimiento = {
 export function AcademicTab({ establecimiento }: { establecimiento: Establecimiento }) {
   const router = useRouter()
   const [formData, setFormData] = useState({
-    nivel: establecimiento.nivel,
-    modalidad: establecimiento.modalidad,
-    matricula: establecimiento.matricula.toString(),
-    varones: establecimiento.varones.toString(),
-    mujeres: establecimiento.mujeres.toString(),
-    secciones: establecimiento.secciones.toString(),
-    turnos: establecimiento.turnos || "",
+    nivel: establecimiento.nivel ?? "",
+    modalidad: establecimiento.modalidad ?? "",
+    matricula: establecimiento.matricula?.toString() ?? "",
+    varones: establecimiento.varones?.toString() ?? "",
+    mujeres: establecimiento.mujeres?.toString() ?? "",
+    secciones: establecimiento.secciones?.toString() ?? "",
+    turnos: establecimiento.turnos ?? "",
   })
   const [isSaving, setIsSaving] = useState(false)
   const [message, setMessage] = useState("")

@@ -8,6 +8,7 @@ export async function updateGeneral(
   data: {
     nombre: string
     alias: string
+    predio: string
     distrito: string
     ciudad: string
     direccion: string
@@ -25,6 +26,7 @@ export async function updateGeneral(
     .update({
       nombre: data.nombre,
       alias: data.alias || null,
+      predio: data.predio ? Number.parseInt(data.predio, 10) : null,
       distrito: data.distrito,
       ciudad: data.ciudad,
       direccion: data.direccion,

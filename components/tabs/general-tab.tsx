@@ -36,6 +36,7 @@ export function GeneralTab({
   const [formData, setFormData] = useState({
     nombre: establecimiento.nombre,
     alias: establecimiento.alias || "",
+    predio: establecimiento.predio?.toString() || "",
     distrito: establecimiento.distrito,
     ciudad: establecimiento.ciudad,
     direccion: establecimiento.direccion,
@@ -109,18 +110,17 @@ export function GeneralTab({
           <p className="text-xs text-muted-foreground">Campo no editable</p>
         </div>
 
-        {/* PREDIO - Read only */}
+        {/* PREDIO - Editable */}
         <div className="space-y-2">
-          <Label htmlFor="predio" className="flex items-center gap-2">
-            Predio <Lock className="h-3 w-3 text-muted-foreground" />
-          </Label>
+          <Label htmlFor="predio">Predio</Label>
           <Input
             id="predio"
-            value={establecimiento.predio || "Sin datos"}
-            disabled
-            className="bg-muted cursor-not-allowed"
+            type="number"
+            value={formData.predio}
+            onChange={(e) => setFormData({ ...formData, predio: e.target.value })}
+            placeholder="Sin datos"
           />
-          <p className="text-xs text-muted-foreground">Campo no editable</p>
+          <p className="text-xs text-muted-foreground">Número de predio</p>
         </div>
       </div>
 
