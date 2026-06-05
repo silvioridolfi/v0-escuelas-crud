@@ -14,14 +14,26 @@ async function getMetrics() {
       .from("establecimientos")
       .select("*", { count: "exact", head: true })
       .eq("es_establecimiento_educativo", true),
-    supabase.from("establecimientos").select("distrito").eq("es_establecimiento_educativo", true),
-    supabase.from("establecimientos").select("varones, mujeres").eq("es_establecimiento_educativo", true),
-    supabase.from("organismos_descentralizados").select("*", { count: "exact", head: true }),
+    supabase
+      .from("establecimientos")
+      .select("distrito")
+      .eq("es_establecimiento_educativo", true),
+    // FIXED: usar el campo matricula directamente, no sumar varones+mujeres
+    supabase
+      .from("establecimientos")
+      .select("matricula")
+      .eq("es_establecimiento_educativo", true),
+    supabase
+      .from("organismos_descentralizados")
+      .select("*", { count: "exact", head: true }),
   ])
 
-  const uniqueDistritos = new Set(distritosData?.map((d) => d.distrito).filter(Boolean)).size
+  const uniqueDistritos = new Set(
+    distritosData?.map((d) => d.distrito).filter(Boolean)
+  ).size
+
   const matriculaTotal =
-    matriculaData?.reduce((sum, row) => sum + (Number(row.varones) || 0) + (Number(row.mujeres) || 0), 0) || 0
+    matriculaData?.reduce((sum, row) => sum + (Number(row.matricula) || 0), 0) || 0
 
   return {
     totalEstablecimientos: totalEstablecimientos || 0,

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { updateAcademic } from "@/app/actions/update-academic"
 import { useRouter } from "next/navigation"
+import { useToast } from "@/hooks/use-toast"
 
 type Establecimiento = {
   id: string
@@ -21,6 +22,7 @@ type Establecimiento = {
 
 export function AcademicTab({ establecimiento }: { establecimiento: Establecimiento }) {
   const router = useRouter()
+  const { toast } = useToast()
   const [formData, setFormData] = useState({
     nivel: establecimiento.nivel ?? "",
     modalidad: establecimiento.modalidad ?? "",
@@ -31,21 +33,34 @@ export function AcademicTab({ establecimiento }: { establecimiento: Establecimie
     turnos: establecimiento.turnos ?? "",
   })
   const [isSaving, setIsSaving] = useState(false)
-  const [message, setMessage] = useState("")
 
   const handleSave = async () => {
     setIsSaving(true)
-    setMessage("")
     try {
       const result = await updateAcademic(establecimiento.id, formData)
       if (result.success) {
-        setMessage("Guardado exitosamente")
+        toast({
+          title: "✓ Cambios guardados",
+          description: "Los datos académicos se actualizaron correctamente",
+          className: "bg-green-50 border-green-200 text-green-900",
+          duration: 3000,
+        })
         router.refresh()
       } else {
-        setMessage(`Error: ${result.error}`)
+        toast({
+          title: "Error al guardar",
+          description: result.error || "No se pudieron guardar los cambios",
+          variant: "destructive",
+          duration: 5000,
+        })
       }
-    } catch (error) {
-      setMessage("Error al guardar")
+    } catch {
+      toast({
+        title: "Error inesperado",
+        description: "Ocurrió un error al guardar",
+        variant: "destructive",
+        duration: 5000,
+      })
     } finally {
       setIsSaving(false)
     }
@@ -121,10 +136,6 @@ export function AcademicTab({ establecimiento }: { establecimiento: Establecimie
           />
         </div>
       </div>
-
-      {message && (
-        <p className={`text-sm ${message.includes("Error") ? "text-red-600" : "text-green-600"}`}>{message}</p>
-      )}
 
       <Button onClick={handleSave} disabled={isSaving} className="bg-[#00AEC3] hover:bg-[#0098ad]">
         {isSaving ? "Guardando..." : "Guardar Cambios"}
