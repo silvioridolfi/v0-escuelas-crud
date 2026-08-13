@@ -178,10 +178,10 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                     e.stopPropagation()
                     router.push(`/establecimientos/${result.sharedWith![0].id}`)
                   }}
-                  className="mx-4 mb-1 flex items-center gap-1.5 rounded-md border border-amber-400/40 bg-amber-50 px-2.5 py-1.5 text-left text-amber-800 transition-colors hover:bg-amber-100"
+                  className="mx-4 mb-1 flex items-start gap-1.5 rounded-md border border-amber-400/40 bg-amber-50 px-2.5 py-1.5 text-left text-amber-800 transition-colors hover:bg-amber-100"
                 >
-                  <AlertTriangle className="h-3.5 w-3.5 shrink-0 text-amber-600" />
-                  <span className="truncate text-[11px] leading-tight">
+                  <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-600" />
+                  <span className="line-clamp-2 text-[11px] leading-tight">
                     Comparte predio con{" "}
                     <span className="font-semibold underline">
                       {result.sharedWith[0].nombre}
