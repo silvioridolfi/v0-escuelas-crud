@@ -190,23 +190,33 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
               </CardHeader>
 
               {result.sharedWith && result.sharedWith.length > 0 && (
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    router.push(`/establecimientos/${result.sharedWith![0].id}`)
-                  }}
-                  className="mx-4 mb-1 flex items-start gap-1.5 rounded-md border border-amber-400/40 bg-amber-50 px-2.5 py-1.5 text-left text-amber-800 transition-colors hover:bg-amber-100"
-                >
-                  <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-600" />
-                  <span className="line-clamp-2 text-[11px] leading-tight">
-                    Comparte predio con{" "}
-                    <span className="font-semibold underline">
-                      {result.sharedWith[0].nombre}
-                      {result.sharedWith.length > 1 ? ` (+${result.sharedWith.length - 1})` : ""}
+                <div className="mx-4 mb-1 rounded-md border border-amber-400/40 bg-amber-50 px-2.5 py-2">
+                  <div className="mb-1.5 flex items-start gap-1.5 text-amber-800">
+                    <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-600" />
+                    <span className="text-[11px] font-medium leading-tight">
+                      Comparte predio con{" "}
+                      {result.sharedWith.length === 1 ? "otro establecimiento" : "otros establecimientos"}:
                     </span>
-                  </span>
-                </button>
+                  </div>
+                  <div className="space-y-1 pl-5">
+                    {result.sharedWith.map((sibling) => (
+                      <button
+                        key={sibling.id}
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          router.push(`/establecimientos/${sibling.id}`)
+                        }}
+                        className="block w-full rounded border border-amber-300/70 bg-white px-2 py-1 text-left transition-colors hover:border-amber-500 hover:bg-amber-100/60"
+                      >
+                        <span className="line-clamp-2 text-[11px] font-semibold leading-snug text-amber-900 underline">
+                          {sibling.nombre}
+                        </span>
+                        <span className="mt-0.5 block text-[10px] text-amber-700">CUE {sibling.cue}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
               )}
 
               <CardContent className="space-y-3 flex-1 flex flex-col justify-between">
