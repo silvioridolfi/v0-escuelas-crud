@@ -14,7 +14,7 @@ export function SiteFooter() {
           alt="Dirección de Tecnología Educativa 2026"
           width={432}
           height={76}
-          className="h-auto w-full max-w-[360px] sm:max-w-[480px]"
+          className="h-auto w-full max-w-[504px] sm:max-w-[672px]"
         />
       </div>
     </footer>
