@@ -194,7 +194,7 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
               </CardHeader>
               <CardContent>
                 <p className="text-4xl font-bold text-[#417099]">
-                  {metrics.totalEstablecimientos.toLocaleString("en-US")}
+                  {metrics.totalEstablecimientos.toLocaleString("es-AR")}
                 </p>
               </CardContent>
             </Card>
@@ -210,7 +210,7 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-4xl font-bold text-[#6366f1]">{metrics.totalOrganismos.toLocaleString("en-US")}</p>
+                <p className="text-4xl font-bold text-[#6366f1]">{metrics.totalOrganismos.toLocaleString("es-AR")}</p>
               </CardContent>
             </Card>
 
@@ -240,7 +240,7 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-4xl font-bold text-[#e81f76]">{metrics.matriculaTotal.toLocaleString("en-US")}</p>
+                <p className="text-4xl font-bold text-[#e81f76]">{metrics.matriculaTotal.toLocaleString("es-AR")}</p>
               </CardContent>
             </Card>
           </div>
