@@ -5,8 +5,8 @@ import { CreateEstablishmentForm } from "@/components/create-establishment-form"
 
 export const dynamic = "force-dynamic"
 
-export default async function EstablishmentPage({ params }: { params: { id: string } }) {
-  const { id } = params
+export default async function EstablishmentPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
 
   if (id === "nuevo") {
     return (
