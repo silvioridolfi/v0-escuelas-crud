@@ -11,10 +11,10 @@ type Establecimiento = {
   id: string
   nivel: string
   modalidad: string
-  matricula: number
-  varones: number
-  mujeres: number
-  secciones: number
+  matricula: number | null
+  varones: number | null
+  mujeres: number | null
+  secciones: number | null
   turnos: string | null
   [key: string]: unknown
 }
@@ -24,10 +24,10 @@ export function AcademicTab({ establecimiento }: { establecimiento: Establecimie
   const [formData, setFormData] = useState({
     nivel: establecimiento.nivel,
     modalidad: establecimiento.modalidad,
-    matricula: establecimiento.matricula.toString(),
-    varones: establecimiento.varones.toString(),
-    mujeres: establecimiento.mujeres.toString(),
-    secciones: establecimiento.secciones.toString(),
+    matricula: establecimiento.matricula?.toString() || "",
+    varones: establecimiento.varones?.toString() || "",
+    mujeres: establecimiento.mujeres?.toString() || "",
+    secciones: establecimiento.secciones?.toString() || "",
     turnos: establecimiento.turnos || "",
   })
   const [isSaving, setIsSaving] = useState(false)
