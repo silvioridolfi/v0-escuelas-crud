@@ -9,7 +9,7 @@ import {
   mapNivelToDB, // Importar nueva función de mapeo de niveles
 } from "@/lib/search-utils"
 
-type SearchResult = {
+export type SearchResult = {
   id: string
   // Establishment fields
   cue?: number
@@ -397,6 +397,48 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
     console.error("[v0] Stack trace:", error instanceof Error ? error.stack : "No stack trace")
 
     // Retornar array vacío en lugar de lanzar excepción
+    return []
+  }
+}
+
+/**
+ * Fetches every organismo descentralizado, mapped to the same shape used in search results,
+ * so it can be rendered with the SearchResults card grid (e.g. from the dashboard metrics).
+ */
+export async function getAllOrganismos(): Promise<SearchResult[]> {
+  try {
+    const supabase = await createClient()
+
+    const { data, error } = await supabase
+      .from("organismos_descentralizados")
+      .select("*")
+      .order("nombre", { ascending: true })
+
+    if (error) {
+      console.error("[v0] Error fetching all organismos:", error)
+      return []
+    }
+
+    return (
+      data?.map((org) => ({
+        id: org.id,
+        codigo: org.codigo,
+        nombre: org.nombre,
+        tipo_organizacion: org.tipo_organizacion,
+        subtipo_organizacion: org.subtipo_organizacion,
+        distrito: org.distrito || "",
+        ciudad: org.localidad || "",
+        direccion: org.domicilio || "",
+        telefono: org.telefono,
+        email: org.email,
+        contacto_nombre: org.contacto_nombre,
+        contacto_apellido: org.contacto_apellido,
+        contacto_cargo: org.contacto_cargo,
+        entity_type: "organismo" as const,
+      })) || []
+    )
+  } catch (error) {
+    console.error("[v0] Unexpected error in getAllOrganismos:", error)
     return []
   }
 }

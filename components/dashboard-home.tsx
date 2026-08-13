@@ -3,20 +3,32 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
-import { Search, Building2, MapPin, Users, Plus } from "lucide-react"
+import { Search, Building2, MapPin, Users, Plus, ChevronRight } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { searchEstablecimientos } from "@/app/actions/search"
+import { Badge } from "@/components/ui/badge"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { searchEstablecimientos, getAllOrganismos, type SearchResult as OrganismoResult } from "@/app/actions/search"
 import { SearchResults } from "@/components/search-results"
 import { useRouter } from "next/navigation"
+import { getFedBadgeColor, formatFedDisplay } from "@/lib/badge-colors"
+
+type FedBreakdownItem = { fed: string; count: number }
+type DistritoBreakdownItem = { distrito: string; count: number }
+type MatriculaByGender = { varones: number; mujeres: number }
 
 type Metrics = {
   totalEstablecimientos: number
   uniqueDistritos: number
   matriculaTotal: number
   totalOrganismos: number // Added organismos to metrics type
+  fedBreakdown: FedBreakdownItem[]
+  distritoBreakdown: DistritoBreakdownItem[]
+  matriculaByGender: MatriculaByGender
 }
+
+type MetricDialog = "fed" | "organismos" | "distritos" | "matricula" | null
 
 type SearchResult = {
   id: string
