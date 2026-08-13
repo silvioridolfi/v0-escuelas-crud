@@ -1,11 +1,23 @@
 "use client"
 
+import { useState } from "react"
+import dynamic from "next/dynamic"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Server } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { getFedBadgeColor, getNivelBadgeColor, formatFedDisplay, parsePlanTokens, getPlanTokenBadgeColor } from "@/lib/badge-colors"
+
+const LocationMap = dynamic(() => import("@/components/tabs/location-map").then((mod) => mod.LocationMap), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-full items-center justify-center bg-slate-100 text-sm text-muted-foreground">
+      Cargando mapa…
+    </div>
+  ),
+})
 
 type SearchResult = {
   id: string
@@ -23,6 +35,8 @@ type SearchResult = {
   es_establecimiento_educativo?: boolean
   plan_enlace?: string | null
   plan_piso_tecnologico?: string | null
+  lat?: number | null
+  lon?: number | null
   sharedWith?: Array<{ id: string; cue: number; nombre: string }>
   // Organismo fields
   codigo?: string
@@ -46,6 +60,10 @@ type SearchResult = {
 
 export function SearchResults({ results, isSearching }: { results: SearchResult[]; isSearching: boolean }) {
   const router = useRouter()
+  const [mapResultId, setMapResultId] = useState<string | null>(null)
+  const mapResult = results.find((r) => r.id === mapResultId) || null
+  const hasMapCoordinates = (r: SearchResult | null) =>
+    !!r && typeof r.lat === "number" && typeof r.lon === "number" && !Number.isNaN(r.lat) && !Number.isNaN(r.lon)
 
   if (isSearching) {
     return (
@@ -266,7 +284,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                   )}
                 </div>
 
-                <div className="pt-3">
+                <div className="pt-3 space-y-2">
                   <Button
                     onClick={() => {
                       const route = isOrganismo ? `/organismos/${result.id}` : `/establecimientos/${result.id}`
@@ -277,12 +295,45 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                   >
                     Ver detalles
                   </Button>
+                  {!isOrganismo && hasMapCoordinates(result) && (
+                    <Button
+                      onClick={() => setMapResultId(result.id)}
+                      variant="outline"
+                      className="w-full border-[#417099]/30 text-[#417099] hover:bg-[#417099]/10 hover:text-[#417099]"
+                      size="sm"
+                    >
+                      <MapPin className="h-4 w-4 mr-1.5" />
+                      Ver ubicación
+                    </Button>
+                  )}
                 </div>
               </CardContent>
             </Card>
           )
         })}
       </div>
+
+      <Dialog open={mapResultId !== null} onOpenChange={(open) => !open && setMapResultId(null)}>
+        <DialogContent className="max-w-[calc(100%-1.5rem)] p-0 sm:max-w-2xl">
+          <DialogHeader className="px-4 pt-4 pb-3 pr-14 text-left border-b border-slate-200">
+            <DialogTitle className="text-sm font-semibold text-slate-800 text-balance leading-snug">
+              {mapResult?.nombre}
+            </DialogTitle>
+            <DialogDescription className="sr-only">Mapa de ubicación de {mapResult?.nombre}</DialogDescription>
+            {mapResult?.direccion && <p className="text-xs text-slate-500">{mapResult.direccion}</p>}
+          </DialogHeader>
+          {hasMapCoordinates(mapResult) && mapResult && (
+            <div className="h-[60vh] max-h-[500px] w-full sm:h-[420px]">
+              <LocationMap
+                lat={mapResult.lat as number}
+                lon={mapResult.lon as number}
+                nombre={mapResult.nombre}
+                direccion={mapResult.direccion}
+              />
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

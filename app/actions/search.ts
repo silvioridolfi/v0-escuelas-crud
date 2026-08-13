@@ -25,6 +25,8 @@ type SearchResult = {
   es_establecimiento_educativo?: boolean
   plan_enlace?: string | null
   plan_piso_tecnologico?: string | null
+  lat?: number | null
+  lon?: number | null
   sharedWith?: Array<{ id: string; cue: number; nombre: string }>
   // Organismo fields
   codigo?: string
@@ -125,7 +127,7 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
       const { data, error } = await supabase
         .from("establecimientos")
         .select(
-          "id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, predio, direccion, fed_a_cargo, es_establecimiento_educativo, plan_enlace, plan_piso_tecnologico, contactos!inner(nombre, apellido, telefono, correo)",
+          "id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, predio, direccion, fed_a_cargo, es_establecimiento_educativo, plan_enlace, plan_piso_tecnologico, lat, lon, contactos!inner(nombre, apellido, telefono, correo)",
         )
         .or(nivelConditions)
         .ilike("nombre", `%${numero}%`)
@@ -180,7 +182,7 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
 
     const establishmentFields = `
       id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, predio, 
-      direccion, fed_a_cargo, es_establecimiento_educativo, plan_enlace, plan_piso_tecnologico,
+      direccion, fed_a_cargo, es_establecimiento_educativo, plan_enlace, plan_piso_tecnologico, lat, lon,
       contactos!inner(nombre, apellido, telefono, correo)
     `
 
