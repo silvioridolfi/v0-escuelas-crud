@@ -15,13 +15,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { ArrowLeft, FileText, Wifi, GraduationCap, Users, FileWarning, Trash2 } from "lucide-react"
+import { ArrowLeft, FileText, Wifi, GraduationCap, Users, FileWarning, Trash2, MapPin } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { GeneralTab } from "@/components/tabs/general-tab"
 import { ConnectivityTab } from "@/components/tabs/connectivity-tab"
 import { AcademicTab } from "@/components/tabs/academic-tab"
 import { ObservationsTab } from "@/components/tabs/observations-tab"
 import { ContactTab } from "@/components/tabs/contact-tab"
+import { LocationTab } from "@/components/tabs/location-tab"
 import { deleteEstablishment } from "@/app/actions/delete-establishment"
 
 type Establecimiento = {
@@ -128,6 +129,15 @@ export function EstablishmentEditor({
       showForGovBuilding: true,
     },
     {
+      value: "location",
+      label: "Ubicación",
+      icon: MapPin,
+      color: "text-emerald-600",
+      bgColor: "bg-emerald-50",
+      borderColor: "border-emerald-500",
+      showForGovBuilding: true,
+    },
+    {
       value: "observations",
       label: "Observaciones",
       icon: FileWarning,
@@ -187,7 +197,7 @@ export function EstablishmentEditor({
             <Tabs value={activeTab} onValueChange={setActiveTab}>
               <div
                 className={`mb-6 grid gap-3 overflow-x-auto border-b-2 border-slate-200 pb-2 ${
-                  isGovernmentBuilding ? "grid-cols-3" : "grid-cols-2 md:grid-cols-5"
+                  isGovernmentBuilding ? "grid-cols-2 md:grid-cols-4" : "grid-cols-2 md:grid-cols-3 lg:grid-cols-6"
                 }`}
               >
                 {tabsConfig.map((tab) => {
@@ -246,6 +256,9 @@ export function EstablishmentEditor({
                     distrito={establecimiento.distrito}
                     fedACargo={establecimiento.fed_a_cargo}
                   />
+                </TabsContent>
+                <TabsContent value="location" className="m-0">
+                  <LocationTab establecimiento={establecimiento} />
                 </TabsContent>
                 <TabsContent value="observations" className="m-0">
                   <ObservationsTab establecimiento={establecimiento} />

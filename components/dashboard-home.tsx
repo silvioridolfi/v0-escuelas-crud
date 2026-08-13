@@ -160,8 +160,8 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
                 <Building2 className="h-7 w-7 text-[#417099]" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold leading-tight text-white">Editor de Establecimientos Educativos</h1>
-                <p className="text-sm text-white/90">Provincia de Buenos Aires</p>
+                <h1 className="text-2xl font-bold leading-tight text-white">Buscador de Establecimientos Educativos</h1>
+                <p className="text-sm text-white/90">Región 1</p>
               </div>
             </div>
             <Button
