@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import { Encode_Sans } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { Toaster } from "@/components/ui/toaster"
-import { TopBanner } from "@/components/top-banner"
+import { SiteFooter } from "@/components/site-footer"
 import "./globals.css"
 
 const encodeSans = Encode_Sans({
@@ -43,8 +43,8 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${encodeSans.variable} font-sans antialiased`}>
-        <TopBanner />
         {children}
+        <SiteFooter />
         <Toaster />
         <Analytics />
       </body>

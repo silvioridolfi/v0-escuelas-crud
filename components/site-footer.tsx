@@ -1,8 +1,8 @@
 import Image from "next/image"
 
-export function TopBanner() {
+export function SiteFooter() {
   return (
-    <div
+    <footer
       className="w-full py-3"
       style={{
         background: "linear-gradient(90deg, #e81f76 0%, #417099 50%, #00aec3 100%)",
@@ -14,10 +14,9 @@ export function TopBanner() {
           alt="Dirección de Tecnología Educativa 2026"
           width={432}
           height={76}
-          priority
           className="h-auto w-full max-w-[360px] sm:max-w-[480px]"
         />
       </div>
-    </div>
+    </footer>
   )
 }
