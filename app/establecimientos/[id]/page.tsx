@@ -34,5 +34,19 @@ export default async function EstablishmentPage({ params }: { params: Promise<{ 
     .eq("cue", establecimiento.cue)
     .order("apellido", { ascending: true })
 
-  return <EstablishmentEditor establecimiento={establecimiento} contactos={contactos || []} />
+  let sharedPredio: Array<{ id: string; cue: number; nombre: string }> = []
+
+  if (establecimiento.predio) {
+    const { data: siblings } = await supabase
+      .from("establecimientos")
+      .select("id, cue, nombre")
+      .eq("predio", establecimiento.predio)
+      .neq("id", establecimiento.id)
+
+    sharedPredio = siblings || []
+  }
+
+  return (
+    <EstablishmentEditor establecimiento={establecimiento} contactos={contactos || []} sharedPredio={sharedPredio} />
+  )
 }

@@ -23,6 +23,9 @@ type SearchResult = {
   matricula?: number
   fed_a_cargo?: string
   es_establecimiento_educativo?: boolean
+  plan_enlace?: string | null
+  plan_piso_tecnologico?: string | null
+  sharedWith?: Array<{ id: string; cue: number; nombre: string }>
   // Organismo fields
   codigo?: string
   tipo_organizacion?: string
@@ -41,6 +44,56 @@ type SearchResult = {
   }>
   // Type discriminator
   entity_type: "establecimiento" | "organismo"
+}
+
+/**
+ * For establecimiento results that share a non-null/non-zero "predio" number with
+ * another establecimiento, attaches the list of sibling establishments (id, cue, nombre)
+ * so the UI can surface a "shares this predio with..." indicator.
+ */
+async function attachSharedPredioInfo(
+  results: SearchResult[],
+  supabase: Awaited<ReturnType<typeof createClient>>,
+): Promise<SearchResult[]> {
+  const predios = Array.from(
+    new Set(
+      results
+        .filter((r) => r.entity_type === "establecimiento" && r.predio)
+        .map((r) => r.predio as number)
+        .filter((predio) => predio > 0),
+    ),
+  )
+
+  if (predios.length === 0) {
+    return results
+  }
+
+  const { data: siblings, error } = await supabase
+    .from("establecimientos")
+    .select("id, cue, nombre, predio")
+    .in("predio", predios)
+
+  if (error || !siblings) {
+    console.error("[v0] Error fetching shared-predio siblings:", error)
+    return results
+  }
+
+  const siblingsByPredio = new Map<number, Array<{ id: string; cue: number; nombre: string }>>()
+  for (const sibling of siblings) {
+    if (!sibling.predio) continue
+    const group = siblingsByPredio.get(sibling.predio) || []
+    group.push({ id: sibling.id, cue: sibling.cue, nombre: sibling.nombre })
+    siblingsByPredio.set(sibling.predio, group)
+  }
+
+  return results.map((r) => {
+    if (r.entity_type !== "establecimiento" || !r.predio) {
+      return r
+    }
+    const group = siblingsByPredio.get(r.predio) || []
+    const sharedWith = group.filter((s) => s.id !== r.id)
+    return sharedWith.length > 0 ? { ...r, sharedWith } : r
+  })
 }
 
 export async function searchEstablecimientos(searchTerm: string): Promise<SearchResult[]> {
@@ -72,7 +125,7 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
       const { data, error } = await supabase
         .from("establecimientos")
         .select(
-          "id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, predio, direccion, fed_a_cargo, es_establecimiento_educativo, contactos!inner(nombre, apellido, telefono, correo)",
+          "id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, predio, direccion, fed_a_cargo, es_establecimiento_educativo, plan_enlace, plan_piso_tecnologico, contactos!inner(nombre, apellido, telefono, correo)",
         )
         .or(nivelConditions)
         .ilike("nombre", `%${numero}%`)
@@ -84,11 +137,12 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
         return []
       }
 
-      return (
+      return attachSharedPredioInfo(
         data?.map((e) => ({
           ...e,
           entity_type: "establecimiento" as const,
-        })) || []
+        })) || [],
+        supabase,
       )
     }
 
@@ -126,7 +180,7 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
 
     const establishmentFields = `
       id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, predio, 
-      direccion, fed_a_cargo, es_establecimiento_educativo,
+      direccion, fed_a_cargo, es_establecimiento_educativo, plan_enlace, plan_piso_tecnologico,
       contactos!inner(nombre, apellido, telefono, correo)
     `
 
@@ -142,11 +196,12 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
         return []
       }
 
-      return (
+      return attachSharedPredioInfo(
         data?.map((e) => ({
           ...e,
           entity_type: "establecimiento" as const,
-        })) || []
+        })) || [],
+        supabase,
       )
     }
 
@@ -163,11 +218,12 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
         return []
       }
 
-      return (
+      return attachSharedPredioInfo(
         data?.map((e) => ({
           ...e,
           entity_type: "establecimiento" as const,
-        })) || []
+        })) || [],
+        supabase,
       )
     }
 
@@ -195,11 +251,12 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
           return []
         }
 
-        return (
+        return attachSharedPredioInfo(
           data?.map((e) => ({
             ...e,
             entity_type: "establecimiento" as const,
-          })) || []
+          })) || [],
+          supabase,
         )
       }
     }
@@ -237,10 +294,13 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
             return regex.test(nombreNorm) || regex.test(aliasNorm)
           })
 
-          return filtered.slice(0, 50).map((e) => ({
-            ...e,
-            entity_type: "establecimiento" as const,
-          }))
+          return attachSharedPredioInfo(
+            filtered.slice(0, 50).map((e) => ({
+              ...e,
+              entity_type: "establecimiento" as const,
+            })),
+            supabase,
+          )
         }
       }
 
@@ -261,10 +321,13 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
         return regex.test(nombreNorm) || regex.test(aliasNorm)
       })
 
-      return filtered.slice(0, 50).map((e) => ({
-        ...e,
-        entity_type: "establecimiento" as const,
-      }))
+      return attachSharedPredioInfo(
+        filtered.slice(0, 50).map((e) => ({
+          ...e,
+          entity_type: "establecimiento" as const,
+        })),
+        supabase,
+      )
     }
 
     if (searchType.type === "text") {
@@ -297,11 +360,13 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
         console.error("[v0] Error searching organismos:", organismoResults.error)
       }
 
-      const establishments =
+      const establishments = await attachSharedPredioInfo(
         establishmentResults.data?.map((e) => ({
           ...e,
           entity_type: "establecimiento" as const,
-        })) || []
+        })) || [],
+        supabase,
+      )
 
       const organismos =
         organismoResults.data?.map((org) => ({

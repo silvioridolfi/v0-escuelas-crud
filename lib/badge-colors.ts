@@ -71,3 +71,34 @@ export function formatFedDisplay(fedName: string | null | undefined): string {
   }
   return `FED Asignado: ${fedName}`
 }
+
+/**
+ * Splits combined plan values like "PNCE - PBA" into individual tokens ["PNCE", "PBA"].
+ * Values without a separator (e.g. "Sin enlace", "ITINERANTE") are returned as a single token.
+ */
+export function parsePlanTokens(value: string | null | undefined): string[] {
+  if (!value) {
+    return []
+  }
+  return value
+    .split("-")
+    .map((token) => token.trim())
+    .filter((token) => token.length > 0)
+}
+
+/**
+ * Returns a consistent color class for a plan token (PNCE, PBA, or other statuses)
+ */
+export function getPlanTokenBadgeColor(token: string): string {
+  const normalized = token.toUpperCase()
+  if (normalized === "PNCE") {
+    return "bg-[#417099]/10 text-[#417099] border-[#417099]/30"
+  }
+  if (normalized === "PBA") {
+    return "bg-[#00AEC3]/10 text-[#00AEC3] border-[#00AEC3]/30"
+  }
+  if (normalized === "SIN ENLACE") {
+    return "bg-slate-200 text-slate-600 border-slate-300"
+  }
+  return "bg-gray-500/10 text-gray-700 border-gray-500/20"
+}

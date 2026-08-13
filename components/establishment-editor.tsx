@@ -65,12 +65,16 @@ type Contacto = {
   fed_a_cargo: string | null
 }
 
+type SharedPredioSibling = { id: string; cue: number; nombre: string }
+
 export function EstablishmentEditor({
   establecimiento,
   contactos,
+  sharedPredio = [],
 }: {
   establecimiento: Establecimiento
   contactos: Contacto[]
+  sharedPredio?: SharedPredioSibling[]
 }) {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState("general")
@@ -237,7 +241,11 @@ export function EstablishmentEditor({
 
               <div className="rounded-lg bg-slate-50/30 p-6">
                 <TabsContent value="general" className="m-0">
-                  <GeneralTab establecimiento={establecimiento} isGovernmentBuilding={isGovernmentBuilding} />
+                  <GeneralTab
+                    establecimiento={establecimiento}
+                    isGovernmentBuilding={isGovernmentBuilding}
+                    sharedPredio={sharedPredio}
+                  />
                 </TabsContent>
                 {!isGovernmentBuilding && (
                   <>

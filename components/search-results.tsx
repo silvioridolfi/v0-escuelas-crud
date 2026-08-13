@@ -3,9 +3,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Building2, MapPin, Mail, Phone, User, Building } from "lucide-react"
+import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Server } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { getFedBadgeColor, getNivelBadgeColor, formatFedDisplay } from "@/lib/badge-colors"
+import { getFedBadgeColor, getNivelBadgeColor, formatFedDisplay, parsePlanTokens, getPlanTokenBadgeColor } from "@/lib/badge-colors"
 
 type SearchResult = {
   id: string
@@ -21,6 +21,9 @@ type SearchResult = {
   matricula?: number
   fed_a_cargo?: string
   es_establecimiento_educativo?: boolean
+  plan_enlace?: string | null
+  plan_piso_tecnologico?: string | null
+  sharedWith?: Array<{ id: string; cue: number; nombre: string }>
   // Organismo fields
   codigo?: string
   tipo_organizacion?: string
@@ -143,10 +146,50 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                           Edificio Gubernamental
                         </Badge>
                       )}
+                      {parsePlanTokens(result.plan_enlace).map((token, i) => (
+                        <Badge
+                          key={`enlace-${i}`}
+                          className={`${getPlanTokenBadgeColor(token)} border text-xs`}
+                          title="Tipo de enlace"
+                        >
+                          <Wifi className="h-3 w-3 mr-1" />
+                          {token}
+                        </Badge>
+                      ))}
+                      {parsePlanTokens(result.plan_piso_tecnologico).map((token, i) => (
+                        <Badge
+                          key={`piso-${i}`}
+                          className={`${getPlanTokenBadgeColor(token)} border text-xs`}
+                          title="Piso tecnológico"
+                        >
+                          <Server className="h-3 w-3 mr-1" />
+                          {token}
+                        </Badge>
+                      ))}
                     </>
                   )}
                 </div>
               </CardHeader>
+
+              {result.sharedWith && result.sharedWith.length > 0 && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    router.push(`/establecimientos/${result.sharedWith![0].id}`)
+                  }}
+                  className="mx-4 mb-1 flex items-center gap-1.5 rounded-md border border-amber-400/40 bg-amber-50 px-2.5 py-1.5 text-left text-amber-800 transition-colors hover:bg-amber-100"
+                >
+                  <AlertTriangle className="h-3.5 w-3.5 shrink-0 text-amber-600" />
+                  <span className="truncate text-[11px] leading-tight">
+                    Comparte predio con{" "}
+                    <span className="font-semibold underline">
+                      {result.sharedWith[0].nombre}
+                      {result.sharedWith.length > 1 ? ` (+${result.sharedWith.length - 1})` : ""}
+                    </span>
+                  </span>
+                </button>
+              )}
 
               <CardContent className="space-y-3 flex-1 flex flex-col justify-between">
                 <div className="space-y-2.5 text-sm">
