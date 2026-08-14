@@ -18,7 +18,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { ArrowLeft, Building, Save, Trash2 } from "lucide-react"
+import { ArrowLeft, Building, Save, Trash2, Pencil, Lock } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { updateOrganismoDescentralizado } from "@/app/actions/update-organismo"
 import { deleteOrganismo } from "@/app/actions/delete-organismo"
@@ -70,6 +70,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
   const [isSaving, setIsSaving] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
 
   const handleSave = async () => {
     setIsSaving(true)
@@ -154,6 +155,27 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
             </div>
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
               <Button
+                onClick={() => setIsEditing((prev) => !prev)}
+                variant={isEditing ? "secondary" : "outline"}
+                className={
+                  isEditing
+                    ? "w-full bg-white text-[#417099] hover:bg-white/90 shadow-md sm:w-auto"
+                    : "w-full border-white/60 bg-white/10 text-white hover:bg-white/20 shadow-md sm:w-auto"
+                }
+              >
+                {isEditing ? (
+                  <>
+                    <Lock className="mr-2 h-4 w-4" />
+                    Bloquear Edición
+                  </>
+                ) : (
+                  <>
+                    <Pencil className="mr-2 h-4 w-4" />
+                    Editar Información
+                  </>
+                )}
+              </Button>
+              <Button
                 onClick={() => setShowDeleteDialog(true)}
                 variant="destructive"
                 className="w-full bg-red-600 text-white hover:bg-red-700 shadow-md sm:w-auto"
@@ -161,18 +183,26 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                 <Trash2 className="mr-2 h-4 w-4" />
                 Eliminar
               </Button>
-              <Button
-                onClick={handleSave}
-                disabled={isSaving}
-                className="w-full bg-white/90 text-[#417099] hover:bg-white shadow-md sm:w-auto"
-              >
-                <Save className="mr-2 h-4 w-4" />
-                {isSaving ? "Guardando..." : "Guardar Cambios"}
-              </Button>
+              {isEditing && (
+                <Button
+                  onClick={handleSave}
+                  disabled={isSaving}
+                  className="w-full bg-white/90 text-[#417099] hover:bg-white shadow-md sm:w-auto"
+                >
+                  <Save className="mr-2 h-4 w-4" />
+                  {isSaving ? "Guardando..." : "Guardar Cambios"}
+                </Button>
+              )}
             </div>
           </div>
         </div>
       </header>
+
+      {isEditing && (
+        <div className="border-b border-amber-200 bg-amber-50 px-4 py-2 text-center text-sm font-medium text-amber-800 sm:text-left">
+          Modo de edición activo: los campos son editables. Recordá guardar los cambios al finalizar.
+        </div>
+      )}
 
       <div className="container mx-auto px-4 py-6 sm:py-8">
         <Card className="shadow-lg">
@@ -188,8 +218,12 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       value={formData.codigo}
                       onChange={(e) => setFormData({ ...formData, codigo: e.target.value })}
                       placeholder="Ej: jr01, jd001, jd113"
+                      disabled
+                      className="bg-slate-50"
                     />
-                    <p className="text-xs text-muted-foreground">Código único de identificación provincial</p>
+                    <p className="text-xs text-muted-foreground">
+                      Código único de identificación provincial (no editable)
+                    </p>
                   </div>
 
                   <div className="space-y-2">
@@ -203,6 +237,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                     <Select
                       value={formData.subtipo_organizacion || ""}
                       onValueChange={(value) => setFormData({ ...formData, subtipo_organizacion: value || null })}
+                      disabled={!isEditing}
                     >
                       <SelectTrigger id="subtipo">
                         <SelectValue placeholder="Seleccionar..." />
@@ -223,6 +258,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       id="nombre"
                       value={formData.nombre}
                       onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
+                      disabled={!isEditing}
                     />
                   </div>
 
@@ -232,6 +268,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       id="distrito"
                       value={formData.distrito}
                       onChange={(e) => setFormData({ ...formData, distrito: e.target.value })}
+                      disabled={!isEditing}
                     />
                   </div>
 
@@ -241,6 +278,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       id="localidad"
                       value={formData.localidad}
                       onChange={(e) => setFormData({ ...formData, localidad: e.target.value })}
+                      disabled={!isEditing}
                     />
                   </div>
 
@@ -250,6 +288,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       id="domicilio"
                       value={formData.domicilio}
                       onChange={(e) => setFormData({ ...formData, domicilio: e.target.value })}
+                      disabled={!isEditing}
                     />
                   </div>
                 </div>
@@ -264,6 +303,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       id="contacto_nombre"
                       value={formData.contacto_nombre}
                       onChange={(e) => setFormData({ ...formData, contacto_nombre: e.target.value })}
+                      disabled={!isEditing}
                     />
                   </div>
 
@@ -273,6 +313,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       id="contacto_apellido"
                       value={formData.contacto_apellido}
                       onChange={(e) => setFormData({ ...formData, contacto_apellido: e.target.value })}
+                      disabled={!isEditing}
                     />
                   </div>
 
@@ -282,6 +323,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       id="contacto_cargo"
                       value={formData.contacto_cargo}
                       onChange={(e) => setFormData({ ...formData, contacto_cargo: e.target.value })}
+                      disabled={!isEditing}
                     />
                   </div>
 
@@ -291,6 +333,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       id="telefono"
                       value={formData.telefono}
                       onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
+                      disabled={!isEditing}
                     />
                   </div>
 
@@ -301,6 +344,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      disabled={!isEditing}
                     />
                   </div>
                 </div>
@@ -317,6 +361,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       placeholder="-34.12345678"
                       value={formData.latitud}
                       onChange={(e) => setFormData({ ...formData, latitud: e.target.value })}
+                      disabled={!isEditing}
                     />
                     <p className="text-xs text-muted-foreground">Coordenada geográfica en formato decimal</p>
                   </div>
@@ -329,6 +374,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       placeholder="-58.12345678"
                       value={formData.longitud}
                       onChange={(e) => setFormData({ ...formData, longitud: e.target.value })}
+                      disabled={!isEditing}
                     />
                     <p className="text-xs text-muted-foreground">Coordenada geográfica en formato decimal</p>
                   </div>
@@ -361,6 +407,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                     rows={4}
                     value={formData.observaciones}
                     onChange={(e) => setFormData({ ...formData, observaciones: e.target.value })}
+                    disabled={!isEditing}
                   />
                 </div>
               </div>

@@ -28,11 +28,13 @@ export function ContactTab({
   contactos,
   distrito,
   fedACargo,
+  isEditing: isEditMode = false,
 }: {
   cue: number
   contactos: Contacto[]
   distrito: string
   fedACargo: string
+  isEditing?: boolean
 }) {
   const router = useRouter()
   const [isCreating, setIsCreating] = useState(false)
@@ -136,7 +138,7 @@ export function ContactTab({
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold">Contactos Registrados</h3>
-            {!isCreating && !editingId && (
+            {isEditMode && !isCreating && !editingId && (
               <Button onClick={startCreating} size="sm" className="bg-[#e81f76] hover:bg-[#c71963]">
                 <Plus className="mr-2 h-4 w-4" />
                 Agregar Contacto
@@ -154,7 +156,7 @@ export function ContactTab({
                     </CardTitle>
                     {contacto.cargo && <CardDescription>{contacto.cargo}</CardDescription>}
                   </div>
-                  {editingId !== contacto.id && !isCreating && (
+                  {isEditMode && editingId !== contacto.id && !isCreating && (
                     <div className="flex gap-2">
                       <Button
                         onClick={() => handleEdit(contacto)}
@@ -240,11 +242,17 @@ export function ContactTab({
           <CardContent className="flex min-h-[200px] items-center justify-center">
             <div className="text-center">
               <CardTitle className="mb-2">No hay contactos registrados</CardTitle>
-              <CardDescription className="mb-4">Crea un contacto para este establecimiento</CardDescription>
-              <Button onClick={startCreating} className="bg-[#e81f76] hover:bg-[#c71963]">
-                <Plus className="mr-2 h-4 w-4" />
-                Crear Contacto
-              </Button>
+              <CardDescription className="mb-4">
+                {isEditMode
+                  ? "Crea un contacto para este establecimiento"
+                  : "Activá el modo de edición para agregar un contacto"}
+              </CardDescription>
+              {isEditMode && (
+                <Button onClick={startCreating} className="bg-[#e81f76] hover:bg-[#c71963]">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Crear Contacto
+                </Button>
+              )}
             </div>
           </CardContent>
         </Card>
