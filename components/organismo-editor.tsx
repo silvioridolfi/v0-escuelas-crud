@@ -118,23 +118,23 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
     <>
       {/* Header */}
       <header className="border-b border-blue-200 bg-gradient-to-r from-[#417099] to-[#00AEC3] shadow-lg">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <div className="container mx-auto px-4 py-4 sm:py-6">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex items-start gap-3 sm:items-center sm:gap-4">
               <Button
                 onClick={() => router.push("/")}
                 variant="ghost"
                 size="icon"
-                className="text-white hover:bg-white/20"
+                className="shrink-0 text-white hover:bg-white/20"
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/90 shadow-md">
+              <div className="flex items-start gap-3 sm:items-center">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/90 shadow-md">
                   <Building className="h-6 w-6 text-[#417099]" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold leading-tight text-white">
+                  <h1 className="text-lg font-bold leading-tight text-white text-balance sm:text-2xl">
                     {organismo.nombre || organismo.tipo_organizacion}
                   </h1>
                   <div className="flex flex-wrap items-center gap-2">
@@ -152,11 +152,11 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
               <Button
                 onClick={() => setShowDeleteDialog(true)}
                 variant="destructive"
-                className="bg-red-600 text-white hover:bg-red-700 shadow-md"
+                className="w-full bg-red-600 text-white hover:bg-red-700 shadow-md sm:w-auto"
               >
                 <Trash2 className="mr-2 h-4 w-4" />
                 Eliminar
@@ -164,7 +164,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
               <Button
                 onClick={handleSave}
                 disabled={isSaving}
-                className="bg-white/90 text-[#417099] hover:bg-white shadow-md"
+                className="w-full bg-white/90 text-[#417099] hover:bg-white shadow-md sm:w-auto"
               >
                 <Save className="mr-2 h-4 w-4" />
                 {isSaving ? "Guardando..." : "Guardar Cambios"}
@@ -174,9 +174,9 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-6 sm:py-8">
         <Card className="shadow-lg">
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="space-y-6">
               <div>
                 <h2 className="text-lg font-semibold mb-4 text-foreground">Información General</h2>

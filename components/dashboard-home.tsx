@@ -187,20 +187,22 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
   return (
     <div className="flex min-h-screen flex-col">
       <header className="border-b border-blue-200 bg-gradient-to-r from-[#417099] to-[#00AEC3] shadow-lg">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/90 shadow-md">
-                <Building2 className="h-7 w-7 text-[#417099]" />
+        <div className="container mx-auto px-4 py-4 sm:py-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/90 shadow-md sm:h-12 sm:w-12">
+                <Building2 className="h-6 w-6 text-[#417099] sm:h-7 sm:w-7" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold leading-tight text-white">Buscador de Establecimientos Educativos</h1>
+                <h1 className="text-lg font-bold leading-tight text-white text-balance sm:text-2xl">
+                  Buscador de Establecimientos Educativos
+                </h1>
                 <p className="text-sm text-white/90">Región 1</p>
               </div>
             </div>
             <Button
               onClick={() => router.push("/establecimientos/nuevo")}
-              className="bg-[#e81f76] hover:bg-[#c71963] text-white shadow-lg"
+              className="w-full bg-[#e81f76] hover:bg-[#c71963] text-white shadow-lg sm:w-auto"
             >
               <Plus className="mr-2 h-4 w-4" />
               Nuevo Establecimiento
@@ -209,7 +211,7 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
         </div>
       </header>
 
-      <div className="container mx-auto flex-1 px-4 py-8 space-y-8">
+      <div className="container mx-auto flex-1 px-4 py-6 space-y-8 sm:py-8">
         <section>
           <div className="mb-4">
             <h2 className="text-lg font-semibold text-[#417099]">Métricas Generales</h2>
@@ -348,7 +350,7 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
           <Card className="relative overflow-hidden border border-slate-200/60 shadow-lg bg-white">
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#00AEC3] to-[#e81f76]" />
             <CardContent className="pt-6 pb-6 bg-slate-50/50">
-              <div className="flex gap-2">
+              <div className="flex flex-col gap-2 sm:flex-row">
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
                   <Input
@@ -361,22 +363,24 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
                     disabled={isSearching}
                   />
                 </div>
-                <Button
-                  onClick={() => handleSearch()}
-                  disabled={isSearching || !searchTerm.trim()}
-                  className="bg-[#00AEC3] hover:bg-[#0098ad] text-white shadow-md hover:shadow-lg transition-shadow"
-                >
-                  {isSearching ? "Buscando..." : "Buscar"}
-                </Button>
-                {searchTerm && (
+                <div className="flex gap-2">
                   <Button
-                    onClick={handleClearSearch}
-                    variant="outline"
-                    className="border-slate-300 hover:bg-slate-100 shadow-sm bg-transparent"
+                    onClick={() => handleSearch()}
+                    disabled={isSearching || !searchTerm.trim()}
+                    className="flex-1 bg-[#00AEC3] hover:bg-[#0098ad] text-white shadow-md hover:shadow-lg transition-shadow sm:flex-none"
                   >
-                    Limpiar
+                    {isSearching ? "Buscando..." : "Buscar"}
                   </Button>
-                )}
+                  {searchTerm && (
+                    <Button
+                      onClick={handleClearSearch}
+                      variant="outline"
+                      className="flex-1 border-slate-300 hover:bg-slate-100 shadow-sm bg-transparent sm:flex-none"
+                    >
+                      Limpiar
+                    </Button>
+                  )}
+                </div>
               </div>
             </CardContent>
           </Card>

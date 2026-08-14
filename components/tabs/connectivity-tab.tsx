@@ -42,7 +42,13 @@ type Establecimiento = {
   [key: string]: unknown
 }
 
-export function ConnectivityTab({ establecimiento }: { establecimiento: Establecimiento }) {
+export function ConnectivityTab({
+  establecimiento,
+  isEditing = false,
+}: {
+  establecimiento: Establecimiento
+  isEditing?: boolean
+}) {
   const router = useRouter()
   const [formData, setFormData] = useState({
     plan_enlace: establecimiento.plan_enlace || "",
@@ -114,6 +120,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="plan_enlace"
             value={formData.plan_enlace}
             onChange={(e) => updateField("plan_enlace", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
         <div className="space-y-2">
@@ -122,6 +129,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="subplan_enlace"
             value={formData.subplan_enlace}
             onChange={(e) => updateField("subplan_enlace", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
         <div className="space-y-2">
@@ -130,11 +138,17 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="fecha_inicio_conectividad"
             value={formData.fecha_inicio_conectividad}
             onChange={(e) => updateField("fecha_inicio_conectividad", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
         <div className="space-y-2">
           <Label htmlFor="mb">Ancho de Banda (Mb)</Label>
-          <Input id="mb" value={formData.mb} onChange={(e) => updateField("mb", e.target.value)} />
+          <Input
+            id="mb"
+            value={formData.mb}
+            onChange={(e) => updateField("mb", e.target.value)}
+            disabled={!isEditing}
+          />
         </div>
         <div className="space-y-2 md:col-span-2">
           <Label htmlFor="listado_conexion_internet">Listado de Conexión a Internet</Label>
@@ -142,6 +156,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="listado_conexion_internet"
             value={formData.listado_conexion_internet}
             onChange={(e) => updateField("listado_conexion_internet", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
       </div>
@@ -160,6 +175,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             value={formData.pnce_estado}
             onChange={(e) => updateField("pnce_estado", e.target.value)}
             placeholder="Estado del Plan Nacional de Conectividad Escolar"
+            disabled={!isEditing}
           />
         </div>
         <div className="space-y-2">
@@ -168,6 +184,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="proveedor_internet_pnce"
             value={formData.proveedor_internet_pnce}
             onChange={(e) => updateField("proveedor_internet_pnce", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
         <div className="space-y-2">
@@ -176,6 +193,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="fecha_instalacion_pnce"
             value={formData.fecha_instalacion_pnce}
             onChange={(e) => updateField("fecha_instalacion_pnce", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
         <div className="space-y-2">
@@ -184,6 +202,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="pnce_fecha_mejora"
             value={formData.pnce_fecha_mejora}
             onChange={(e) => updateField("pnce_fecha_mejora", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
         <div className="space-y-2 md:col-span-2">
@@ -192,6 +211,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="pnce_tipo_mejora"
             value={formData.pnce_tipo_mejora}
             onChange={(e) => updateField("pnce_tipo_mejora", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
       </div>
@@ -207,6 +227,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="pba_grupo_1_estado"
             value={formData.pba_grupo_1_estado}
             onChange={(e) => updateField("pba_grupo_1_estado", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
         <div className="space-y-2">
@@ -215,6 +236,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="pba_grupo_1_proveedor_internet"
             value={formData.pba_grupo_1_proveedor_internet}
             onChange={(e) => updateField("pba_grupo_1_proveedor_internet", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
         <div className="space-y-2">
@@ -223,6 +245,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="pba_grupo_1_fecha_instalacion"
             value={formData.pba_grupo_1_fecha_instalacion}
             onChange={(e) => updateField("pba_grupo_1_fecha_instalacion", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
         <div className="space-y-2">
@@ -231,6 +254,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="reclamos_grupo_1_ani"
             value={formData.reclamos_grupo_1_ani}
             onChange={(e) => updateField("reclamos_grupo_1_ani", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
       </div>
@@ -246,6 +270,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="pba_2019_estado"
             value={formData.pba_2019_estado}
             onChange={(e) => updateField("pba_2019_estado", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
         <div className="space-y-2">
@@ -254,6 +279,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="pba_2019_proveedor_internet"
             value={formData.pba_2019_proveedor_internet}
             onChange={(e) => updateField("pba_2019_proveedor_internet", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
         <div className="space-y-2 md:col-span-2">
@@ -262,6 +288,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="pba_2019_fecha_instalacion"
             value={formData.pba_2019_fecha_instalacion}
             onChange={(e) => updateField("pba_2019_fecha_instalacion", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
       </div>
@@ -277,6 +304,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="pba_grupo_2_a_estado"
             value={formData.pba_grupo_2_a_estado}
             onChange={(e) => updateField("pba_grupo_2_a_estado", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
         <div className="space-y-2">
@@ -285,6 +313,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="pba_grupo_2_a_proveedor_internet"
             value={formData.pba_grupo_2_a_proveedor_internet}
             onChange={(e) => updateField("pba_grupo_2_a_proveedor_internet", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
         <div className="space-y-2">
@@ -293,6 +322,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="pba_grupo_2_a_fecha_instalacion"
             value={formData.pba_grupo_2_a_fecha_instalacion}
             onChange={(e) => updateField("pba_grupo_2_a_fecha_instalacion", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
         <div className="space-y-2">
@@ -301,6 +331,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="pba_grupo_2_a_fecha_mejora"
             value={formData.pba_grupo_2_a_fecha_mejora}
             onChange={(e) => updateField("pba_grupo_2_a_fecha_mejora", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
         <div className="space-y-2 md:col-span-2">
@@ -309,6 +340,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="pba_grupo_2_a_tipo_mejora"
             value={formData.pba_grupo_2_a_tipo_mejora}
             onChange={(e) => updateField("pba_grupo_2_a_tipo_mejora", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
       </div>
@@ -324,6 +356,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="estado_instalacion_pba"
             value={formData.estado_instalacion_pba}
             onChange={(e) => updateField("estado_instalacion_pba", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
         <div className="space-y-2">
@@ -332,6 +365,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="proveedor_asignado_pba"
             value={formData.proveedor_asignado_pba}
             onChange={(e) => updateField("proveedor_asignado_pba", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
       </div>
@@ -349,6 +383,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="plan_piso_tecnologico"
             value={formData.plan_piso_tecnologico}
             onChange={(e) => updateField("plan_piso_tecnologico", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
         <div className="space-y-2">
@@ -357,6 +392,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="tipo_piso_instalado"
             value={formData.tipo_piso_instalado}
             onChange={(e) => updateField("tipo_piso_instalado", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
         <div className="space-y-2">
@@ -365,6 +401,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="fecha_terminado_piso_tecnologico_cue"
             value={formData.fecha_terminado_piso_tecnologico_cue}
             onChange={(e) => updateField("fecha_terminado_piso_tecnologico_cue", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
         <div className="space-y-2">
@@ -373,6 +410,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="proveedor_piso_tecnologico_cue"
             value={formData.proveedor_piso_tecnologico_cue}
             onChange={(e) => updateField("proveedor_piso_tecnologico_cue", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
         <div className="space-y-2">
@@ -381,6 +419,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             id="fecha_mejora"
             value={formData.fecha_mejora}
             onChange={(e) => updateField("fecha_mejora", e.target.value)}
+            disabled={!isEditing}
           />
         </div>
         <div className="space-y-2">
@@ -390,6 +429,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
             value={formData.tipo_mejora}
             onChange={(e) => updateField("tipo_mejora", e.target.value)}
             placeholder="Tipo de mejora realizada"
+            disabled={!isEditing}
           />
         </div>
       </div>
@@ -398,9 +438,11 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
         <p className={`text-sm ${message.includes("Error") ? "text-red-600" : "text-green-600"}`}>{message}</p>
       )}
 
-      <Button onClick={handleSave} disabled={isSaving} className="bg-[#00AEC3] hover:bg-[#0098ad]">
-        {isSaving ? "Guardando..." : "Guardar Cambios"}
-      </Button>
+      {isEditing && (
+        <Button onClick={handleSave} disabled={isSaving} className="bg-[#00AEC3] hover:bg-[#0098ad]">
+          {isSaving ? "Guardando..." : "Guardar Cambios"}
+        </Button>
+      )}
     </div>
   )
 }

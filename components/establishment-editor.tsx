@@ -15,7 +15,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { ArrowLeft, FileText, Wifi, GraduationCap, Users, FileWarning, Trash2, MapPin } from "lucide-react"
+import { ArrowLeft, FileText, Wifi, GraduationCap, Users, FileWarning, Trash2, MapPin, Pencil, Lock } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { GeneralTab } from "@/components/tabs/general-tab"
 import { ConnectivityTab } from "@/components/tabs/connectivity-tab"
@@ -80,6 +80,7 @@ export function EstablishmentEditor({
   const [activeTab, setActiveTab] = useState("general")
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
 
   const isGovernmentBuilding = establecimiento.es_establecimiento_educativo === false
 
@@ -158,49 +159,82 @@ export function EstablishmentEditor({
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
       {/* Header */}
       <header className="border-b border-blue-200 bg-gradient-to-r from-[#417099] to-[#00AEC3] shadow-lg">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center gap-4">
-            <Button
-              onClick={() => router.push("/")}
-              variant="ghost"
-              size="icon"
-              className="text-white hover:bg-white/20"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <div className="flex-1">
-              <h1 className="text-2xl font-bold leading-tight text-white">{establecimiento.nombre}</h1>
-              <div className="flex items-center gap-2">
-                <p className="text-sm text-white/90">CUE: {establecimiento.cue}</p>
-                {isGovernmentBuilding && (
-                  <Badge variant="secondary" className="bg-amber-500/90 text-white hover:bg-amber-600">
-                    Edificio Gubernamental
-                  </Badge>
-                )}
+        <div className="container mx-auto px-4 py-4 sm:py-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+            <div className="flex items-start gap-3 sm:items-center sm:gap-4">
+              <Button
+                onClick={() => router.push("/")}
+                variant="ghost"
+                size="icon"
+                className="shrink-0 text-white hover:bg-white/20"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              <div className="flex-1">
+                <h1 className="text-lg font-bold leading-tight text-white text-balance sm:text-2xl">
+                  {establecimiento.nombre}
+                </h1>
+                <div className="flex flex-wrap items-center gap-2">
+                  <p className="text-sm text-white/90">CUE: {establecimiento.cue}</p>
+                  {isGovernmentBuilding && (
+                    <Badge variant="secondary" className="bg-amber-500/90 text-white hover:bg-amber-600">
+                      Edificio Gubernamental
+                    </Badge>
+                  )}
+                </div>
               </div>
             </div>
-            <Button
-              onClick={() => setShowDeleteDialog(true)}
-              variant="destructive"
-              className="bg-red-600 text-white hover:bg-red-700 shadow-md"
-            >
-              <Trash2 className="mr-2 h-4 w-4" />
-              Eliminar Establecimiento
-            </Button>
+            <div className="flex flex-col gap-2 sm:ml-auto sm:flex-row">
+              <Button
+                onClick={() => setIsEditing((prev) => !prev)}
+                variant={isEditing ? "secondary" : "outline"}
+                className={
+                  isEditing
+                    ? "w-full bg-white text-[#417099] hover:bg-white/90 shadow-md sm:w-auto"
+                    : "w-full border-white/60 bg-white/10 text-white hover:bg-white/20 shadow-md sm:w-auto"
+                }
+              >
+                {isEditing ? (
+                  <>
+                    <Lock className="mr-2 h-4 w-4" />
+                    Bloquear Edición
+                  </>
+                ) : (
+                  <>
+                    <Pencil className="mr-2 h-4 w-4" />
+                    Editar Información
+                  </>
+                )}
+              </Button>
+              <Button
+                onClick={() => setShowDeleteDialog(true)}
+                variant="destructive"
+                className="w-full bg-red-600 text-white hover:bg-red-700 shadow-md sm:w-auto"
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Eliminar Establecimiento
+              </Button>
+            </div>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
+      {isEditing && (
+        <div className="border-b border-amber-200 bg-amber-50 px-4 py-2 text-center text-sm font-medium text-amber-800 sm:text-left">
+          Modo de edición activo: los campos son editables. Recordá guardar los cambios en cada sección.
+        </div>
+      )}
+
+      <div className="container mx-auto px-4 py-6 sm:py-8">
         <Card className="overflow-hidden border-slate-200 bg-white shadow-xl">
           <CardHeader className="border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white">
             <CardTitle className="text-xl text-slate-900">Detalles del Establecimiento</CardTitle>
             <CardDescription className="text-slate-600">Edita la información organizadas por secciones</CardDescription>
           </CardHeader>
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <Tabs value={activeTab} onValueChange={setActiveTab}>
               <div
-                className={`mb-6 grid gap-3 overflow-x-auto border-b-2 border-slate-200 pb-2 ${
+                className={`mb-6 grid gap-2 overflow-x-auto border-b-2 border-slate-200 pb-2 sm:gap-3 ${
                   isGovernmentBuilding ? "grid-cols-2 md:grid-cols-4" : "grid-cols-2 md:grid-cols-3 lg:grid-cols-6"
                 }`}
               >
@@ -212,7 +246,7 @@ export function EstablishmentEditor({
                       key={tab.value}
                       onClick={() => setActiveTab(tab.value)}
                       className={`
-                        group relative flex items-center gap-2 rounded-t-lg px-4 py-3 font-medium transition-all
+                        group relative flex items-center gap-1.5 rounded-t-lg px-2.5 py-2.5 font-medium transition-all sm:gap-2 sm:px-4 sm:py-3
                         ${
                           isActive
                             ? `${tab.bgColor} ${tab.color} shadow-md ring-2 ${tab.borderColor} ring-opacity-50`
@@ -227,12 +261,12 @@ export function EstablishmentEditor({
                       )}
 
                       <Icon
-                        className={`h-5 w-5 transition-transform ${isActive ? "scale-110" : "group-hover:scale-105"}`}
+                        className={`h-4 w-4 shrink-0 transition-transform sm:h-5 sm:w-5 ${isActive ? "scale-110" : "group-hover:scale-105"}`}
                       />
-                      <span className="whitespace-nowrap text-sm">{tab.label}</span>
+                      <span className="truncate text-xs sm:whitespace-nowrap sm:text-sm">{tab.label}</span>
 
                       {isActive && (
-                        <div className={`ml-1 h-2 w-2 rounded-full ${tab.borderColor.replace("border-", "bg-")}`} />
+                        <div className={`ml-1 hidden h-2 w-2 shrink-0 rounded-full sm:block ${tab.borderColor.replace("border-", "bg-")}`} />
                       )}
                     </button>
                   )
@@ -245,15 +279,16 @@ export function EstablishmentEditor({
                     establecimiento={establecimiento}
                     isGovernmentBuilding={isGovernmentBuilding}
                     sharedPredio={sharedPredio}
+                    isEditing={isEditing}
                   />
                 </TabsContent>
                 {!isGovernmentBuilding && (
                   <>
                     <TabsContent value="connectivity" className="m-0">
-                      <ConnectivityTab establecimiento={establecimiento} />
+                      <ConnectivityTab establecimiento={establecimiento} isEditing={isEditing} />
                     </TabsContent>
                     <TabsContent value="academic" className="m-0">
-                      <AcademicTab establecimiento={establecimiento} />
+                      <AcademicTab establecimiento={establecimiento} isEditing={isEditing} />
                     </TabsContent>
                   </>
                 )}
@@ -263,13 +298,14 @@ export function EstablishmentEditor({
                     contactos={contactos}
                     distrito={establecimiento.distrito}
                     fedACargo={establecimiento.fed_a_cargo}
+                    isEditing={isEditing}
                   />
                 </TabsContent>
                 <TabsContent value="location" className="m-0">
                   <LocationTab establecimiento={establecimiento} />
                 </TabsContent>
                 <TabsContent value="observations" className="m-0">
-                  <ObservationsTab establecimiento={establecimiento} />
+                  <ObservationsTab establecimiento={establecimiento} isEditing={isEditing} />
                 </TabsContent>
               </div>
             </Tabs>

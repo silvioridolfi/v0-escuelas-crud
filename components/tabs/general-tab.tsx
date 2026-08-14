@@ -33,10 +33,12 @@ export function GeneralTab({
   establecimiento,
   isGovernmentBuilding = false,
   sharedPredio = [],
+  isEditing = false,
 }: {
   establecimiento: Establecimiento
   isGovernmentBuilding?: boolean
   sharedPredio?: SharedPredioSibling[]
+  isEditing?: boolean
 }) {
   const router = useRouter()
   const { toast } = useToast()
@@ -172,6 +174,7 @@ export function GeneralTab({
             id="nombre"
             value={formData.nombre}
             onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
+            disabled={!isEditing}
           />
         </div>
 
@@ -181,12 +184,17 @@ export function GeneralTab({
             id="alias"
             value={formData.alias}
             onChange={(e) => setFormData({ ...formData, alias: e.target.value })}
+            disabled={!isEditing}
           />
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="distrito">Distrito</Label>
-          <Select value={formData.distrito} onValueChange={(value) => setFormData({ ...formData, distrito: value })}>
+          <Select
+            value={formData.distrito}
+            onValueChange={(value) => setFormData({ ...formData, distrito: value })}
+            disabled={!isEditing}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Selecciona un distrito" />
             </SelectTrigger>
@@ -206,6 +214,7 @@ export function GeneralTab({
             id="ciudad"
             value={formData.ciudad}
             onChange={(e) => setFormData({ ...formData, ciudad: e.target.value })}
+            disabled={!isEditing}
           />
         </div>
 
@@ -215,6 +224,7 @@ export function GeneralTab({
             id="direccion"
             value={formData.direccion}
             onChange={(e) => setFormData({ ...formData, direccion: e.target.value })}
+            disabled={!isEditing}
           />
         </div>
       </div>
@@ -232,6 +242,7 @@ export function GeneralTab({
             step="any"
             value={formData.lat}
             onChange={(e) => setFormData({ ...formData, lat: e.target.value })}
+            disabled={!isEditing}
           />
         </div>
 
@@ -243,6 +254,7 @@ export function GeneralTab({
             step="any"
             value={formData.lon}
             onChange={(e) => setFormData({ ...formData, lon: e.target.value })}
+            disabled={!isEditing}
           />
         </div>
       </div>
@@ -258,6 +270,7 @@ export function GeneralTab({
             <Select
               value={formData.fed_a_cargo || "NONE"}
               onValueChange={(value) => setFormData({ ...formData, fed_a_cargo: value })}
+              disabled={!isEditing}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Selecciona FED" />
@@ -279,6 +292,7 @@ export function GeneralTab({
             id="tipo_establecimiento"
             value={formData.tipo_establecimiento}
             onChange={(e) => setFormData({ ...formData, tipo_establecimiento: e.target.value })}
+            disabled={!isEditing}
           />
         </div>
 
@@ -288,13 +302,16 @@ export function GeneralTab({
             id="ambito"
             value={formData.ambito}
             onChange={(e) => setFormData({ ...formData, ambito: e.target.value })}
+            disabled={!isEditing}
           />
         </div>
       </div>
 
-      <Button onClick={handleSave} disabled={isSaving} className="bg-[#00AEC3] hover:bg-[#0098ad]">
-        {isSaving ? "Guardando..." : "Guardar Cambios"}
-      </Button>
+      {isEditing && (
+        <Button onClick={handleSave} disabled={isSaving} className="bg-[#00AEC3] hover:bg-[#0098ad]">
+          {isSaving ? "Guardando..." : "Guardar Cambios"}
+        </Button>
+      )}
     </div>
   )
 }
