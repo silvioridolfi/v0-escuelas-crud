@@ -386,12 +386,12 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                     <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
                       <p className="text-sm text-blue-800">
                         <a
-                          href={`https://www.google.com/maps?q=${formData.latitud},${formData.longitud}`}
+                          href={`https://www.openstreetmap.org/?mlat=${formData.latitud}&mlon=${formData.longitud}#map=17/${formData.latitud}/${formData.longitud}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="underline hover:text-blue-600"
                         >
-                          Ver ubicación en Google Maps
+                          Ver ubicación en OpenStreetMap
                         </a>
                       </p>
                     </div>
