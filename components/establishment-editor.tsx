@@ -23,6 +23,7 @@ import { AcademicTab } from "@/components/tabs/academic-tab"
 import { ObservationsTab } from "@/components/tabs/observations-tab"
 import { ContactTab } from "@/components/tabs/contact-tab"
 import { LocationTab } from "@/components/tabs/location-tab"
+import { splitEstablishmentName } from "@/lib/school-name"
 import { deleteEstablishment } from "@/app/actions/delete-establishment"
 
 type Establecimiento = {
@@ -83,6 +84,7 @@ export function EstablishmentEditor({
   const [isEditing, setIsEditing] = useState(false)
 
   const isGovernmentBuilding = establecimiento.es_establecimiento_educativo === false
+  const { primary: nombrePrimary, secondary: nombreSecondary } = splitEstablishmentName(establecimiento.nombre)
 
   const handleDelete = async () => {
     setIsDeleting(true)
@@ -172,7 +174,12 @@ export function EstablishmentEditor({
               </Button>
               <div className="flex-1">
                 <h1 className="text-lg font-bold leading-tight text-white text-balance sm:text-2xl">
-                  {establecimiento.nombre}
+                  <span className="block">{nombrePrimary}</span>
+                  {nombreSecondary && (
+                    <span className="mt-0.5 block text-base font-medium text-white/90 sm:text-lg">
+                      {nombreSecondary}
+                    </span>
+                  )}
                 </h1>
                 <div className="flex flex-wrap items-center gap-2">
                   <p className="text-sm text-white/90">CUE: {establecimiento.cue}</p>

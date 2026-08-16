@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Server } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { getFedBadgeColor, getNivelBadgeColor, formatFedDisplay, parsePlanTokens, getPlanTokenBadgeColor } from "@/lib/badge-colors"
+import { splitEstablishmentName } from "@/lib/school-name"
 
 const LocationMap = dynamic(() => import("@/components/tabs/location-map").then((mod) => mod.LocationMap), {
   ssr: false,
@@ -109,6 +110,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
           const isGovernmentBuilding = result.es_establecimiento_educativo === false
           const isRegional = result.subtipo_organizacion === "Jefatura Regional"
           const isDistrital = result.subtipo_organizacion === "Jefatura Distrital"
+          const { primary: nombrePrimary, secondary: nombreSecondary } = splitEstablishmentName(result.nombre)
 
           return (
             <Card
@@ -119,7 +121,10 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
 
               <CardHeader className="pb-3 pt-5 flex-shrink-0">
                 <CardTitle className="text-base leading-tight text-balance text-slate-800 min-h-[3rem]">
-                  {result.nombre}
+                  <span className="block">{nombrePrimary}</span>
+                  {nombreSecondary && (
+                    <span className="mt-0.5 block text-sm font-normal text-slate-600">{nombreSecondary}</span>
+                  )}
                 </CardTitle>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {isOrganismo ? (
