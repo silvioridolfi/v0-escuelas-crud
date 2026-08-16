@@ -236,8 +236,10 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
       if (synonyms.length > 0) {
         const orConditions = synonyms
           .map((syn) => {
-            const normalized = normalizeText(syn)
-            return `nombre.ilike.%${normalized}%,alias.ilike.%${normalized}%`
+            // Use the synonym as-is (accented and unaccented variants are both
+            // present in the synonym list). Stripping accents here would prevent
+            // matching DB values that keep the accent (e.g. "Técnica").
+            return `nombre.ilike.%${syn}%,alias.ilike.%${syn}%`
           })
           .join(",")
 
@@ -273,8 +275,9 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
         if (synonyms.length > 0) {
           const orConditions = synonyms
             .map((syn) => {
-              const normalized = normalizeText(syn)
-              return `nombre.ilike.%${normalized}%,alias.ilike.%${normalized}%`
+              // Use the synonym as-is so accented variants (e.g. "Técnica")
+              // still match against the DB values that keep the accent.
+              return `nombre.ilike.%${syn}%,alias.ilike.%${syn}%`
             })
             .join(",")
 
@@ -333,23 +336,43 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
     }
 
     if (searchType.type === "text") {
+      const raw = searchTerm.trim()
       const normalized = normalizeText(searchTerm)
+      // Postgres ILIKE is case-insensitive but not accent-insensitive, so a term
+      // without accents (e.g. "tecnica") won't match DB values that keep the
+      // accent (e.g. "Técnica"). Search both the raw term and the accent-stripped
+      // version to cover both cases; skip the duplicate query when they're equal.
+      const terms = raw.toLowerCase() === normalized ? [raw] : [raw, normalized]
+
+      const establishmentOr = terms
+        .flatMap((term) => [
+          `nombre.ilike.%${term}%`,
+          `alias.ilike.%${term}%`,
+          `distrito.ilike.%${term}%`,
+          `ciudad.ilike.%${term}%`,
+        ])
+        .join(",")
+
+      const organismoOr = terms
+        .flatMap((term) => [
+          `nombre.ilike.%${term}%`,
+          `tipo_organizacion.ilike.%${term}%`,
+          `subtipo_organizacion.ilike.%${term}%`,
+          `distrito.ilike.%${term}%`,
+        ])
+        .join(",")
 
       const [establishmentResults, organismoResults] = await Promise.all([
         supabase
           .from("establecimientos")
           .select(establishmentFields)
-          .or(
-            `nombre.ilike.%${normalized}%,alias.ilike.%${normalized}%,distrito.ilike.%${normalized}%,ciudad.ilike.%${normalized}%`,
-          )
+          .or(establishmentOr)
           .order("nombre", { ascending: true })
           .limit(50),
         supabase
           .from("organismos_descentralizados")
           .select("*")
-          .or(
-            `nombre.ilike.%${normalized}%,tipo_organizacion.ilike.%${normalized}%,subtipo_organizacion.ilike.%${normalized}%,distrito.ilike.%${normalized}%`,
-          )
+          .or(organismoOr)
           .order("nombre", { ascending: true })
           .limit(50),
       ])

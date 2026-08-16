@@ -86,9 +86,12 @@ export function getSchoolTypeSynonyms(type: string): string[] {
 
   const synonymMap: Record<string, string[]> = {
     // Técnica
-    tecnica: ["tecnica", "técnica", "tec", "escuela tecnica", "escuela técnica", "et"],
-    técnica: ["tecnica", "técnica", "tec", "escuela tecnica", "escuela técnica", "et"],
-    tec: ["tecnica", "técnica", "tec", "escuela tecnica", "escuela técnica", "et"],
+    // Nota: se excluye "et" como sinónimo porque es un fragmento de 2 letras
+    // demasiado genérico (aparece dentro de muchas palabras comunes) y generaba
+    // resultados falsos positivos al buscar por ILIKE de subcadena.
+    tecnica: ["tecnica", "técnica", "escuela tecnica", "escuela técnica"],
+    técnica: ["tecnica", "técnica", "escuela tecnica", "escuela técnica"],
+    tec: ["tecnica", "técnica", "escuela tecnica", "escuela técnica"],
 
     // Jardín
     jardin: ["jardin", "jardín", "ji", "j.i.", "infantes", "jardin de infantes", "jardín de infantes"],
