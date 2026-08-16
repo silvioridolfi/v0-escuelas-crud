@@ -425,10 +425,12 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
             {metrics.fedBreakdown.map((item) => (
               <div
                 key={item.fed}
-                className="flex items-center justify-between gap-3 rounded-md border border-slate-200 bg-slate-50/50 px-3 py-2"
+                className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 rounded-md border border-slate-200 bg-slate-50/50 px-3 py-2.5"
               >
-                <Badge className={`${getFedBadgeColor(item.fed)} border text-xs`}>{formatFedDisplay(item.fed)}</Badge>
-                <span className="text-sm font-semibold text-slate-700">
+                <Badge className={`${getFedBadgeColor(item.fed)} border text-xs whitespace-normal text-left`}>
+                  {formatFedDisplay(item.fed)}
+                </Badge>
+                <span className="shrink-0 text-sm font-semibold text-slate-700">
                   {item.count.toLocaleString("es-AR")} {item.count === 1 ? "escuela" : "escuelas"}
                 </span>
               </div>
