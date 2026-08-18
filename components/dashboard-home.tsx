@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Search, Building2, MapPin, Users, Plus, ChevronRight } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -48,6 +48,7 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
   const [isSearching, setIsSearching] = useState(false)
   const [hasSearched, setHasSearched] = useState(false)
   const router = useRouter()
+  const searchInputRef = useRef<HTMLInputElement>(null)
 
   const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(null)
 
@@ -93,6 +94,12 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
     if (savedHasSearched === "true") {
       setHasSearched(true)
     }
+  }, [])
+
+  useEffect(() => {
+    // Enfocar automáticamente el buscador al cargar la página para que el
+    // usuario pueda escribir de inmediato sin hacer clic.
+    searchInputRef.current?.focus()
   }, [])
 
   useEffect(() => {
@@ -211,8 +218,8 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
         </div>
       </header>
 
-      <div className="container mx-auto flex-1 px-4 py-6 space-y-8 sm:py-8">
-        <section>
+      <div className="container mx-auto flex flex-1 flex-col gap-8 px-4 py-6 sm:py-8">
+        <section className="order-3 lg:order-1">
           <div className="mb-4">
             <h2 className="text-lg font-semibold text-[#417099]">Métricas Generales</h2>
             <p className="text-sm text-slate-600">Resumen estadístico del sistema</p>
@@ -342,7 +349,7 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
           </div>
         </section>
 
-        <section>
+        <section className="order-1 lg:order-2">
           <div className="mb-4">
             <h2 className="text-lg font-semibold text-[#417099]">Buscador de establecimientos</h2>
             <p className="text-sm text-slate-600">Busca por CUE, PREDIO, tipo de escuela, o nombre</p>
@@ -354,6 +361,8 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
                   <Input
+                    ref={searchInputRef}
+                    autoFocus
                     type="text"
                     placeholder="Buscar por CUE, PREDIO, nombre..."
                     value={searchTerm}
@@ -387,7 +396,7 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
         </section>
 
         {hasSearched && (
-          <section>
+          <section className="order-2 lg:order-3">
             <div className="mb-4">
               <h2 className="text-lg font-semibold text-[#417099]">Resultados</h2>
               <p className="text-sm text-slate-600">Establecimientos encontrados</p>
@@ -397,7 +406,7 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
         )}
 
         {!hasSearched && (
-          <section>
+          <section className="order-2 lg:order-3">
             <Card className="relative overflow-hidden border-2 border-dashed border-slate-300/60 shadow-sm bg-slate-50/30">
               <CardContent className="flex min-h-[300px] items-center justify-center">
                 <div className="text-center">
