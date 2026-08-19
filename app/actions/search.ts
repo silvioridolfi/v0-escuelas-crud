@@ -309,10 +309,15 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
         }
       }
 
+      // Para una búsqueda numérica sin tipo (por ejemplo, "980"), limitar la
+      // consulta a nombres/alias que contengan ese número evita perder jardines
+      // válidos cuando quedan fuera del primer lote de registros.
       const { data: allSchools, error: allError } = await supabase
         .from("establecimientos")
         .select(establishmentFields)
-        .limit(500)
+        .or(`nombre.ilike.%${number}%,alias.ilike.%${number}%`)
+        .order("nombre", { ascending: true })
+        .limit(1000)
 
       if (allError) {
         console.error("[v0] Error searching schools:", allError)

@@ -13,25 +13,12 @@ const encodeSans = Encode_Sans({
 })
 
 export const metadata: Metadata = {
-  title: "Editor de Escuelas - Provincia de Buenos Aires",
+  title: "Buscador de Establecimientos - Provincia de Buenos Aires",
   description: "Sistema de gestión de establecimientos educativos de la Provincia de Buenos Aires",
   generator: "v0.app",
   icons: {
-    icon: [
-      {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
-      },
-    ],
-    apple: "/apple-icon.png",
+    icon: "/favicon_dte.png",
+    apple: "/favicon_dte.png",
   },
 }
 
