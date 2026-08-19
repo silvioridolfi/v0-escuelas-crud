@@ -310,7 +310,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                   >
                     Ver detalles
                   </Button>
-                  {!isOrganismo && hasMapCoordinates(result) && (
+                  {hasMapCoordinates(result) && (
                     <Button
                       onClick={() => setMapResultId(result.id)}
                       variant="outline"
@@ -331,10 +331,10 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
       <Dialog open={mapResultId !== null} onOpenChange={(open) => !open && setMapResultId(null)}>
         <DialogContent className="max-w-[calc(100%-1.5rem)] p-0 sm:max-w-2xl">
           <DialogHeader className="px-4 pt-4 pb-3 pr-14 text-left border-b border-slate-200">
-            <DialogTitle className="text-sm font-semibold text-slate-800 text-balance leading-snug">
-              {mapResult?.nombre}
-            </DialogTitle>
-            <DialogDescription className="sr-only">Mapa de ubicación de {mapResult?.nombre}</DialogDescription>
+              <DialogTitle className="text-sm font-semibold text-slate-800 text-balance leading-snug">
+                Ubicación: {mapResult?.nombre}
+              </DialogTitle>
+              <DialogDescription className="sr-only">Mapa de ubicación de {mapResult?.nombre}</DialogDescription>
             {mapResult?.direccion && <p className="text-xs text-slate-500">{mapResult.direccion}</p>}
           </DialogHeader>
           {hasMapCoordinates(mapResult) && mapResult && (
