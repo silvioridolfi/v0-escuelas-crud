@@ -121,8 +121,14 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
 
       console.log("[v0] Nivel+Numero search:", { nivel, numero, nivelesDB })
 
-      // Construir condición OR para los niveles mapeados
+      // Primero acotamos por nivel y luego filtramos en memoria para exigir
+      // simultáneamente el tipo escrito y el número como token exacto. Esto
+      // evita que "tecnica 2" devuelva cualquier escuela cuyo nombre contenga
+      // el dígito 2, aunque no sea técnica ni corresponda al número 2.
       const nivelConditions = nivelesDB.map((n) => `nivel.ilike.%${n}%`).join(",")
+      const typeSynonyms = getSchoolTypeSynonyms(nivel)
+      const typeNeedles = typeSynonyms.length > 0 ? typeSynonyms : [nivel]
+      const numberRegex = new RegExp(buildNumberTokenRegex(numero), "i")
 
       const { data, error } = await supabase
         .from("establecimientos")
@@ -130,20 +136,29 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
           "id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, predio, direccion, fed_a_cargo, es_establecimiento_educativo, plan_enlace, plan_piso_tecnologico, lat, lon, contactos!inner(nombre, apellido, telefono, correo)",
         )
         .or(nivelConditions)
-        .ilike("nombre", `%${numero}%`)
         .order("nombre", { ascending: true })
-        .limit(50)
+        .limit(1000)
 
       if (error) {
         console.error("[v0] Error in nivel_numero search:", error)
         return []
       }
 
+      const filtered = (data || []).filter((school) => {
+        const nombre = normalizeText(school.nombre || "")
+        const alias = normalizeText(school.alias || "")
+        const hasType = typeNeedles.some((needle) => {
+          const normalizedNeedle = normalizeText(needle)
+          return nombre.includes(normalizedNeedle) || alias.includes(normalizedNeedle)
+        })
+        return hasType && (numberRegex.test(nombre) || numberRegex.test(alias))
+      })
+
       return attachSharedPredioInfo(
-        data?.map((e) => ({
+        filtered.slice(0, 50).map((e) => ({
           ...e,
           entity_type: "establecimiento" as const,
-        })) || [],
+        })),
         supabase,
       )
     }
