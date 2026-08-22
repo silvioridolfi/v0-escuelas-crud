@@ -1,6 +1,6 @@
 "use server"
 
-import { createClient } from "@/lib/supabase/server"
+import { createAdminClient } from "@/lib/supabase/admin"
 import { revalidatePath } from "next/cache"
 
 type CreateOrganismoData = {
@@ -19,7 +19,7 @@ type CreateOrganismoData = {
 }
 
 export async function createOrganismoDescentralizado(data: CreateOrganismoData) {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   // Verificar si el código ya existe
   const { data: existing } = await supabase
