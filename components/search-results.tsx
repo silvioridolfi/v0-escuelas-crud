@@ -1,11 +1,24 @@
 "use client"
 
+import { useState } from "react"
+import dynamic from "next/dynamic"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Building2, MapPin, Mail, Phone, User, Building } from "lucide-react"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Server } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { getFedBadgeColor, getNivelBadgeColor, formatFedDisplay } from "@/lib/badge-colors"
+import { getFedBadgeColor, getNivelBadgeColor, formatFedDisplay, parsePlanTokens, getPlanTokenBadgeColor } from "@/lib/badge-colors"
+import { splitEstablishmentName } from "@/lib/school-name"
+
+const LocationMap = dynamic(() => import("@/components/tabs/location-map").then((mod) => mod.LocationMap), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-full items-center justify-center bg-slate-100 text-sm text-muted-foreground">
+      Cargando mapa…
+    </div>
+  ),
+})
 
 type SearchResult = {
   id: string
@@ -21,6 +34,11 @@ type SearchResult = {
   matricula?: number
   fed_a_cargo?: string
   es_establecimiento_educativo?: boolean
+  plan_enlace?: string | null
+  plan_piso_tecnologico?: string | null
+  lat?: number | null
+  lon?: number | null
+  sharedWith?: Array<{ id: string; cue: number; nombre: string }>
   // Organismo fields
   codigo?: string
   tipo_organizacion?: string
@@ -43,6 +61,10 @@ type SearchResult = {
 
 export function SearchResults({ results, isSearching }: { results: SearchResult[]; isSearching: boolean }) {
   const router = useRouter()
+  const [mapResultId, setMapResultId] = useState<string | null>(null)
+  const mapResult = results.find((r) => r.id === mapResultId) || null
+  const hasMapCoordinates = (r: SearchResult | null) =>
+    !!r && typeof r.lat === "number" && typeof r.lon === "number" && !Number.isNaN(r.lat) && !Number.isNaN(r.lon)
 
   if (isSearching) {
     return (
@@ -88,6 +110,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
           const isGovernmentBuilding = result.es_establecimiento_educativo === false
           const isRegional = result.subtipo_organizacion === "Jefatura Regional"
           const isDistrital = result.subtipo_organizacion === "Jefatura Distrital"
+          const { primary: nombrePrimary, secondary: nombreSecondary } = splitEstablishmentName(result.nombre)
 
           return (
             <Card
@@ -98,7 +121,10 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
 
               <CardHeader className="pb-3 pt-5 flex-shrink-0">
                 <CardTitle className="text-base leading-tight text-balance text-slate-800 min-h-[3rem]">
-                  {result.nombre}
+                  <span className="block">{nombrePrimary}</span>
+                  {nombreSecondary && (
+                    <span className="mt-0.5 block text-sm font-normal text-slate-600">{nombreSecondary}</span>
+                  )}
                 </CardTitle>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {isOrganismo ? (
@@ -143,10 +169,60 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                           Edificio Gubernamental
                         </Badge>
                       )}
+                      {parsePlanTokens(result.plan_enlace).map((token, i) => (
+                        <Badge
+                          key={`enlace-${i}`}
+                          className={`${getPlanTokenBadgeColor(token)} border text-xs`}
+                          title="Tipo de enlace"
+                        >
+                          <Wifi className="h-3 w-3 mr-1" />
+                          {token}
+                        </Badge>
+                      ))}
+                      {parsePlanTokens(result.plan_piso_tecnologico).map((token, i) => (
+                        <Badge
+                          key={`piso-${i}`}
+                          className={`${getPlanTokenBadgeColor(token)} border text-xs`}
+                          title="Piso tecnológico"
+                        >
+                          <Server className="h-3 w-3 mr-1" />
+                          {token}
+                        </Badge>
+                      ))}
                     </>
                   )}
                 </div>
               </CardHeader>
+
+              {result.sharedWith && result.sharedWith.length > 0 && (
+                <div className="mx-4 mb-1 rounded-md border border-amber-400/40 bg-amber-50 px-2.5 py-2">
+                  <div className="mb-1.5 flex items-start gap-1.5 text-amber-800">
+                    <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-600" />
+                    <span className="text-[11px] font-medium leading-tight">
+                      Comparte predio con{" "}
+                      {result.sharedWith.length === 1 ? "otro establecimiento" : "otros establecimientos"}:
+                    </span>
+                  </div>
+                  <div className="space-y-1 pl-5">
+                    {result.sharedWith.map((sibling) => (
+                      <button
+                        key={sibling.id}
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          router.push(`/establecimientos/${sibling.id}`)
+                        }}
+                        className="block w-full rounded border border-amber-300/70 bg-white px-2 py-1 text-left transition-colors hover:border-amber-500 hover:bg-amber-100/60"
+                      >
+                        <span className="line-clamp-2 text-[11px] font-semibold leading-snug text-amber-900 underline">
+                          {sibling.nombre}
+                        </span>
+                        <span className="mt-0.5 block text-[10px] text-amber-700">CUE {sibling.cue}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <CardContent className="space-y-3 flex-1 flex flex-col justify-between">
                 <div className="space-y-2.5 text-sm">
@@ -223,7 +299,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                   )}
                 </div>
 
-                <div className="pt-3">
+                <div className="pt-3 space-y-2">
                   <Button
                     onClick={() => {
                       const route = isOrganismo ? `/organismos/${result.id}` : `/establecimientos/${result.id}`
@@ -234,12 +310,45 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                   >
                     Ver detalles
                   </Button>
+                  {hasMapCoordinates(result) && (
+                    <Button
+                      onClick={() => setMapResultId(result.id)}
+                      variant="outline"
+                      className="w-full border-[#417099]/30 text-[#417099] hover:bg-[#417099]/10 hover:text-[#417099]"
+                      size="sm"
+                    >
+                      <MapPin className="h-4 w-4 mr-1.5" />
+                      Ver ubicación
+                    </Button>
+                  )}
                 </div>
               </CardContent>
             </Card>
           )
         })}
       </div>
+
+      <Dialog open={mapResultId !== null} onOpenChange={(open) => !open && setMapResultId(null)}>
+        <DialogContent className="max-w-[calc(100%-1.5rem)] p-0 sm:max-w-2xl">
+          <DialogHeader className="px-4 pt-4 pb-3 pr-14 text-left border-b border-slate-200">
+              <DialogTitle className="text-sm font-semibold text-slate-800 text-balance leading-snug">
+                Ubicación: {mapResult?.nombre}
+              </DialogTitle>
+              <DialogDescription className="sr-only">Mapa de ubicación de {mapResult?.nombre}</DialogDescription>
+            {mapResult?.direccion && <p className="text-xs text-slate-500">{mapResult.direccion}</p>}
+          </DialogHeader>
+          {hasMapCoordinates(mapResult) && mapResult && (
+            <div className="h-[60vh] max-h-[500px] w-full sm:h-[420px]">
+              <LocationMap
+                lat={mapResult.lat as number}
+                lon={mapResult.lon as number}
+                nombre={mapResult.nombre}
+                direccion={mapResult.direccion}
+              />
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

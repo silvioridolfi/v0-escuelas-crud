@@ -10,7 +10,7 @@ import {
   escapePostgrestFilterValue,
 } from "@/lib/search-utils"
 
-type SearchResult = {
+export type SearchResult = {
   id: string
   // Establishment fields
   cue?: number
@@ -24,6 +24,11 @@ type SearchResult = {
   matricula?: number
   fed_a_cargo?: string
   es_establecimiento_educativo?: boolean
+  plan_enlace?: string | null
+  plan_piso_tecnologico?: string | null
+  lat?: number | null
+  lon?: number | null
+  sharedWith?: Array<{ id: string; cue: number; nombre: string }>
   // Organismo fields
   codigo?: string
   tipo_organizacion?: string
@@ -42,6 +47,77 @@ type SearchResult = {
   }>
   // Type discriminator
   entity_type: "establecimiento" | "organismo"
+}
+
+/**
+ * For establecimiento results that share a non-null/non-zero "predio" number with
+ * another establecimiento, attaches the list of sibling establishments (id, cue, nombre)
+ * so the UI can surface a "shares this predio with..." indicator.
+ */
+async function attachSharedPredioInfo(
+  results: SearchResult[],
+  supabase: Awaited<ReturnType<typeof createClient>>,
+): Promise<SearchResult[]> {
+  const predios = Array.from(
+    new Set(
+      results
+        .filter((r) => r.entity_type === "establecimiento" && r.predio)
+        .map((r) => r.predio as number)
+        .filter((predio) => predio > 0),
+    ),
+  )
+
+  let siblings: Array<{ id: string; cue: number; nombre: string; predio: number | null }> = []
+  if (predios.length > 0) {
+    const { data, error } = await supabase
+      .from("establecimientos")
+      .select("id, cue, nombre, predio")
+      .in("predio", predios)
+
+    if (error) {
+      console.error("[v0] Error fetching shared-predio siblings:", error)
+    } else {
+      siblings = data || []
+    }
+  }
+
+  const siblingsByPredio = new Map<number, Array<{ id: string; cue: number; nombre: string }>>()
+  for (const sibling of siblings) {
+    if (!sibling.predio) continue
+    const group = siblingsByPredio.get(sibling.predio) || []
+    group.push({ id: sibling.id, cue: sibling.cue, nombre: sibling.nombre })
+    siblingsByPredio.set(sibling.predio, group)
+  }
+
+  const establishmentResults = results.filter((r) => r.entity_type === "establecimiento" && r.cue)
+  const cues = establishmentResults.map((r) => r.cue as number)
+  const { data: contacts } = await supabase
+    .from("contactos")
+    .select("cue, nombre, apellido, telefono, correo")
+    .in("cue", cues)
+    .order("apellido", { ascending: true })
+
+  const contactsByCue = new Map<number, SearchResult["contactos"]>()
+  for (const contact of contacts || []) {
+    const existing = contactsByCue.get(contact.cue) || []
+    existing.push({
+      nombre: contact.nombre || "",
+      apellido: contact.apellido || "",
+      telefono: contact.telefono || "",
+      correo: contact.correo || "",
+    })
+    contactsByCue.set(contact.cue, existing)
+  }
+
+  return results.map((r) => {
+    const withContacts = r.cue ? { ...r, contactos: contactsByCue.get(r.cue) || [] } : r
+    if (withContacts.entity_type !== "establecimiento" || !withContacts.predio) {
+      return withContacts
+    }
+    const group = siblingsByPredio.get(withContacts.predio) || []
+    const sharedWith = group.filter((s) => s.id !== withContacts.id)
+    return sharedWith.length > 0 ? { ...withContacts, sharedWith } : withContacts
+  })
 }
 
 export async function searchEstablecimientos(searchTerm: string): Promise<SearchResult[]> {
@@ -67,31 +143,47 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
 
       console.log("[v0] Nivel+Numero search:", { nivel, numero, nivelesDB })
 
-      // Construir condición OR para los niveles mapeados
+      // Primero acotamos por nivel y luego filtramos en memoria para exigir
+      // simultáneamente el tipo escrito y el número como token exacto. Esto
+      // evita que "tecnica 2" devuelva cualquier escuela cuyo nombre contenga
+      // el dígito 2, aunque no sea técnica ni corresponda al número 2.
       const nivelConditions = nivelesDB
         .map((n) => `nivel.ilike.%${escapePostgrestFilterValue(n)}%`)
         .join(",")
+      const typeSynonyms = getSchoolTypeSynonyms(nivel)
+      const typeNeedles = typeSynonyms.length > 0 ? typeSynonyms : [nivel]
+      const numberRegex = new RegExp(buildNumberTokenRegex(numero), "i")
 
       const { data, error } = await supabase
         .from("establecimientos")
         .select(
-          "id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, predio, direccion, fed_a_cargo, es_establecimiento_educativo, contactos!inner(nombre, apellido, telefono, correo)",
+          "id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, predio, direccion, fed_a_cargo, es_establecimiento_educativo, plan_enlace, plan_piso_tecnologico, lat, lon",
         )
         .or(nivelConditions)
-        .ilike("nombre", `%${numero}%`)
         .order("nombre", { ascending: true })
-        .limit(50)
+        .limit(1000)
 
       if (error) {
         console.error("[v0] Error in nivel_numero search:", error)
         return []
       }
 
-      return (
-        data?.map((e) => ({
+      const filtered = (data || []).filter((school) => {
+        const nombre = normalizeText(school.nombre || "")
+        const alias = normalizeText(school.alias || "")
+        const hasType = typeNeedles.some((needle) => {
+          const normalizedNeedle = normalizeText(needle)
+          return nombre.includes(normalizedNeedle) || alias.includes(normalizedNeedle)
+        })
+        return hasType && (numberRegex.test(nombre) || numberRegex.test(alias))
+      })
+
+      return attachSharedPredioInfo(
+        filtered.slice(0, 50).map((e) => ({
           ...e,
           entity_type: "establecimiento" as const,
-        })) || []
+        })),
+        supabase,
       )
     }
 
@@ -117,6 +209,8 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
           distrito: org.distrito || "",
           ciudad: org.localidad || "",
           direccion: org.domicilio || "",
+          lat: typeof org.latitud === "number" ? org.latitud : Number(org.latitud) || null,
+          lon: typeof org.longitud === "number" ? org.longitud : Number(org.longitud) || null,
           telefono: org.telefono,
           email: org.email,
           contacto_nombre: org.contacto_nombre,
@@ -129,8 +223,8 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
 
     const establishmentFields = `
       id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, predio, 
-      direccion, fed_a_cargo, es_establecimiento_educativo,
-      contactos!inner(nombre, apellido, telefono, correo)
+      direccion, fed_a_cargo, es_establecimiento_educativo, plan_enlace, plan_piso_tecnologico, lat, lon,
+      contactos(nombre, apellido, telefono, correo)
     `
 
     if (searchType.type === "cue") {
@@ -145,11 +239,12 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
         return []
       }
 
-      return (
+      return attachSharedPredioInfo(
         data?.map((e) => ({
           ...e,
           entity_type: "establecimiento" as const,
-        })) || []
+        })) || [],
+        supabase,
       )
     }
 
@@ -166,11 +261,12 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
         return []
       }
 
-      return (
+      return attachSharedPredioInfo(
         data?.map((e) => ({
           ...e,
           entity_type: "establecimiento" as const,
-        })) || []
+        })) || [],
+        supabase,
       )
     }
 
@@ -181,8 +277,10 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
       if (synonyms.length > 0) {
         const orConditions = synonyms
           .map((syn) => {
-            const normalized = normalizeText(syn)
-            return `nombre.ilike.%${normalized}%,alias.ilike.%${normalized}%`
+            // Use the synonym as-is (accented and unaccented variants are both
+            // present in the synonym list). Stripping accents here would prevent
+            // matching DB values that keep the accent (e.g. "Técnica").
+            return `nombre.ilike.%${syn}%,alias.ilike.%${syn}%`
           })
           .join(",")
 
@@ -198,11 +296,12 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
           return []
         }
 
-        return (
+        return attachSharedPredioInfo(
           data?.map((e) => ({
             ...e,
             entity_type: "establecimiento" as const,
-          })) || []
+          })) || [],
+          supabase,
         )
       }
     }
@@ -217,8 +316,9 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
         if (synonyms.length > 0) {
           const orConditions = synonyms
             .map((syn) => {
-              const normalized = normalizeText(syn)
-              return `nombre.ilike.%${normalized}%,alias.ilike.%${normalized}%`
+              // Use the synonym as-is so accented variants (e.g. "Técnica")
+              // still match against the DB values that keep the accent.
+              return `nombre.ilike.%${syn}%,alias.ilike.%${syn}%`
             })
             .join(",")
 
@@ -240,17 +340,25 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
             return regex.test(nombreNorm) || regex.test(aliasNorm)
           })
 
-          return filtered.slice(0, 50).map((e) => ({
-            ...e,
-            entity_type: "establecimiento" as const,
-          }))
+          return attachSharedPredioInfo(
+            filtered.slice(0, 50).map((e) => ({
+              ...e,
+              entity_type: "establecimiento" as const,
+            })),
+            supabase,
+          )
         }
       }
 
+      // Para una búsqueda numérica sin tipo (por ejemplo, "980"), limitar la
+      // consulta a nombres/alias que contengan ese número evita perder jardines
+      // válidos cuando quedan fuera del primer lote de registros.
       const { data: allSchools, error: allError } = await supabase
         .from("establecimientos")
         .select(establishmentFields)
-        .limit(500)
+        .or(`nombre.ilike.%${number}%,alias.ilike.%${number}%`)
+        .order("nombre", { ascending: true })
+        .limit(1000)
 
       if (allError) {
         console.error("[v0] Error searching schools:", allError)
@@ -264,30 +372,53 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
         return regex.test(nombreNorm) || regex.test(aliasNorm)
       })
 
-      return filtered.slice(0, 50).map((e) => ({
-        ...e,
-        entity_type: "establecimiento" as const,
-      }))
+      return attachSharedPredioInfo(
+        filtered.slice(0, 50).map((e) => ({
+          ...e,
+          entity_type: "establecimiento" as const,
+        })),
+        supabase,
+      )
     }
 
     if (searchType.type === "text") {
+      const raw = escapePostgrestFilterValue(searchTerm.trim())
       const normalized = escapePostgrestFilterValue(normalizeText(searchTerm))
+      // Postgres ILIKE is case-insensitive but not accent-insensitive, so a term
+      // without accents (e.g. "tecnica") won't match DB values that keep the
+      // accent (e.g. "Técnica"). Search both the raw term and the accent-stripped
+      // version to cover both cases; skip the duplicate query when they're equal.
+      const terms = raw.toLowerCase() === normalized ? [raw] : [raw, normalized]
+
+      const establishmentOr = terms
+        .flatMap((term) => [
+          `nombre.ilike.%${term}%`,
+          `alias.ilike.%${term}%`,
+          `distrito.ilike.%${term}%`,
+          `ciudad.ilike.%${term}%`,
+        ])
+        .join(",")
+
+      const organismoOr = terms
+        .flatMap((term) => [
+          `nombre.ilike.%${term}%`,
+          `tipo_organizacion.ilike.%${term}%`,
+          `subtipo_organizacion.ilike.%${term}%`,
+          `distrito.ilike.%${term}%`,
+        ])
+        .join(",")
 
       const [establishmentResults, organismoResults] = await Promise.all([
         supabase
           .from("establecimientos")
           .select(establishmentFields)
-          .or(
-            `nombre.ilike.%${normalized}%,alias.ilike.%${normalized}%,distrito.ilike.%${normalized}%,ciudad.ilike.%${normalized}%`,
-          )
+          .or(establishmentOr)
           .order("nombre", { ascending: true })
           .limit(50),
         supabase
           .from("organismos_descentralizados")
           .select("*")
-          .or(
-            `nombre.ilike.%${normalized}%,tipo_organizacion.ilike.%${normalized}%,subtipo_organizacion.ilike.%${normalized}%,distrito.ilike.%${normalized}%`,
-          )
+          .or(organismoOr)
           .order("nombre", { ascending: true })
           .limit(50),
       ])
@@ -300,11 +431,13 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
         console.error("[v0] Error searching organismos:", organismoResults.error)
       }
 
-      const establishments =
+      const establishments = await attachSharedPredioInfo(
         establishmentResults.data?.map((e) => ({
           ...e,
           entity_type: "establecimiento" as const,
-        })) || []
+        })) || [],
+        supabase,
+      )
 
       const organismos =
         organismoResults.data?.map((org) => ({
@@ -316,6 +449,8 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
           distrito: org.distrito || "",
           ciudad: org.localidad || "",
           direccion: org.domicilio || "",
+          lat: typeof org.latitud === "number" ? org.latitud : Number(org.latitud) || null,
+          lon: typeof org.longitud === "number" ? org.longitud : Number(org.longitud) || null,
           telefono: org.telefono,
           email: org.email,
           contacto_nombre: org.contacto_nombre,
@@ -333,6 +468,48 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
     console.error("[v0] Stack trace:", error instanceof Error ? error.stack : "No stack trace")
 
     // Retornar array vacío en lugar de lanzar excepción
+    return []
+  }
+}
+
+/**
+ * Fetches every organismo descentralizado, mapped to the same shape used in search results,
+ * so it can be rendered with the SearchResults card grid (e.g. from the dashboard metrics).
+ */
+export async function getAllOrganismos(): Promise<SearchResult[]> {
+  try {
+    const supabase = await createClient()
+
+    const { data, error } = await supabase
+      .from("organismos_descentralizados")
+      .select("*")
+      .order("nombre", { ascending: true })
+
+    if (error) {
+      console.error("[v0] Error fetching all organismos:", error)
+      return []
+    }
+
+    return (
+      data?.map((org) => ({
+        id: org.id,
+        codigo: org.codigo,
+        nombre: org.nombre,
+        tipo_organizacion: org.tipo_organizacion,
+        subtipo_organizacion: org.subtipo_organizacion,
+        distrito: org.distrito || "",
+        ciudad: org.localidad || "",
+        direccion: org.domicilio || "",
+        telefono: org.telefono,
+        email: org.email,
+        contacto_nombre: org.contacto_nombre,
+        contacto_apellido: org.contacto_apellido,
+        contacto_cargo: org.contacto_cargo,
+        entity_type: "organismo" as const,
+      })) || []
+    )
+  } catch (error) {
+    console.error("[v0] Unexpected error in getAllOrganismos:", error)
     return []
   }
 }

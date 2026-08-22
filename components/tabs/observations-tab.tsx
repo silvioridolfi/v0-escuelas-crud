@@ -13,7 +13,13 @@ type Establecimiento = {
   [key: string]: unknown
 }
 
-export function ObservationsTab({ establecimiento }: { establecimiento: Establecimiento }) {
+export function ObservationsTab({
+  establecimiento,
+  isEditing = false,
+}: {
+  establecimiento: Establecimiento
+  isEditing?: boolean
+}) {
   const router = useRouter()
   const [observaciones, setObservaciones] = useState(establecimiento.observaciones || "")
   const [isSaving, setIsSaving] = useState(false)
@@ -47,6 +53,7 @@ export function ObservationsTab({ establecimiento }: { establecimiento: Establec
           onChange={(e) => setObservaciones(e.target.value)}
           rows={8}
           placeholder="Ingrese observaciones adicionales..."
+          disabled={!isEditing}
         />
       </div>
 
@@ -54,9 +61,11 @@ export function ObservationsTab({ establecimiento }: { establecimiento: Establec
         <p className={`text-sm ${message.includes("Error") ? "text-red-600" : "text-green-600"}`}>{message}</p>
       )}
 
-      <Button onClick={handleSave} disabled={isSaving} className="bg-[#00AEC3] hover:bg-[#0098ad]">
-        {isSaving ? "Guardando..." : "Guardar Cambios"}
-      </Button>
+      {isEditing && (
+        <Button onClick={handleSave} disabled={isSaving} className="bg-[#00AEC3] hover:bg-[#0098ad]">
+          {isSaving ? "Guardando..." : "Guardar Cambios"}
+        </Button>
+      )}
     </div>
   )
 }

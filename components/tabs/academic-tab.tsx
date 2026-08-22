@@ -11,23 +11,29 @@ type Establecimiento = {
   id: string
   nivel: string
   modalidad: string
-  matricula: number
-  varones: number
-  mujeres: number
-  secciones: number
+  matricula: number | null
+  varones: number | null
+  mujeres: number | null
+  secciones: number | null
   turnos: string | null
   [key: string]: unknown
 }
 
-export function AcademicTab({ establecimiento }: { establecimiento: Establecimiento }) {
+export function AcademicTab({
+  establecimiento,
+  isEditing = false,
+}: {
+  establecimiento: Establecimiento
+  isEditing?: boolean
+}) {
   const router = useRouter()
   const [formData, setFormData] = useState({
     nivel: establecimiento.nivel,
     modalidad: establecimiento.modalidad,
-    matricula: establecimiento.matricula.toString(),
-    varones: establecimiento.varones.toString(),
-    mujeres: establecimiento.mujeres.toString(),
-    secciones: establecimiento.secciones.toString(),
+    matricula: establecimiento.matricula?.toString() || "",
+    varones: establecimiento.varones?.toString() || "",
+    mujeres: establecimiento.mujeres?.toString() || "",
+    secciones: establecimiento.secciones?.toString() || "",
     turnos: establecimiento.turnos || "",
   })
   const [isSaving, setIsSaving] = useState(false)
@@ -60,6 +66,7 @@ export function AcademicTab({ establecimiento }: { establecimiento: Establecimie
             id="nivel"
             value={formData.nivel}
             onChange={(e) => setFormData({ ...formData, nivel: e.target.value })}
+            disabled={!isEditing}
           />
         </div>
 
@@ -69,6 +76,7 @@ export function AcademicTab({ establecimiento }: { establecimiento: Establecimie
             id="modalidad"
             value={formData.modalidad}
             onChange={(e) => setFormData({ ...formData, modalidad: e.target.value })}
+            disabled={!isEditing}
           />
         </div>
 
@@ -79,6 +87,7 @@ export function AcademicTab({ establecimiento }: { establecimiento: Establecimie
             type="number"
             value={formData.matricula}
             onChange={(e) => setFormData({ ...formData, matricula: e.target.value })}
+            disabled={!isEditing}
           />
         </div>
 
@@ -89,6 +98,7 @@ export function AcademicTab({ establecimiento }: { establecimiento: Establecimie
             type="number"
             value={formData.varones}
             onChange={(e) => setFormData({ ...formData, varones: e.target.value })}
+            disabled={!isEditing}
           />
         </div>
 
@@ -99,6 +109,7 @@ export function AcademicTab({ establecimiento }: { establecimiento: Establecimie
             type="number"
             value={formData.mujeres}
             onChange={(e) => setFormData({ ...formData, mujeres: e.target.value })}
+            disabled={!isEditing}
           />
         </div>
 
@@ -109,6 +120,7 @@ export function AcademicTab({ establecimiento }: { establecimiento: Establecimie
             type="number"
             value={formData.secciones}
             onChange={(e) => setFormData({ ...formData, secciones: e.target.value })}
+            disabled={!isEditing}
           />
         </div>
 
@@ -118,6 +130,7 @@ export function AcademicTab({ establecimiento }: { establecimiento: Establecimie
             id="turnos"
             value={formData.turnos}
             onChange={(e) => setFormData({ ...formData, turnos: e.target.value })}
+            disabled={!isEditing}
           />
         </div>
       </div>
@@ -126,9 +139,11 @@ export function AcademicTab({ establecimiento }: { establecimiento: Establecimie
         <p className={`text-sm ${message.includes("Error") ? "text-red-600" : "text-green-600"}`}>{message}</p>
       )}
 
-      <Button onClick={handleSave} disabled={isSaving} className="bg-[#00AEC3] hover:bg-[#0098ad]">
-        {isSaving ? "Guardando..." : "Guardar Cambios"}
-      </Button>
+      {isEditing && (
+        <Button onClick={handleSave} disabled={isSaving} className="bg-[#00AEC3] hover:bg-[#0098ad]">
+          {isSaving ? "Guardando..." : "Guardar Cambios"}
+        </Button>
+      )}
     </div>
   )
 }

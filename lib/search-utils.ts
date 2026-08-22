@@ -53,7 +53,7 @@ export function detectSearchType(input: string): SearchType {
 
   // Soporta niveles educativos estándar de Buenos Aires
   const nivelNumeroPattern =
-    /^(primaria?|secundaria?|inicial|jardin|jardín|tecnica?|técnica?|especial|adultos?|superior|formaci[oó]n\s+profesional)\s+n?°?\s*(\d{1,4})$/i
+    /^(primaria?|secundaria?|inicial|jardin|jardín|maternal|maternales|tecnica?|técnica?|especial|adultos?|superior|formaci[oó]n\s+profesional)\s+n?°?\s*(\d{1,4})$/i
 
   const matchNivelNumero = trimmed.match(nivelNumeroPattern)
 
@@ -65,7 +65,7 @@ export function detectSearchType(input: string): SearchType {
 
   // Búsqueda tipo "secundaria 8", "tecnica 5", etc. (patrón anterior mantenido como fallback)
   const schoolTypeWithNumberPattern =
-    /^(secundaria|primaria|tecnica|técnica|jardin|jardín|infantes|especial|adultos|cfp|centro|ep|ees|ji|eee|cea|cens|tec)\s+(\d{1,4})$/i
+    /^(secundaria|primaria|tecnica|técnica|jardin|jardín|maternal|maternales|infantes|especial|adultos|cfp|centro|ep|ees|ji|eee|cea|cens|tec)\s+(\d{1,4})$/i
   const matchWithNumber = trimmed.match(schoolTypeWithNumberPattern)
 
   if (matchWithNumber) {
@@ -95,15 +95,22 @@ export function getSchoolTypeSynonyms(type: string): string[] {
 
   const synonymMap: Record<string, string[]> = {
     // Técnica
-    tecnica: ["tecnica", "técnica", "tec", "escuela tecnica", "escuela técnica", "et"],
-    técnica: ["tecnica", "técnica", "tec", "escuela tecnica", "escuela técnica", "et"],
-    tec: ["tecnica", "técnica", "tec", "escuela tecnica", "escuela técnica", "et"],
+    // Nota: se excluye "et" como sinónimo porque es un fragmento de 2 letras
+    // demasiado genérico (aparece dentro de muchas palabras comunes) y generaba
+    // resultados falsos positivos al buscar por ILIKE de subcadena.
+    tecnica: ["tecnica", "técnica", "escuela tecnica", "escuela técnica"],
+    técnica: ["tecnica", "técnica", "escuela tecnica", "escuela técnica"],
+    tec: ["tecnica", "técnica", "escuela tecnica", "escuela técnica"],
 
     // Jardín
     jardin: ["jardin", "jardín", "ji", "j.i.", "infantes", "jardin de infantes", "jardín de infantes"],
     jardín: ["jardin", "jardín", "ji", "j.i.", "infantes", "jardin de infantes", "jardín de infantes"],
     infantes: ["jardin", "jardín", "ji", "j.i.", "infantes", "jardin de infantes", "jardín de infantes"],
     ji: ["jardin", "jardín", "ji", "j.i.", "infantes", "jardin de infantes", "jardín de infantes"],
+
+    // Jardín maternal
+    maternal: ["maternal", "maternales", "jardin maternal", "jardín maternal"],
+    maternales: ["maternal", "maternales", "jardin maternal", "jardín maternal"],
 
     // Secundaria
     secundaria: ["secundaria", "ees", "media", "escuela secundaria"],
@@ -157,7 +164,9 @@ export function mapNivelToDB(nivelInput: string): string[] {
 
     // Nivel Inicial
     inicial: ["Nivel Inicial", "Inicial"],
-    jardin: ["Nivel Inicial", "Inicial", "Jardín"],
+    jardin: ["Nivel Inicial", "Inicial", "Jardín", "Maternal"],
+    maternal: ["Nivel Inicial", "Inicial", "Jardín", "Maternal"],
+    maternales: ["Nivel Inicial", "Inicial", "Jardín", "Maternal"],
 
     // Técnica
     tecnica: ["Nivel Secundario", "Secundaria", "Técnica"],

@@ -18,7 +18,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { ArrowLeft, Building, Save, Trash2 } from "lucide-react"
+import { ArrowLeft, Building, Save, Trash2, Pencil, Lock } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { updateOrganismoDescentralizado } from "@/app/actions/update-organismo"
 import { deleteOrganismo } from "@/app/actions/delete-organismo"
@@ -70,6 +70,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
   const [isSaving, setIsSaving] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
 
   const handleSave = async () => {
     setIsSaving(true)
@@ -118,23 +119,23 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
     <>
       {/* Header */}
       <header className="border-b border-blue-200 bg-gradient-to-r from-[#417099] to-[#00AEC3] shadow-lg">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <div className="container mx-auto px-4 py-4 sm:py-6">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex items-start gap-3 sm:items-center sm:gap-4">
               <Button
                 onClick={() => router.push("/")}
                 variant="ghost"
                 size="icon"
-                className="text-white hover:bg-white/20"
+                className="shrink-0 text-white hover:bg-white/20"
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/90 shadow-md">
+              <div className="flex items-start gap-3 sm:items-center">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/90 shadow-md">
                   <Building className="h-6 w-6 text-[#417099]" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold leading-tight text-white">
+                  <h1 className="text-lg font-bold leading-tight text-white text-balance sm:text-2xl">
                     {organismo.nombre || organismo.tipo_organizacion}
                   </h1>
                   <div className="flex flex-wrap items-center gap-2">
@@ -152,31 +153,60 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+              <Button
+                onClick={() => setIsEditing((prev) => !prev)}
+                variant={isEditing ? "secondary" : "outline"}
+                className={
+                  isEditing
+                    ? "w-full bg-white text-[#417099] hover:bg-white/90 shadow-md sm:w-auto"
+                    : "w-full border-white/60 bg-white/10 text-white hover:bg-white/20 shadow-md sm:w-auto"
+                }
+              >
+                {isEditing ? (
+                  <>
+                    <Lock className="mr-2 h-4 w-4" />
+                    Bloquear Edición
+                  </>
+                ) : (
+                  <>
+                    <Pencil className="mr-2 h-4 w-4" />
+                    Editar Información
+                  </>
+                )}
+              </Button>
               <Button
                 onClick={() => setShowDeleteDialog(true)}
                 variant="destructive"
-                className="bg-red-600 text-white hover:bg-red-700 shadow-md"
+                className="w-full bg-red-600 text-white hover:bg-red-700 shadow-md sm:w-auto"
               >
                 <Trash2 className="mr-2 h-4 w-4" />
                 Eliminar
               </Button>
-              <Button
-                onClick={handleSave}
-                disabled={isSaving}
-                className="bg-white/90 text-[#417099] hover:bg-white shadow-md"
-              >
-                <Save className="mr-2 h-4 w-4" />
-                {isSaving ? "Guardando..." : "Guardar Cambios"}
-              </Button>
+              {isEditing && (
+                <Button
+                  onClick={handleSave}
+                  disabled={isSaving}
+                  className="w-full bg-white/90 text-[#417099] hover:bg-white shadow-md sm:w-auto"
+                >
+                  <Save className="mr-2 h-4 w-4" />
+                  {isSaving ? "Guardando..." : "Guardar Cambios"}
+                </Button>
+              )}
             </div>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
+      {isEditing && (
+        <div className="border-b border-amber-200 bg-amber-50 px-4 py-2 text-center text-sm font-medium text-amber-800 sm:text-left">
+          Modo de edición activo: los campos son editables. Recordá guardar los cambios al finalizar.
+        </div>
+      )}
+
+      <div className="container mx-auto px-4 py-6 sm:py-8">
         <Card className="shadow-lg">
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="space-y-6">
               <div>
                 <h2 className="text-lg font-semibold mb-4 text-foreground">Información General</h2>
@@ -188,8 +218,12 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       value={formData.codigo}
                       onChange={(e) => setFormData({ ...formData, codigo: e.target.value })}
                       placeholder="Ej: jr01, jd001, jd113"
+                      disabled
+                      className="bg-slate-50"
                     />
-                    <p className="text-xs text-muted-foreground">Código único de identificación provincial</p>
+                    <p className="text-xs text-muted-foreground">
+                      Código único de identificación provincial (no editable)
+                    </p>
                   </div>
 
                   <div className="space-y-2">
@@ -203,6 +237,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                     <Select
                       value={formData.subtipo_organizacion || ""}
                       onValueChange={(value) => setFormData({ ...formData, subtipo_organizacion: value || null })}
+                      disabled={!isEditing}
                     >
                       <SelectTrigger id="subtipo">
                         <SelectValue placeholder="Seleccionar..." />
@@ -223,6 +258,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       id="nombre"
                       value={formData.nombre}
                       onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
+                      disabled={!isEditing}
                     />
                   </div>
 
@@ -232,6 +268,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       id="distrito"
                       value={formData.distrito}
                       onChange={(e) => setFormData({ ...formData, distrito: e.target.value })}
+                      disabled={!isEditing}
                     />
                   </div>
 
@@ -241,6 +278,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       id="localidad"
                       value={formData.localidad}
                       onChange={(e) => setFormData({ ...formData, localidad: e.target.value })}
+                      disabled={!isEditing}
                     />
                   </div>
 
@@ -250,6 +288,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       id="domicilio"
                       value={formData.domicilio}
                       onChange={(e) => setFormData({ ...formData, domicilio: e.target.value })}
+                      disabled={!isEditing}
                     />
                   </div>
                 </div>
@@ -264,6 +303,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       id="contacto_nombre"
                       value={formData.contacto_nombre}
                       onChange={(e) => setFormData({ ...formData, contacto_nombre: e.target.value })}
+                      disabled={!isEditing}
                     />
                   </div>
 
@@ -273,6 +313,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       id="contacto_apellido"
                       value={formData.contacto_apellido}
                       onChange={(e) => setFormData({ ...formData, contacto_apellido: e.target.value })}
+                      disabled={!isEditing}
                     />
                   </div>
 
@@ -282,6 +323,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       id="contacto_cargo"
                       value={formData.contacto_cargo}
                       onChange={(e) => setFormData({ ...formData, contacto_cargo: e.target.value })}
+                      disabled={!isEditing}
                     />
                   </div>
 
@@ -291,6 +333,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       id="telefono"
                       value={formData.telefono}
                       onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
+                      disabled={!isEditing}
                     />
                   </div>
 
@@ -301,6 +344,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      disabled={!isEditing}
                     />
                   </div>
                 </div>
@@ -317,6 +361,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       placeholder="-34.12345678"
                       value={formData.latitud}
                       onChange={(e) => setFormData({ ...formData, latitud: e.target.value })}
+                      disabled={!isEditing}
                     />
                     <p className="text-xs text-muted-foreground">Coordenada geográfica en formato decimal</p>
                   </div>
@@ -329,6 +374,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       placeholder="-58.12345678"
                       value={formData.longitud}
                       onChange={(e) => setFormData({ ...formData, longitud: e.target.value })}
+                      disabled={!isEditing}
                     />
                     <p className="text-xs text-muted-foreground">Coordenada geográfica en formato decimal</p>
                   </div>
@@ -340,12 +386,12 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                     <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
                       <p className="text-sm text-blue-800">
                         <a
-                          href={`https://www.google.com/maps?q=${formData.latitud},${formData.longitud}`}
+                          href={`https://www.openstreetmap.org/?mlat=${formData.latitud}&mlon=${formData.longitud}#map=17/${formData.latitud}/${formData.longitud}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="underline hover:text-blue-600"
                         >
-                          Ver ubicación en Google Maps
+                          Ver ubicación en OpenStreetMap
                         </a>
                       </p>
                     </div>
@@ -361,6 +407,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                     rows={4}
                     value={formData.observaciones}
                     onChange={(e) => setFormData({ ...formData, observaciones: e.target.value })}
+                    disabled={!isEditing}
                   />
                 </div>
               </div>
