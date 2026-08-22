@@ -66,18 +66,18 @@ async function attachSharedPredioInfo(
     ),
   )
 
-  if (predios.length === 0) {
-    return results
-  }
+  let siblings: Array<{ id: string; cue: number; nombre: string; predio: number | null }> = []
+  if (predios.length > 0) {
+    const { data, error } = await supabase
+      .from("establecimientos")
+      .select("id, cue, nombre, predio")
+      .in("predio", predios)
 
-  const { data: siblings, error } = await supabase
-    .from("establecimientos")
-    .select("id, cue, nombre, predio")
-    .in("predio", predios)
-
-  if (error || !siblings) {
-    console.error("[v0] Error fetching shared-predio siblings:", error)
-    return results
+    if (error) {
+      console.error("[v0] Error fetching shared-predio siblings:", error)
+    } else {
+      siblings = data || []
+    }
   }
 
   const siblingsByPredio = new Map<number, Array<{ id: string; cue: number; nombre: string }>>()
@@ -88,13 +88,34 @@ async function attachSharedPredioInfo(
     siblingsByPredio.set(sibling.predio, group)
   }
 
+  const establishmentResults = results.filter((r) => r.entity_type === "establecimiento" && r.cue)
+  const cues = establishmentResults.map((r) => r.cue as number)
+  const { data: contacts } = await supabase
+    .from("contactos")
+    .select("cue, nombre, apellido, telefono, correo")
+    .in("cue", cues)
+    .order("apellido", { ascending: true })
+
+  const contactsByCue = new Map<number, SearchResult["contactos"]>()
+  for (const contact of contacts || []) {
+    const existing = contactsByCue.get(contact.cue) || []
+    existing.push({
+      nombre: contact.nombre || "",
+      apellido: contact.apellido || "",
+      telefono: contact.telefono || "",
+      correo: contact.correo || "",
+    })
+    contactsByCue.set(contact.cue, existing)
+  }
+
   return results.map((r) => {
-    if (r.entity_type !== "establecimiento" || !r.predio) {
-      return r
+    const withContacts = r.cue ? { ...r, contactos: contactsByCue.get(r.cue) || [] } : r
+    if (withContacts.entity_type !== "establecimiento" || !withContacts.predio) {
+      return withContacts
     }
-    const group = siblingsByPredio.get(r.predio) || []
-    const sharedWith = group.filter((s) => s.id !== r.id)
-    return sharedWith.length > 0 ? { ...r, sharedWith } : r
+    const group = siblingsByPredio.get(withContacts.predio) || []
+    const sharedWith = group.filter((s) => s.id !== withContacts.id)
+    return sharedWith.length > 0 ? { ...withContacts, sharedWith } : withContacts
   })
 }
 
@@ -133,7 +154,7 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
       const { data, error } = await supabase
         .from("establecimientos")
         .select(
-          "id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, predio, direccion, fed_a_cargo, es_establecimiento_educativo, plan_enlace, plan_piso_tecnologico, lat, lon, contactos(nombre, apellido, telefono, correo)",
+          "id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, predio, direccion, fed_a_cargo, es_establecimiento_educativo, plan_enlace, plan_piso_tecnologico, lat, lon",
         )
         .or(nivelConditions)
         .order("nombre", { ascending: true })
