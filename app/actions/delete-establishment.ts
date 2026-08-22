@@ -1,11 +1,11 @@
 "use server"
 
-import { createClient } from "@/lib/supabase/server"
+import { createAdminClient } from "@/lib/supabase/admin"
 import { revalidatePath } from "next/cache"
 
 export async function deleteEstablishment(id: string) {
   try {
-    const supabase = await createClient()
+    const supabase = createAdminClient()
 
     // Delete the establishment
     const { error } = await supabase.from("establecimientos").delete().eq("id", id)

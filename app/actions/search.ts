@@ -7,6 +7,7 @@ import {
   getSchoolTypeSynonyms,
   buildNumberTokenRegex,
   mapNivelToDB, // Importar nueva función de mapeo de niveles
+  escapePostgrestFilterValue,
 } from "@/lib/search-utils"
 
 export type SearchResult = {
@@ -146,7 +147,9 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
       // simultáneamente el tipo escrito y el número como token exacto. Esto
       // evita que "tecnica 2" devuelva cualquier escuela cuyo nombre contenga
       // el dígito 2, aunque no sea técnica ni corresponda al número 2.
-      const nivelConditions = nivelesDB.map((n) => `nivel.ilike.%${n}%`).join(",")
+      const nivelConditions = nivelesDB
+        .map((n) => `nivel.ilike.%${escapePostgrestFilterValue(n)}%`)
+        .join(",")
       const typeSynonyms = getSchoolTypeSynonyms(nivel)
       const typeNeedles = typeSynonyms.length > 0 ? typeSynonyms : [nivel]
       const numberRegex = new RegExp(buildNumberTokenRegex(numero), "i")
@@ -379,8 +382,8 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
     }
 
     if (searchType.type === "text") {
-      const raw = searchTerm.trim()
-      const normalized = normalizeText(searchTerm)
+      const raw = escapePostgrestFilterValue(searchTerm.trim())
+      const normalized = escapePostgrestFilterValue(normalizeText(searchTerm))
       // Postgres ILIKE is case-insensitive but not accent-insensitive, so a term
       // without accents (e.g. "tecnica") won't match DB values that keep the
       // accent (e.g. "Técnica"). Search both the raw term and the accent-stripped

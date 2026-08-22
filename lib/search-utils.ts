@@ -11,6 +11,15 @@ export function normalizeText(text: string): string {
 }
 
 /**
+ * Escapa caracteres que tienen significado especial en los filtros PostgREST
+ * (usados dentro de .or() / .ilike() de supabase-js). Sin esto, un searchTerm
+ * con comas o paréntesis podría alterar la lógica del filtro armado a mano.
+ */
+export function escapePostgrestFilterValue(value: string): string {
+  return value.replace(/[,()]/g, "")
+}
+
+/**
  * Detecta el tipo de búsqueda basado en el input
  */
 export type SearchType =
