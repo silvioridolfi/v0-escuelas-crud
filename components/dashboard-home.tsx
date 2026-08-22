@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { searchEstablecimientos, getAllOrganismos, type SearchResult as OrganismoResult } from "@/app/actions/search"
+import { searchEstablecimientos, getAllOrganismos, type SearchResult } from "@/app/actions/search"
 import { SearchResults } from "@/components/search-results"
 import { useRouter } from "next/navigation"
 import { getFedBadgeColor, formatFedDisplay } from "@/lib/badge-colors"
@@ -30,17 +30,6 @@ type Metrics = {
 
 type MetricDialog = "fed" | "organismos" | "distritos" | "matricula" | null
 
-type SearchResult = {
-  id: string
-  cue: number
-  nombre: string
-  distrito: string
-  ciudad: string
-  nivel: string
-  modalidad: string
-  matricula: number
-}
-
 export function DashboardHome({ metrics }: { metrics: Metrics }) {
   const [mounted, setMounted] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
@@ -53,7 +42,7 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
   const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(null)
 
   const [openDialog, setOpenDialog] = useState<MetricDialog>(null)
-  const [organismos, setOrganismos] = useState<OrganismoResult[]>([])
+  const [organismos, setOrganismos] = useState<SearchResult[]>([])
   const [isLoadingOrganismos, setIsLoadingOrganismos] = useState(false)
 
   const handleOpenOrganismos = async () => {

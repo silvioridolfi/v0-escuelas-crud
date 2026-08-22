@@ -236,7 +236,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                     <Label htmlFor="subtipo">Sub Tipo de Organismo</Label>
                     <Select
                       value={formData.subtipo_organizacion || ""}
-                      onValueChange={(value) => setFormData({ ...formData, subtipo_organizacion: value || null })}
+                      onValueChange={(value) => setFormData({ ...formData, subtipo_organizacion: value })}
                       disabled={!isEditing}
                     >
                       <SelectTrigger id="subtipo">

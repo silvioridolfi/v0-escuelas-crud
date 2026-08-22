@@ -1,3 +1,5 @@
 node_modules/
 pnpm-workspace.yaml
 tsconfig.tsbuildinfo
+.next/
+next-env.d.ts

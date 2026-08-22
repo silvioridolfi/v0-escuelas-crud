@@ -6,18 +6,12 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { updateAcademic } from "@/app/actions/update-academic"
 import { useRouter } from "next/navigation"
+import type { Establecimiento as EstablecimientoFull } from "@/lib/establecimiento"
 
-type Establecimiento = {
-  id: string
-  nivel: string
-  modalidad: string
-  matricula: number | null
-  varones: number | null
-  mujeres: number | null
-  secciones: number | null
-  turnos: string | null
-  [key: string]: unknown
-}
+type Establecimiento = Pick<
+  EstablecimientoFull,
+  "id" | "nivel" | "modalidad" | "matricula" | "varones" | "mujeres" | "secciones" | "turnos"
+>
 
 export function AcademicTab({
   establecimiento,

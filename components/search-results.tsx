@@ -10,6 +10,7 @@ import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Se
 import { useRouter } from "next/navigation"
 import { getFedBadgeColor, getNivelBadgeColor, formatFedDisplay, parsePlanTokens, getPlanTokenBadgeColor } from "@/lib/badge-colors"
 import { splitEstablishmentName } from "@/lib/school-name"
+import type { SearchResult } from "@/app/actions/search"
 
 const LocationMap = dynamic(() => import("@/components/tabs/location-map").then((mod) => mod.LocationMap), {
   ssr: false,
@@ -19,45 +20,6 @@ const LocationMap = dynamic(() => import("@/components/tabs/location-map").then(
     </div>
   ),
 })
-
-type SearchResult = {
-  id: string
-  // Establishment fields
-  cue?: number
-  predio?: number
-  nombre: string
-  distrito: string
-  ciudad: string
-  direccion: string
-  nivel?: string
-  modalidad?: string
-  matricula?: number
-  fed_a_cargo?: string
-  es_establecimiento_educativo?: boolean
-  plan_enlace?: string | null
-  plan_piso_tecnologico?: string | null
-  lat?: number | null
-  lon?: number | null
-  sharedWith?: Array<{ id: string; cue: number; nombre: string }>
-  // Organismo fields
-  codigo?: string
-  tipo_organizacion?: string
-  subtipo_organizacion?: string // Added subtipo field
-  telefono?: string
-  email?: string
-  contacto_nombre?: string
-  contacto_apellido?: string
-  contacto_cargo?: string
-  // Contact info
-  contactos?: Array<{
-    nombre: string
-    apellido: string
-    telefono: string
-    correo: string
-  }>
-  // Type discriminator
-  entity_type: "establecimiento" | "organismo"
-}
 
 export function SearchResults({ results, isSearching }: { results: SearchResult[]; isSearching: boolean }) {
   const router = useRouter()

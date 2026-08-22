@@ -25,34 +25,7 @@ import { ContactTab } from "@/components/tabs/contact-tab"
 import { LocationTab } from "@/components/tabs/location-tab"
 import { splitEstablishmentName } from "@/lib/school-name"
 import { deleteEstablishment } from "@/app/actions/delete-establishment"
-
-type Establecimiento = {
-  id: string
-  cue: number
-  predio: number | null
-  nombre: string
-  alias: string | null
-  distrito: string
-  ciudad: string
-  direccion: string
-  lat: number | null
-  lon: number | null
-  nivel: string
-  modalidad: string
-  tipo_establecimiento: string
-  ambito: string
-  matricula: number
-  varones: number
-  mujeres: number
-  secciones: number
-  turnos: string | null
-  fed_a_cargo: string
-  plan_enlace: string | null
-  plan_piso_tecnologico: string | null
-  observaciones: string | null
-  es_establecimiento_educativo: boolean // Added flag for government buildings
-  [key: string]: unknown
-}
+import type { Establecimiento } from "@/lib/establecimiento"
 
 type Contacto = {
   id: string

@@ -10,32 +10,33 @@ import { Textarea } from "@/components/ui/textarea"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { createClient } from "@/lib/supabase/client"
 import { useToast } from "@/hooks/use-toast"
+import type { Establecimiento as EstablecimientoFull } from "@/lib/establecimiento"
 
-type Establecimiento = {
-  id: string
-  cue: number
-  nombre: string
-  distrito: string
-  ciudad: string
-  direccion: string
-  nivel: string
-  modalidad: string
-  tipo_establecimiento: string
-  ambito: string
-  matricula: number
-  varones: number
-  mujeres: number
-  secciones: number
-  fed_a_cargo: string
-  turnos: string
-  plan_enlace: string
-  proveedor_internet_pnce: string
-  fecha_instalacion_pnce: string
-  lat: number
-  lon: number
-  observaciones: string
-  [key: string]: unknown
-}
+type Establecimiento = Pick<
+  EstablecimientoFull,
+  | "id"
+  | "cue"
+  | "nombre"
+  | "distrito"
+  | "ciudad"
+  | "direccion"
+  | "nivel"
+  | "modalidad"
+  | "tipo_establecimiento"
+  | "ambito"
+  | "matricula"
+  | "varones"
+  | "mujeres"
+  | "secciones"
+  | "fed_a_cargo"
+  | "turnos"
+  | "plan_enlace"
+  | "proveedor_internet_pnce"
+  | "fecha_instalacion_pnce"
+  | "lat"
+  | "lon"
+  | "observaciones"
+>
 
 interface SchoolDetailsDialogProps {
   school: Establecimiento | null

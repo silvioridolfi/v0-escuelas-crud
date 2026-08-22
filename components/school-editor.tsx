@@ -7,25 +7,33 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { SchoolDetailsDialog } from "@/components/school-details-dialog"
+import type { Establecimiento as EstablecimientoFull } from "@/lib/establecimiento"
 
-type Establecimiento = {
-  id: string
-  cue: number
-  nombre: string
-  distrito: string
-  ciudad: string
-  direccion: string
-  nivel: string
-  modalidad: string
-  tipo_establecimiento: string
-  ambito: string
-  matricula: number
-  fed_a_cargo: string
-  plan_enlace: string
-  lat: number
-  lon: number
-  [key: string]: unknown
-}
+type Establecimiento = Pick<
+  EstablecimientoFull,
+  | "id"
+  | "cue"
+  | "nombre"
+  | "distrito"
+  | "ciudad"
+  | "direccion"
+  | "nivel"
+  | "modalidad"
+  | "tipo_establecimiento"
+  | "ambito"
+  | "matricula"
+  | "varones"
+  | "mujeres"
+  | "secciones"
+  | "fed_a_cargo"
+  | "turnos"
+  | "plan_enlace"
+  | "proveedor_internet_pnce"
+  | "fecha_instalacion_pnce"
+  | "lat"
+  | "lon"
+  | "observaciones"
+>
 
 interface SchoolEditorProps {
   initialData: Establecimiento[]

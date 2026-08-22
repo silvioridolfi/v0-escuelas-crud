@@ -13,7 +13,7 @@ export async function updateGeneral(
     direccion: string
     lat: string
     lon: string
-    fed_a_cargo: string
+    fed_a_cargo: string | null
     tipo_establecimiento: string
     ambito: string
   },

@@ -9,25 +9,26 @@ import { updateGeneral } from "@/app/actions/update-general"
 import { useRouter } from "next/navigation"
 import { Lock, AlertTriangle, ChevronRight } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import type { Establecimiento as EstablecimientoFull } from "@/lib/establecimiento"
 
 type SharedPredioSibling = { id: string; cue: number; nombre: string }
 
-type Establecimiento = {
-  id: string
-  cue: number
-  predio: number | null
-  nombre: string
-  alias: string | null
-  distrito: string
-  ciudad: string
-  direccion: string
-  lat: number | null
-  lon: number | null
-  fed_a_cargo: string
-  tipo_establecimiento: string
-  ambito: string
-  [key: string]: unknown
-}
+type Establecimiento = Pick<
+  EstablecimientoFull,
+  | "id"
+  | "cue"
+  | "predio"
+  | "nombre"
+  | "alias"
+  | "distrito"
+  | "ciudad"
+  | "direccion"
+  | "lat"
+  | "lon"
+  | "fed_a_cargo"
+  | "tipo_establecimiento"
+  | "ambito"
+>
 
 export function GeneralTab({
   establecimiento,

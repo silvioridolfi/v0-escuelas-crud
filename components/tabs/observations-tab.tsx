@@ -6,12 +6,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { updateObservations } from "@/app/actions/update-observations"
 import { useRouter } from "next/navigation"
+import type { Establecimiento as EstablecimientoFull } from "@/lib/establecimiento"
 
-type Establecimiento = {
-  id: string
-  observaciones: string | null
-  [key: string]: unknown
-}
+type Establecimiento = Pick<EstablecimientoFull, "id" | "observaciones">
 
 export function ObservationsTab({
   establecimiento,

@@ -6,41 +6,42 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { updateConnectivity } from "@/app/actions/update-connectivity"
 import { useRouter } from "next/navigation"
+import type { Establecimiento as EstablecimientoFull } from "@/lib/establecimiento"
 
-type Establecimiento = {
-  id: string
-  plan_enlace: string | null
-  subplan_enlace: string | null
-  fecha_inicio_conectividad: string | null
-  mb: string | null
-  listado_conexion_internet: string | null
-  pnce_estado: string | null
-  proveedor_internet_pnce: string | null
-  fecha_instalacion_pnce: string | null
-  pnce_fecha_mejora: string | null
-  pnce_tipo_mejora: string | null
-  pba_grupo_1_estado: string | null
-  pba_grupo_1_proveedor_internet: string | null
-  pba_grupo_1_fecha_instalacion: string | null
-  reclamos_grupo_1_ani: string | null
-  pba_2019_estado: string | null
-  pba_2019_proveedor_internet: string | null
-  pba_2019_fecha_instalacion: string | null
-  pba_grupo_2_a_estado: string | null
-  pba_grupo_2_a_proveedor_internet: string | null
-  pba_grupo_2_a_fecha_instalacion: string | null
-  pba_grupo_2_a_fecha_mejora: string | null
-  pba_grupo_2_a_tipo_mejora: string | null
-  estado_instalacion_pba: string | null
-  proveedor_asignado_pba: string | null
-  plan_piso_tecnologico: string | null
-  tipo_piso_instalado: string | null
-  fecha_terminado_piso_tecnologico_cue: string | null
-  proveedor_piso_tecnologico_cue: string | null
-  fecha_mejora: string | null
-  tipo_mejora: string | null
-  [key: string]: unknown
-}
+type Establecimiento = Pick<
+  EstablecimientoFull,
+  | "id"
+  | "plan_enlace"
+  | "subplan_enlace"
+  | "fecha_inicio_conectividad"
+  | "mb"
+  | "listado_conexion_internet"
+  | "pnce_estado"
+  | "proveedor_internet_pnce"
+  | "fecha_instalacion_pnce"
+  | "pnce_fecha_mejora"
+  | "pnce_tipo_mejora"
+  | "pba_grupo_1_estado"
+  | "pba_grupo_1_proveedor_internet"
+  | "pba_grupo_1_fecha_instalacion"
+  | "reclamos_grupo_1_ani"
+  | "pba_2019_estado"
+  | "pba_2019_proveedor_internet"
+  | "pba_2019_fecha_instalacion"
+  | "pba_grupo_2_a_estado"
+  | "pba_grupo_2_a_proveedor_internet"
+  | "pba_grupo_2_a_fecha_instalacion"
+  | "pba_grupo_2_a_fecha_mejora"
+  | "pba_grupo_2_a_tipo_mejora"
+  | "estado_instalacion_pba"
+  | "proveedor_asignado_pba"
+  | "plan_piso_tecnologico"
+  | "tipo_piso_instalado"
+  | "fecha_terminado_piso_tecnologico_cue"
+  | "proveedor_piso_tecnologico_cue"
+  | "fecha_mejora"
+  | "tipo_mejora"
+>
 
 export function ConnectivityTab({
   establecimiento,

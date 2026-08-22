@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic"
 import { MapPin, AlertTriangle } from "lucide-react"
 import { Label } from "@/components/ui/label"
+import type { Establecimiento as EstablecimientoFull } from "@/lib/establecimiento"
 
 const LocationMap = dynamic(() => import("@/components/tabs/location-map").then((mod) => mod.LocationMap), {
   ssr: false,
@@ -13,15 +14,7 @@ const LocationMap = dynamic(() => import("@/components/tabs/location-map").then(
   ),
 })
 
-type Establecimiento = {
-  nombre: string
-  direccion: string | null
-  ciudad: string | null
-  distrito: string | null
-  lat: number | null
-  lon: number | null
-  [key: string]: unknown
-}
+type Establecimiento = Pick<EstablecimientoFull, "nombre" | "direccion" | "ciudad" | "distrito" | "lat" | "lon">
 
 export function LocationTab({ establecimiento }: { establecimiento: Establecimiento }) {
   const hasCoordinates =

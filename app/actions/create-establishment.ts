@@ -9,9 +9,9 @@ export async function createEstablishment(data: {
   distrito: string
   ciudad: string
   direccion: string
-  nivel: string
-  modalidad: string
-  fed_a_cargo: string
+  nivel: string | null
+  modalidad: string | null
+  fed_a_cargo: string | null
 }) {
   const supabase = createAdminClient()
 
