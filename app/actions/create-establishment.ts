@@ -1,6 +1,6 @@
 "use server"
 
-import { createClient } from "@/lib/supabase/server"
+import { createAdminClient } from "@/lib/supabase/admin"
 
 export async function createEstablishment(data: {
   cue: number
@@ -13,7 +13,7 @@ export async function createEstablishment(data: {
   modalidad: string
   fed_a_cargo: string
 }) {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   const { data: existing } = await supabase.from("establecimientos").select("id").eq("cue", data.cue).single()
 

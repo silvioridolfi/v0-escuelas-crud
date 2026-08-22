@@ -1,6 +1,6 @@
 "use server"
 
-import { createClient } from "@/lib/supabase/server"
+import { createAdminClient } from "@/lib/supabase/admin"
 import { revalidatePath } from "next/cache"
 
 type UpdateOrganismoData = {
@@ -21,7 +21,7 @@ type UpdateOrganismoData = {
 }
 
 export async function updateOrganismoDescentralizado(id: string, data: UpdateOrganismoData) {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   const { error } = await supabase
     .from("organismos_descentralizados")

@@ -7,6 +7,7 @@ import {
   getSchoolTypeSynonyms,
   buildNumberTokenRegex,
   mapNivelToDB, // Importar nueva función de mapeo de niveles
+  escapePostgrestFilterValue,
 } from "@/lib/search-utils"
 
 type SearchResult = {
@@ -67,7 +68,9 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
       console.log("[v0] Nivel+Numero search:", { nivel, numero, nivelesDB })
 
       // Construir condición OR para los niveles mapeados
-      const nivelConditions = nivelesDB.map((n) => `nivel.ilike.%${n}%`).join(",")
+      const nivelConditions = nivelesDB
+        .map((n) => `nivel.ilike.%${escapePostgrestFilterValue(n)}%`)
+        .join(",")
 
       const { data, error } = await supabase
         .from("establecimientos")
@@ -268,7 +271,7 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
     }
 
     if (searchType.type === "text") {
-      const normalized = normalizeText(searchTerm)
+      const normalized = escapePostgrestFilterValue(normalizeText(searchTerm))
 
       const [establishmentResults, organismoResults] = await Promise.all([
         supabase

@@ -1,11 +1,11 @@
 "use server"
 
-import { createClient } from "@/lib/supabase/server"
+import { createAdminClient } from "@/lib/supabase/admin"
 import { revalidatePath } from "next/cache"
 
 export async function deleteOrganismo(id: string) {
   try {
-    const supabase = await createClient()
+    const supabase = createAdminClient()
 
     // Delete the organismo
     const { error } = await supabase.from("organismos_descentralizados").delete().eq("id", id)
