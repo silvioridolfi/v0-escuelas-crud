@@ -133,7 +133,7 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
       const { data, error } = await supabase
         .from("establecimientos")
         .select(
-          "id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, predio, direccion, fed_a_cargo, es_establecimiento_educativo, plan_enlace, plan_piso_tecnologico, lat, lon, contactos!inner(nombre, apellido, telefono, correo)",
+          "id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, predio, direccion, fed_a_cargo, es_establecimiento_educativo, plan_enlace, plan_piso_tecnologico, lat, lon, contactos(nombre, apellido, telefono, correo)",
         )
         .or(nivelConditions)
         .order("nombre", { ascending: true })
@@ -200,7 +200,7 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
     const establishmentFields = `
       id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, predio, 
       direccion, fed_a_cargo, es_establecimiento_educativo, plan_enlace, plan_piso_tecnologico, lat, lon,
-      contactos!inner(nombre, apellido, telefono, correo)
+      contactos(nombre, apellido, telefono, correo)
     `
 
     if (searchType.type === "cue") {
