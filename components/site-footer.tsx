@@ -12,9 +12,9 @@ export function SiteFooter() {
         <Image
           src="/images/logo-dte-2026.png"
           alt="Dirección de Tecnología Educativa 2026"
-          width={432}
-          height={76}
-          className="h-auto w-full max-w-[504px] sm:max-w-[672px]"
+          width={1030}
+          height={142}
+          className="h-auto w-full max-w-[504px] object-contain sm:max-w-[672px]"
         />
         <p className="text-center text-[11px] text-white/80">
           © {new Date().getFullYear()} Dirección de Tecnología Educativa (DTE), Región 1 ·
