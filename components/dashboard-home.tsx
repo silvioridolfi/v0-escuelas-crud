@@ -3,6 +3,7 @@
 import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
+import Image from "next/image"
 import { Search, Building2, MapPin, Users, Plus, ChevronRight } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -182,12 +183,22 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="border-b border-blue-200 bg-gradient-to-r from-[#417099] to-[#00AEC3] shadow-lg">
+      <header
+        className="border-b border-blue-200 shadow-lg"
+        style={{
+          background: "linear-gradient(90deg, #e81f76 0%, #417099 50%, #00aec3 100%)",
+        }}
+      >
         <div className="container mx-auto px-4 py-4 sm:py-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3 sm:gap-4">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/90 shadow-md sm:h-12 sm:w-12">
-                <Building2 className="h-6 w-6 text-[#417099] sm:h-7 sm:w-7" />
+              <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-xl shadow-md sm:h-12 sm:w-12">
+                <Image
+                  src="/images/dte-region1-icono.jpg"
+                  alt="DTE Región 1"
+                  fill
+                  className="object-cover"
+                />
               </div>
               <div>
                 <h1 className="text-lg font-bold leading-tight text-white text-balance sm:text-2xl">
