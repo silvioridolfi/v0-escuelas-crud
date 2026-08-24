@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { searchEstablecimientos, getAllOrganismos, type SearchResult } from "@/app/actions/search"
 import { SearchResults } from "@/components/search-results"
 import { useRouter } from "next/navigation"
@@ -181,6 +182,134 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
     }
   }
 
+const metricCards = (
+    <>
+<Card
+  role="button"
+  tabIndex={0}
+  onClick={() => setOpenDialog("fed")}
+  onKeyDown={(e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault()
+      setOpenDialog("fed")
+    }
+  }}
+  className="group relative min-w-[240px] shrink-0 overflow-hidden border border-slate-200/60 bg-white shadow-md transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEC3] lg:min-w-0 lg:shrink"
+>
+  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#00AEC3] to-[#417099]" />
+  <CardHeader className="pb-3">
+    <CardTitle className="flex items-center justify-between gap-2 text-sm font-medium text-slate-600">
+      <span className="flex items-center gap-2">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#00AEC3]/10">
+          <Building2 className="h-4 w-4 text-[#00AEC3]" />
+        </div>
+        Total Establecimientos
+      </span>
+      <ChevronRight className="h-4 w-4 text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-[#00AEC3]" />
+    </CardTitle>
+  </CardHeader>
+  <CardContent>
+    <p className="text-4xl font-bold text-[#417099]">
+      {metrics.totalEstablecimientos.toLocaleString("es-AR")}
+    </p>
+    <p className="mt-1 text-xs text-slate-400">Ver distribución por FED</p>
+  </CardContent>
+</Card>
+
+<Card
+  role="button"
+  tabIndex={0}
+  onClick={handleOpenOrganismos}
+  onKeyDown={(e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault()
+      handleOpenOrganismos()
+    }
+  }}
+  className="group relative min-w-[240px] shrink-0 overflow-hidden border border-slate-200/60 bg-white shadow-md transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6366f1] lg:min-w-0 lg:shrink"
+>
+  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#6366f1] to-[#8b5cf6]" />
+  <CardHeader className="pb-3">
+    <CardTitle className="flex items-center justify-between gap-2 text-sm font-medium text-slate-600">
+      <span className="flex items-center gap-2">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#6366f1]/10">
+          <Building2 className="h-4 w-4 text-[#6366f1]" />
+        </div>
+        Organismos Descentralizados
+      </span>
+      <ChevronRight className="h-4 w-4 text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-[#6366f1]" />
+    </CardTitle>
+  </CardHeader>
+  <CardContent>
+    <p className="text-4xl font-bold text-[#6366f1]">{metrics.totalOrganismos.toLocaleString("es-AR")}</p>
+    <p className="mt-1 text-xs text-slate-400">Ver listado completo</p>
+  </CardContent>
+</Card>
+
+<Card
+  role="button"
+  tabIndex={0}
+  onClick={() => setOpenDialog("distritos")}
+  onKeyDown={(e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault()
+      setOpenDialog("distritos")
+    }
+  }}
+  className="group relative min-w-[240px] shrink-0 overflow-hidden border border-slate-200/60 bg-white shadow-md transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#417099] lg:min-w-0 lg:shrink"
+>
+  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#417099] to-[#00AEC3]" />
+  <CardHeader className="pb-3">
+    <CardTitle className="flex items-center justify-between gap-2 text-sm font-medium text-slate-600">
+      <span className="flex items-center gap-2">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#417099]/10">
+          <MapPin className="h-4 w-4 text-[#417099]" />
+        </div>
+        Distritos
+      </span>
+      <ChevronRight className="h-4 w-4 text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-[#417099]" />
+    </CardTitle>
+  </CardHeader>
+  <CardContent>
+    <p className="text-4xl font-bold text-[#00AEC3]">{metrics.uniqueDistritos}</p>
+    <p className="mt-1 text-xs text-slate-400">Ver establecimientos por distrito</p>
+  </CardContent>
+</Card>
+
+<Card
+  role="button"
+  tabIndex={0}
+  onClick={() => setOpenDialog("matricula")}
+  onKeyDown={(e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault()
+      setOpenDialog("matricula")
+    }
+  }}
+  className="group relative min-w-[240px] shrink-0 overflow-hidden border border-slate-200/60 bg-white shadow-md transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e81f76] lg:min-w-0 lg:shrink"
+>
+  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#e81f76] to-[#417099]" />
+  <CardHeader className="pb-3">
+    <CardTitle className="flex items-center justify-between gap-2 text-sm font-medium text-slate-600">
+      <span className="flex items-center gap-2">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#e81f76]/10">
+          <Users className="h-4 w-4 text-[#e81f76]" />
+        </div>
+        Matrícula Total
+      </span>
+      <ChevronRight className="h-4 w-4 text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-[#e81f76]" />
+    </CardTitle>
+  </CardHeader>
+  <CardContent>
+    <p className="text-4xl font-bold text-[#e81f76]">{metrics.matriculaTotal.toLocaleString("es-AR")}</p>
+    <p className="mt-1 text-xs text-slate-400">Ver por género</p>
+  </CardContent>
+</Card>
+
+    </>
+  )
+
+  
   return (
     <div className="flex min-h-screen flex-col">
       <header
@@ -218,138 +347,38 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
         </div>
       </header>
 
-      <div className="container mx-auto flex flex-1 flex-col gap-8 px-4 py-6 sm:py-8">
-        <section className="order-3 lg:order-1">
-          <div className="mb-4">
-            <h2 className="text-lg font-semibold text-[#417099]">Métricas Generales</h2>
-            <p className="text-sm text-slate-600">Resumen estadístico del sistema</p>
+      <div className="container mx-auto flex flex-1 flex-col gap-6 px-4 py-6 sm:py-8 lg:flex-row lg:items-start lg:gap-8">
+        <aside className="lg:w-72 lg:shrink-0">
+          {/* Mobile: fila horizontal scrolleable, colapsable */}
+          <div className="lg:hidden">
+            <Accordion type="single" collapsible className="rounded-lg border border-slate-200/60 bg-white px-4 shadow-md">
+              <AccordionItem value="metrics" className="border-b-0">
+                <AccordionTrigger className="hover:no-underline">
+                  <div className="text-left">
+                    <h2 className="text-lg font-semibold text-[#417099]">Ver métricas</h2>
+                    <p className="text-sm font-normal text-slate-600">Resumen estadístico del sistema</p>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="flex gap-4 overflow-x-auto pb-2">{metricCards}</div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card
-              role="button"
-              tabIndex={0}
-              onClick={() => setOpenDialog("fed")}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault()
-                  setOpenDialog("fed")
-                }
-              }}
-              className="group relative overflow-hidden border border-slate-200/60 shadow-md hover:shadow-lg transition-shadow bg-white cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEC3]"
-            >
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#00AEC3] to-[#417099]" />
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center justify-between gap-2 text-sm font-medium text-slate-600">
-                  <span className="flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#00AEC3]/10">
-                      <Building2 className="h-4 w-4 text-[#00AEC3]" />
-                    </div>
-                    Total Establecimientos
-                  </span>
-                  <ChevronRight className="h-4 w-4 text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-[#00AEC3]" />
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-4xl font-bold text-[#417099]">
-                  {metrics.totalEstablecimientos.toLocaleString("es-AR")}
-                </p>
-                <p className="mt-1 text-xs text-slate-400">Ver distribución por FED</p>
-              </CardContent>
-            </Card>
 
-            <Card
-              role="button"
-              tabIndex={0}
-              onClick={handleOpenOrganismos}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault()
-                  handleOpenOrganismos()
-                }
-              }}
-              className="group relative overflow-hidden border border-slate-200/60 shadow-md hover:shadow-lg transition-shadow bg-white cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6366f1]"
-            >
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#6366f1] to-[#8b5cf6]" />
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center justify-between gap-2 text-sm font-medium text-slate-600">
-                  <span className="flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#6366f1]/10">
-                      <Building2 className="h-4 w-4 text-[#6366f1]" />
-                    </div>
-                    Organismos Descentralizados
-                  </span>
-                  <ChevronRight className="h-4 w-4 text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-[#6366f1]" />
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-4xl font-bold text-[#6366f1]">{metrics.totalOrganismos.toLocaleString("es-AR")}</p>
-                <p className="mt-1 text-xs text-slate-400">Ver listado completo</p>
-              </CardContent>
-            </Card>
-
-            <Card
-              role="button"
-              tabIndex={0}
-              onClick={() => setOpenDialog("distritos")}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault()
-                  setOpenDialog("distritos")
-                }
-              }}
-              className="group relative overflow-hidden border border-slate-200/60 shadow-md hover:shadow-lg transition-shadow bg-white cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#417099]"
-            >
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#417099] to-[#00AEC3]" />
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center justify-between gap-2 text-sm font-medium text-slate-600">
-                  <span className="flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#417099]/10">
-                      <MapPin className="h-4 w-4 text-[#417099]" />
-                    </div>
-                    Distritos
-                  </span>
-                  <ChevronRight className="h-4 w-4 text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-[#417099]" />
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-4xl font-bold text-[#00AEC3]">{metrics.uniqueDistritos}</p>
-                <p className="mt-1 text-xs text-slate-400">Ver establecimientos por distrito</p>
-              </CardContent>
-            </Card>
-
-            <Card
-              role="button"
-              tabIndex={0}
-              onClick={() => setOpenDialog("matricula")}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault()
-                  setOpenDialog("matricula")
-                }
-              }}
-              className="group relative overflow-hidden border border-slate-200/60 shadow-md hover:shadow-lg transition-shadow bg-white cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e81f76]"
-            >
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#e81f76] to-[#417099]" />
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center justify-between gap-2 text-sm font-medium text-slate-600">
-                  <span className="flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#e81f76]/10">
-                      <Users className="h-4 w-4 text-[#e81f76]" />
-                    </div>
-                    Matrícula Total
-                  </span>
-                  <ChevronRight className="h-4 w-4 text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-[#e81f76]" />
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-4xl font-bold text-[#e81f76]">{metrics.matriculaTotal.toLocaleString("es-AR")}</p>
-                <p className="mt-1 text-xs text-slate-400">Ver por género</p>
-              </CardContent>
-            </Card>
+          {/* Desktop: siempre visibles, apiladas verticalmente */}
+          <div className="hidden rounded-lg border border-slate-200/60 bg-white p-4 shadow-md lg:block">
+            <div className="mb-4">
+              <h2 className="text-lg font-semibold text-[#417099]">Métricas Generales</h2>
+              <p className="text-sm text-slate-600">Resumen estadístico del sistema</p>
+            </div>
+            <div className="flex flex-col gap-4">{metricCards}</div>
           </div>
-        </section>
+        </aside>
 
-        <section className="order-1 lg:order-2">
+        <div className="flex flex-1 flex-col gap-8">
+
+        <section>
           <div className="mb-4">
             <h2 className="text-lg font-semibold text-[#417099]">Buscador de establecimientos</h2>
             <p className="text-sm text-slate-600">Busca por CUE, PREDIO, tipo de escuela, o nombre</p>
@@ -396,7 +425,7 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
         </section>
 
         {hasSearched && (
-          <section className="order-2 lg:order-3">
+          <section>
             <div className="mb-4">
               <h2 className="text-lg font-semibold text-[#417099]">Resultados</h2>
               <p className="text-sm text-slate-600">Establecimientos encontrados</p>
@@ -406,7 +435,7 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
         )}
 
         {!hasSearched && (
-          <section className="order-2 lg:order-3">
+          <section>
             <Card className="relative overflow-hidden border-2 border-dashed border-slate-300/60 shadow-sm bg-slate-50/30">
               <CardContent className="flex min-h-[300px] items-center justify-center">
                 <div className="text-center">
@@ -422,6 +451,7 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
             </Card>
           </section>
         )}
+        </div>
       </div>
 
       <Dialog open={openDialog === "fed"} onOpenChange={(open) => !open && setOpenDialog(null)}>
