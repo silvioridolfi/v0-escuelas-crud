@@ -2,6 +2,40 @@
 
 import { createAdminClient } from "@/lib/supabase/admin"
 import { revalidatePath } from "next/cache"
+import { logFieldChanges } from "@/lib/historial"
+
+const FIELD_LABELS: Record<string, string> = {
+  plan_enlace: "Plan de enlace",
+  subplan_enlace: "Sub-plan de enlace",
+  fecha_inicio_conectividad: "Fecha inicio conectividad",
+  mb: "Mb",
+  listado_conexion_internet: "Listado conexión internet",
+  pnce_estado: "PNCE estado",
+  proveedor_internet_pnce: "Proveedor internet PNCE",
+  fecha_instalacion_pnce: "Fecha instalación PNCE",
+  pnce_fecha_mejora: "PNCE fecha mejora",
+  pnce_tipo_mejora: "PNCE tipo mejora",
+  pba_grupo_1_estado: "PBA Grupo 1 estado",
+  pba_grupo_1_proveedor_internet: "PBA Grupo 1 proveedor internet",
+  pba_grupo_1_fecha_instalacion: "PBA Grupo 1 fecha instalación",
+  reclamos_grupo_1_ani: "Reclamos Grupo 1 ANI",
+  pba_2019_estado: "PBA 2019 estado",
+  pba_2019_proveedor_internet: "PBA 2019 proveedor internet",
+  pba_2019_fecha_instalacion: "PBA 2019 fecha instalación",
+  pba_grupo_2_a_estado: "PBA Grupo 2-A estado",
+  pba_grupo_2_a_proveedor_internet: "PBA Grupo 2-A proveedor internet",
+  pba_grupo_2_a_fecha_instalacion: "PBA Grupo 2-A fecha instalación",
+  pba_grupo_2_a_fecha_mejora: "PBA Grupo 2-A fecha mejora",
+  pba_grupo_2_a_tipo_mejora: "PBA Grupo 2-A tipo mejora",
+  estado_instalacion_pba: "Estado instalación PBA",
+  proveedor_asignado_pba: "Proveedor asignado PBA",
+  plan_piso_tecnologico: "Plan piso tecnológico",
+  tipo_piso_instalado: "Tipo piso instalado",
+  fecha_terminado_piso_tecnologico_cue: "Fecha terminado piso tecnológico",
+  proveedor_piso_tecnologico_cue: "Proveedor piso tecnológico",
+  fecha_mejora: "Fecha mejora",
+  tipo_mejora: "Tipo mejora",
+}
 
 export async function updateConnectivity(
   id: string,
@@ -40,44 +74,59 @@ export async function updateConnectivity(
 ) {
   const supabase = createAdminClient()
 
-  const { error } = await supabase
+  const { data: before } = await supabase
     .from("establecimientos")
-    .update({
-      plan_enlace: data.plan_enlace || null,
-      subplan_enlace: data.subplan_enlace || null,
-      fecha_inicio_conectividad: data.fecha_inicio_conectividad || null,
-      mb: data.mb || null,
-      listado_conexion_internet: data.listado_conexion_internet || null,
-      pnce_estado: data.pnce_estado || null,
-      proveedor_internet_pnce: data.proveedor_internet_pnce || null,
-      fecha_instalacion_pnce: data.fecha_instalacion_pnce || null,
-      pnce_fecha_mejora: data.pnce_fecha_mejora || null,
-      pnce_tipo_mejora: data.pnce_tipo_mejora || null,
-      pba_grupo_1_estado: data.pba_grupo_1_estado || null,
-      pba_grupo_1_proveedor_internet: data.pba_grupo_1_proveedor_internet || null,
-      pba_grupo_1_fecha_instalacion: data.pba_grupo_1_fecha_instalacion || null,
-      reclamos_grupo_1_ani: data.reclamos_grupo_1_ani || null,
-      pba_2019_estado: data.pba_2019_estado || null,
-      pba_2019_proveedor_internet: data.pba_2019_proveedor_internet || null,
-      pba_2019_fecha_instalacion: data.pba_2019_fecha_instalacion || null,
-      pba_grupo_2_a_estado: data.pba_grupo_2_a_estado || null,
-      pba_grupo_2_a_proveedor_internet: data.pba_grupo_2_a_proveedor_internet || null,
-      pba_grupo_2_a_fecha_instalacion: data.pba_grupo_2_a_fecha_instalacion || null,
-      pba_grupo_2_a_fecha_mejora: data.pba_grupo_2_a_fecha_mejora || null,
-      pba_grupo_2_a_tipo_mejora: data.pba_grupo_2_a_tipo_mejora || null,
-      estado_instalacion_pba: data.estado_instalacion_pba || null,
-      proveedor_asignado_pba: data.proveedor_asignado_pba || null,
-      plan_piso_tecnologico: data.plan_piso_tecnologico || null,
-      tipo_piso_instalado: data.tipo_piso_instalado || null,
-      fecha_terminado_piso_tecnologico_cue: data.fecha_terminado_piso_tecnologico_cue || null,
-      proveedor_piso_tecnologico_cue: data.proveedor_piso_tecnologico_cue || null,
-      fecha_mejora: data.fecha_mejora || null,
-      tipo_mejora: data.tipo_mejora || null,
-    })
+    .select("plan_enlace, subplan_enlace, fecha_inicio_conectividad, mb, listado_conexion_internet, pnce_estado, proveedor_internet_pnce, fecha_instalacion_pnce, pnce_fecha_mejora, pnce_tipo_mejora, pba_grupo_1_estado, pba_grupo_1_proveedor_internet, pba_grupo_1_fecha_instalacion, reclamos_grupo_1_ani, pba_2019_estado, pba_2019_proveedor_internet, pba_2019_fecha_instalacion, pba_grupo_2_a_estado, pba_grupo_2_a_proveedor_internet, pba_grupo_2_a_fecha_instalacion, pba_grupo_2_a_fecha_mejora, pba_grupo_2_a_tipo_mejora, estado_instalacion_pba, proveedor_asignado_pba, plan_piso_tecnologico, tipo_piso_instalado, fecha_terminado_piso_tecnologico_cue, proveedor_piso_tecnologico_cue, fecha_mejora, tipo_mejora")
     .eq("id", id)
+    .single()
+
+  const after = {
+    plan_enlace: data.plan_enlace || null,
+    subplan_enlace: data.subplan_enlace || null,
+    fecha_inicio_conectividad: data.fecha_inicio_conectividad || null,
+    mb: data.mb || null,
+    listado_conexion_internet: data.listado_conexion_internet || null,
+    pnce_estado: data.pnce_estado || null,
+    proveedor_internet_pnce: data.proveedor_internet_pnce || null,
+    fecha_instalacion_pnce: data.fecha_instalacion_pnce || null,
+    pnce_fecha_mejora: data.pnce_fecha_mejora || null,
+    pnce_tipo_mejora: data.pnce_tipo_mejora || null,
+    pba_grupo_1_estado: data.pba_grupo_1_estado || null,
+    pba_grupo_1_proveedor_internet: data.pba_grupo_1_proveedor_internet || null,
+    pba_grupo_1_fecha_instalacion: data.pba_grupo_1_fecha_instalacion || null,
+    reclamos_grupo_1_ani: data.reclamos_grupo_1_ani || null,
+    pba_2019_estado: data.pba_2019_estado || null,
+    pba_2019_proveedor_internet: data.pba_2019_proveedor_internet || null,
+    pba_2019_fecha_instalacion: data.pba_2019_fecha_instalacion || null,
+    pba_grupo_2_a_estado: data.pba_grupo_2_a_estado || null,
+    pba_grupo_2_a_proveedor_internet: data.pba_grupo_2_a_proveedor_internet || null,
+    pba_grupo_2_a_fecha_instalacion: data.pba_grupo_2_a_fecha_instalacion || null,
+    pba_grupo_2_a_fecha_mejora: data.pba_grupo_2_a_fecha_mejora || null,
+    pba_grupo_2_a_tipo_mejora: data.pba_grupo_2_a_tipo_mejora || null,
+    estado_instalacion_pba: data.estado_instalacion_pba || null,
+    proveedor_asignado_pba: data.proveedor_asignado_pba || null,
+    plan_piso_tecnologico: data.plan_piso_tecnologico || null,
+    tipo_piso_instalado: data.tipo_piso_instalado || null,
+    fecha_terminado_piso_tecnologico_cue: data.fecha_terminado_piso_tecnologico_cue || null,
+    proveedor_piso_tecnologico_cue: data.proveedor_piso_tecnologico_cue || null,
+    fecha_mejora: data.fecha_mejora || null,
+    tipo_mejora: data.tipo_mejora || null,
+  }
+
+  const { error } = await supabase.from("establecimientos").update(after).eq("id", id)
 
   if (error) {
     return { success: false, error: error.message }
+  }
+
+  if (before) {
+    await logFieldChanges(supabase, {
+      establecimientoId: id,
+      seccion: "Conectividad",
+      before,
+      after,
+      labels: FIELD_LABELS,
+    })
   }
 
   revalidatePath(`/establecimientos/${id}`)

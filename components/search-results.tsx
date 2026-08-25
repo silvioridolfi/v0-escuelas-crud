@@ -82,6 +82,17 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#e81f76] via-[#00AEC3] to-[#417099]" />
 
               <CardHeader className="pb-3 pt-5 flex-shrink-0">
+                <span
+                  className={`mb-1.5 inline-flex w-fit items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
+                    isOrganismo
+                      ? "bg-indigo-50 text-indigo-700"
+                      : isGovernmentBuilding
+                        ? "bg-amber-50 text-amber-700"
+                        : "bg-teal-50 text-teal-700"
+                  }`}
+                >
+                  {isOrganismo ? "Organismo" : isGovernmentBuilding ? "Edificio gubernamental" : "Establecimiento"}
+                </span>
                 <CardTitle className="text-base leading-tight text-balance text-slate-800 min-h-[3rem]">
                   <span className="block">{nombrePrimary}</span>
                   {nombreSecondary && (

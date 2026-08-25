@@ -14,7 +14,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { ArrowLeft, FileText, Wifi, GraduationCap, Users, FileWarning, Trash2, MapPin } from "lucide-react"
+import { ArrowLeft, FileText, Wifi, GraduationCap, Users, FileWarning, Trash2, MapPin, History } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { GeneralTab } from "@/components/tabs/general-tab"
 import { ConnectivityTab } from "@/components/tabs/connectivity-tab"
@@ -22,6 +22,7 @@ import { AcademicTab } from "@/components/tabs/academic-tab"
 import { ObservationsTab } from "@/components/tabs/observations-tab"
 import { ContactTab } from "@/components/tabs/contact-tab"
 import { LocationTab } from "@/components/tabs/location-tab"
+import { HistorialTab } from "@/components/tabs/historial-tab"
 import { splitEstablishmentName } from "@/lib/school-name"
 import { deleteEstablishment } from "@/app/actions/delete-establishment"
 import type { Establecimiento } from "@/lib/establecimiento"
@@ -123,6 +124,15 @@ export function EstablishmentEditor({
       color: "text-amber-600",
       bgColor: "bg-amber-50",
       borderColor: "border-amber-500",
+      showForGovBuilding: true,
+    },
+    {
+      value: "historial",
+      label: "Historial",
+      icon: History,
+      color: "text-violet-600",
+      bgColor: "bg-violet-50",
+      borderColor: "border-violet-500",
       showForGovBuilding: true,
     },
   ]
@@ -228,6 +238,9 @@ export function EstablishmentEditor({
                   </TabsContent>
                   <TabsContent value="observations" className="m-0">
                     <ObservationsTab establecimiento={establecimiento} />
+                  </TabsContent>
+                  <TabsContent value="historial" className="m-0">
+                    <HistorialTab establecimientoId={establecimiento.id} />
                   </TabsContent>
                 </div>
               </Tabs>
