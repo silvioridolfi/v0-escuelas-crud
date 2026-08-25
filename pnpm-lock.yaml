@@ -149,9 +149,6 @@ importers:
       react-leaflet:
         specifier: ^5.0.0
         version: 5.0.0(leaflet@1.9.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      react-leaflet-cluster:
-        specifier: ^4.1.3
-        version: 4.1.3(@react-leaflet/core@3.0.0(leaflet@1.9.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(leaflet@1.9.4)(react-dom@19.2.0(react@19.2.0))(react-leaflet@5.0.0(leaflet@1.9.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)
       react-resizable-panels:
         specifier: ^2.1.7
         version: 2.1.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -1493,11 +1490,6 @@ packages:
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
-  leaflet.markercluster@1.5.3:
-    resolution: {integrity: sha512-vPTw/Bndq7eQHjLBVlWpnGeLa3t+3zGiuM7fJwCkiMFq+nmRuG3RI3f7f4N4TDX7T4NpbAXpR2+NTRSEGfCSeA==}
-    peerDependencies:
-      leaflet: ^1.3.1
-
   leaflet@1.9.4:
     resolution: {integrity: sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA==}
 
@@ -1674,15 +1666,6 @@ packages:
 
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
-
-  react-leaflet-cluster@4.1.3:
-    resolution: {integrity: sha512-b3ICS7r9Fs5hBWrFPMVnmkCuDewyG3m1GaGzamXY0eryyAXDfQ+ikSkiR/mVethueIIA5MSyLok2/KsZVotspQ==}
-    peerDependencies:
-      '@react-leaflet/core': ^3.0.0
-      leaflet: ^1.9.0
-      react: ^19.0.0
-      react-dom: ^19.0.0
-      react-leaflet: ^5.0.0
 
   react-leaflet@5.0.0:
     resolution: {integrity: sha512-CWbTpr5vcHw5bt9i4zSlPEVQdTVcML390TjeDG0cK59z1ylexpqC6M1PJFjV8jD7CF+ACBFsLIDs6DRMoLEofw==}
@@ -3065,10 +3048,6 @@ snapshots:
 
   js-tokens@4.0.0: {}
 
-  leaflet.markercluster@1.5.3(leaflet@1.9.4):
-    dependencies:
-      leaflet: 1.9.4
-
   leaflet@1.9.4: {}
 
   lightningcss-darwin-arm64@1.30.1:
@@ -3213,15 +3192,6 @@ snapshots:
   react-is@16.13.1: {}
 
   react-is@18.3.1: {}
-
-  react-leaflet-cluster@4.1.3(@react-leaflet/core@3.0.0(leaflet@1.9.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(leaflet@1.9.4)(react-dom@19.2.0(react@19.2.0))(react-leaflet@5.0.0(leaflet@1.9.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0):
-    dependencies:
-      '@react-leaflet/core': 3.0.0(leaflet@1.9.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      leaflet: 1.9.4
-      leaflet.markercluster: 1.5.3(leaflet@1.9.4)
-      react: 19.2.0
-      react-dom: 19.2.0(react@19.2.0)
-      react-leaflet: 5.0.0(leaflet@1.9.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
 
   react-leaflet@5.0.0(leaflet@1.9.4)(react-dom@19.2.0(react@19.2.0))(react@19.2.0):
     dependencies:

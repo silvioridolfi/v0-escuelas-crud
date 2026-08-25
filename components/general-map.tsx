@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react"
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet"
-import MarkerClusterGroup from "react-leaflet-cluster"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
 import Link from "next/link"
@@ -99,30 +98,28 @@ export function GeneralMap({ points }: { points: MapPoint[] }) {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <MarkerClusterGroup chunkedLoading>
-            {filtered.map((p) => (
-              <Marker key={`${p.entity_type}-${p.id}`} position={[p.lat, p.lon]} icon={p.entity_type === "organismo" ? iconOrganismo : iconEstablecimiento}>
-                <Popup>
-                  <div className="space-y-1 text-sm">
-                    <p className="font-semibold">{p.nombre}</p>
-                    {p.cue && <p className="text-xs text-slate-500">CUE: {p.cue}</p>}
-                    {p.distrito && <p className="text-xs text-slate-500">{p.distrito}</p>}
-                    {p.fed_a_cargo && <p className="text-xs text-slate-500">FED: {p.fed_a_cargo}</p>}
-                    {p.entity_type === "establecimiento" && (
-                      <Link href={`/establecimientos/${p.id}`} className="text-xs font-medium text-[#00AEC3] hover:underline">
-                        Ver ficha →
-                      </Link>
-                    )}
-                    {p.entity_type === "organismo" && (
-                      <Link href={`/organismos/${p.id}`} className="text-xs font-medium text-[#00AEC3] hover:underline">
-                        Ver ficha →
-                      </Link>
-                    )}
-                  </div>
-                </Popup>
-              </Marker>
-            ))}
-          </MarkerClusterGroup>
+          {filtered.map((p) => (
+            <Marker key={`${p.entity_type}-${p.id}`} position={[p.lat, p.lon]} icon={p.entity_type === "organismo" ? iconOrganismo : iconEstablecimiento}>
+              <Popup>
+                <div className="space-y-1 text-sm">
+                  <p className="font-semibold">{p.nombre}</p>
+                  {p.cue && <p className="text-xs text-slate-500">CUE: {p.cue}</p>}
+                  {p.distrito && <p className="text-xs text-slate-500">{p.distrito}</p>}
+                  {p.fed_a_cargo && <p className="text-xs text-slate-500">FED: {p.fed_a_cargo}</p>}
+                  {p.entity_type === "establecimiento" && (
+                    <Link href={`/establecimientos/${p.id}`} className="text-xs font-medium text-[#00AEC3] hover:underline">
+                      Ver ficha →
+                    </Link>
+                  )}
+                  {p.entity_type === "organismo" && (
+                    <Link href={`/organismos/${p.id}`} className="text-xs font-medium text-[#00AEC3] hover:underline">
+                      Ver ficha →
+                    </Link>
+                  )}
+                </div>
+              </Popup>
+            </Marker>
+          ))}
         </MapContainer>
       </div>
     </div>
