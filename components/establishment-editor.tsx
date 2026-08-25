@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -15,7 +15,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { ArrowLeft, FileText, Wifi, GraduationCap, Users, FileWarning, Trash2, MapPin, Pencil, Lock } from "lucide-react"
+import { ArrowLeft, FileText, Wifi, GraduationCap, Users, FileWarning, Trash2, MapPin } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { GeneralTab } from "@/components/tabs/general-tab"
 import { ConnectivityTab } from "@/components/tabs/connectivity-tab"
@@ -54,7 +54,6 @@ export function EstablishmentEditor({
   const [activeTab, setActiveTab] = useState("general")
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
-  const [isEditing, setIsEditing] = useState(false)
 
   const isGovernmentBuilding = establecimiento.es_establecimiento_educativo === false
   const { primary: nombrePrimary, secondary: nombreSecondary } = splitEstablishmentName(establecimiento.nombre)
@@ -166,27 +165,6 @@ export function EstablishmentEditor({
             </div>
             <div className="flex flex-col gap-2 sm:ml-auto sm:flex-row">
               <Button
-                onClick={() => setIsEditing((prev) => !prev)}
-                variant={isEditing ? "secondary" : "outline"}
-                className={
-                  isEditing
-                    ? "w-full bg-white text-[#417099] hover:bg-white/90 shadow-md sm:w-auto"
-                    : "w-full border-white/60 bg-white/10 text-white hover:bg-white/20 shadow-md sm:w-auto"
-                }
-              >
-                {isEditing ? (
-                  <>
-                    <Lock className="mr-2 h-4 w-4" />
-                    Bloquear Edición
-                  </>
-                ) : (
-                  <>
-                    <Pencil className="mr-2 h-4 w-4" />
-                    Editar Información
-                  </>
-                )}
-              </Button>
-              <Button
                 onClick={() => setShowDeleteDialog(true)}
                 variant="destructive"
                 className="w-full bg-red-600 text-white hover:bg-red-700 shadow-md sm:w-auto"
@@ -199,22 +177,12 @@ export function EstablishmentEditor({
         </div>
       </header>
 
-      {isEditing && (
-        <div className="border-b border-amber-200 bg-amber-50 px-4 py-2 text-center text-sm font-medium text-amber-800 sm:text-left">
-          Modo de edición activo: los campos son editables. Recordá guardar los cambios en cada sección.
-        </div>
-      )}
-
       <div className="container mx-auto px-4 py-6 sm:py-8">
-        <Card className="overflow-hidden border-slate-200 bg-white shadow-xl">
-          <CardHeader className="border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white">
-            <CardTitle className="text-xl text-slate-900">Detalles del Establecimiento</CardTitle>
-            <CardDescription className="text-slate-600">Edita la información organizadas por secciones</CardDescription>
-          </CardHeader>
+        <Card className="overflow-hidden border-slate-200 bg-white shadow-lg">
           <CardContent className="p-4 sm:p-6">
             <Tabs value={activeTab} onValueChange={setActiveTab}>
               <div
-                className={`mb-6 grid gap-2 overflow-x-auto border-b-2 border-slate-200 pb-2 sm:gap-3 ${
+                className={`mb-6 grid gap-2 overflow-x-auto border-b border-slate-200 pb-2 sm:gap-3 ${
                   isGovernmentBuilding ? "grid-cols-2 md:grid-cols-4" : "grid-cols-2 md:grid-cols-3 lg:grid-cols-6"
                 }`}
               >
@@ -253,22 +221,21 @@ export function EstablishmentEditor({
                 })}
               </div>
 
-              <div className="rounded-lg bg-slate-50/30 p-6">
+              <div className="pt-2">
                 <TabsContent value="general" className="m-0">
                   <GeneralTab
                     establecimiento={establecimiento}
                     isGovernmentBuilding={isGovernmentBuilding}
                     sharedPredio={sharedPredio}
-                    isEditing={isEditing}
                   />
                 </TabsContent>
                 {!isGovernmentBuilding && (
                   <>
                     <TabsContent value="connectivity" className="m-0">
-                      <ConnectivityTab establecimiento={establecimiento} isEditing={isEditing} />
+                      <ConnectivityTab establecimiento={establecimiento} />
                     </TabsContent>
                     <TabsContent value="academic" className="m-0">
-                      <AcademicTab establecimiento={establecimiento} isEditing={isEditing} />
+                      <AcademicTab establecimiento={establecimiento} />
                     </TabsContent>
                   </>
                 )}
@@ -278,14 +245,13 @@ export function EstablishmentEditor({
                     contactos={contactos}
                     distrito={establecimiento.distrito}
                     fedACargo={establecimiento.fed_a_cargo}
-                    isEditing={isEditing}
                   />
                 </TabsContent>
                 <TabsContent value="location" className="m-0">
                   <LocationTab establecimiento={establecimiento} />
                 </TabsContent>
                 <TabsContent value="observations" className="m-0">
-                  <ObservationsTab establecimiento={establecimiento} isEditing={isEditing} />
+                  <ObservationsTab establecimiento={establecimiento} />
                 </TabsContent>
               </div>
             </Tabs>
