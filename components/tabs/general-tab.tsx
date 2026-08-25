@@ -50,7 +50,6 @@ export function GeneralTab({
     distrito: establecimiento.distrito,
     ciudad: establecimiento.ciudad,
     direccion: establecimiento.direccion,
-    predio: establecimiento.predio?.toString() || "",
     lat: establecimiento.lat?.toString() || "",
     lon: establecimiento.lon?.toString() || "",
     fed_a_cargo: establecimiento.fed_a_cargo,
@@ -77,7 +76,6 @@ export function GeneralTab({
     try {
       const dataToSave = {
         ...formData,
-        predio: formData.predio.trim() ? Number.parseInt(formData.predio, 10) : null,
         fed_a_cargo: formData.fed_a_cargo === "NONE" ? null : formData.fed_a_cargo,
       }
       const result = await updateGeneral(establecimiento.id, dataToSave)
@@ -122,17 +120,18 @@ export function GeneralTab({
           <p className="text-xs text-muted-foreground">Campo no editable</p>
         </div>
 
-        {/* PREDIO - Editable */}
+        {/* PREDIO - Read only */}
         <div className="space-y-2">
-          <Label htmlFor="predio">Predio</Label>
+          <Label htmlFor="predio" className="flex items-center gap-2">
+            Predio <Lock className="h-3 w-3 text-muted-foreground" />
+          </Label>
           <Input
             id="predio"
-            type="number"
-            value={formData.predio}
-            onChange={(e) => setFormData({ ...formData, predio: e.target.value })}
-            disabled={!isEditing}
-            placeholder="Sin datos"
+            value={establecimiento.predio || "Sin datos"}
+            disabled
+            className="bg-muted cursor-not-allowed"
           />
+          <p className="text-xs text-muted-foreground">Campo no editable</p>
         </div>
       </div>
 
