@@ -67,19 +67,27 @@ async function attachSharedPredioInfo(
     ),
   )
 
-  let siblings: Array<{ id: string; cue: number; nombre: string; predio: number | null }> = []
-  if (predios.length > 0) {
-    const { data, error } = await supabase
-      .from("establecimientos")
-      .select("id, cue, nombre, predio")
-      .in("predio", predios)
+  const establishmentResults = results.filter((r) => r.entity_type === "establecimiento" && r.cue)
+  const cues = establishmentResults.map((r) => r.cue as number)
 
-    if (error) {
-      console.error("[v0] Error fetching shared-predio siblings:", error)
-    } else {
-      siblings = data || []
-    }
+  const [siblingsRes, contactsRes] = await Promise.all([
+    predios.length > 0
+      ? supabase.from("establecimientos").select("id, cue, nombre, predio").in("predio", predios)
+      : Promise.resolve({ data: [], error: null }),
+    cues.length > 0
+      ? supabase
+          .from("contactos")
+          .select("cue, nombre, apellido, telefono, correo")
+          .in("cue", cues)
+          .order("apellido", { ascending: true })
+      : Promise.resolve({ data: [], error: null }),
+  ])
+
+  if (siblingsRes.error) {
+    console.error("[v0] Error fetching shared-predio siblings:", siblingsRes.error)
   }
+  const siblings = siblingsRes.data || []
+  const contacts = contactsRes.data || []
 
   const siblingsByPredio = new Map<number, Array<{ id: string; cue: number; nombre: string }>>()
   for (const sibling of siblings) {
@@ -89,16 +97,8 @@ async function attachSharedPredioInfo(
     siblingsByPredio.set(sibling.predio, group)
   }
 
-  const establishmentResults = results.filter((r) => r.entity_type === "establecimiento" && r.cue)
-  const cues = establishmentResults.map((r) => r.cue as number)
-  const { data: contacts } = await supabase
-    .from("contactos")
-    .select("cue, nombre, apellido, telefono, correo")
-    .in("cue", cues)
-    .order("apellido", { ascending: true })
-
   const contactsByCue = new Map<number, SearchResult["contactos"]>()
-  for (const contact of contacts || []) {
+  for (const contact of contacts) {
     const existing = contactsByCue.get(contact.cue) || []
     existing.push({
       nombre: contact.nombre || "",
@@ -223,8 +223,7 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
 
     const establishmentFields = `
       id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, predio, 
-      direccion, fed_a_cargo, es_establecimiento_educativo, plan_enlace, plan_piso_tecnologico, lat, lon,
-      contactos(nombre, apellido, telefono, correo)
+      direccion, fed_a_cargo, es_establecimiento_educativo, plan_enlace, plan_piso_tecnologico, lat, lon
     `
 
     if (searchType.type === "cue") {
