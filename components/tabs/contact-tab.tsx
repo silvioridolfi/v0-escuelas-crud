@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { createContact, updateContact, deleteContact } from "@/app/actions/contact-actions"
 import { useRouter } from "next/navigation"
 import { Plus, Pencil, Trash2, X } from "lucide-react"
+import { EditSectionToggle } from "@/components/tabs/edit-section-toggle"
 
 type Contacto = {
   id: string
@@ -28,15 +29,14 @@ export function ContactTab({
   contactos,
   distrito,
   fedACargo,
-  isEditing: isEditMode = false,
 }: {
   cue: number
   contactos: Contacto[]
   distrito: string
   fedACargo: string
-  isEditing?: boolean
 }) {
   const router = useRouter()
+  const [isEditMode, setIsEditMode] = useState(false)
   const [isCreating, setIsCreating] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [formData, setFormData] = useState({
@@ -133,6 +133,10 @@ export function ContactTab({
 
   return (
     <div className="space-y-6 py-4">
+      {!isCreating && !editingId && (
+        <EditSectionToggle isEditing={isEditMode} onToggle={() => setIsEditMode((v) => !v)} />
+      )}
+
       {/* List existing contacts */}
       {contactos.length > 0 && (
         <div className="space-y-4">

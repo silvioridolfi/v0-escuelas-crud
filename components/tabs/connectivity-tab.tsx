@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import { updateConnectivity } from "@/app/actions/update-connectivity"
 import { useRouter } from "next/navigation"
 import type { Establecimiento as EstablecimientoFull } from "@/lib/establecimiento"
+import { SectionHeader } from "@/components/tabs/section-header"
+import { EditSectionToggle } from "@/components/tabs/edit-section-toggle"
 
 type Establecimiento = Pick<
   EstablecimientoFull,
@@ -43,14 +45,9 @@ type Establecimiento = Pick<
   | "tipo_mejora"
 >
 
-export function ConnectivityTab({
-  establecimiento,
-  isEditing = false,
-}: {
-  establecimiento: Establecimiento
-  isEditing?: boolean
-}) {
+export function ConnectivityTab({ establecimiento }: { establecimiento: Establecimiento }) {
   const router = useRouter()
+  const [isEditing, setIsEditing] = useState(false)
   const [formData, setFormData] = useState({
     plan_enlace: establecimiento.plan_enlace || "",
     subplan_enlace: establecimiento.subplan_enlace || "",
@@ -110,9 +107,9 @@ export function ConnectivityTab({
 
   return (
     <div className="space-y-6 py-4">
-      <div className="border-b-2 border-gray-300 pb-2 mb-4">
-        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Plan de Enlace</h3>
-      </div>
+      <EditSectionToggle isEditing={isEditing} onToggle={() => setIsEditing((v) => !v)} />
+
+      <SectionHeader title="Plan de Enlace" />
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
@@ -162,11 +159,7 @@ export function ConnectivityTab({
         </div>
       </div>
 
-      <div className="border-b-2 border-gray-300 pb-2 mb-4 mt-6">
-        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
-          PNCE - Plan Nacional de Conectividad Escolar
-        </h3>
-      </div>
+      <SectionHeader title="PNCE - Plan Nacional de Conectividad Escolar" />
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
@@ -217,9 +210,7 @@ export function ConnectivityTab({
         </div>
       </div>
 
-      <div className="border-b-2 border-gray-300 pb-2 mb-4 mt-6">
-        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">PBA - Grupo 1</h3>
-      </div>
+      <SectionHeader title="PBA - Grupo 1" />
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
@@ -260,9 +251,7 @@ export function ConnectivityTab({
         </div>
       </div>
 
-      <div className="border-b-2 border-gray-300 pb-2 mb-4 mt-6">
-        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">PBA 2019</h3>
-      </div>
+      <SectionHeader title="PBA 2019" />
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
@@ -294,9 +283,7 @@ export function ConnectivityTab({
         </div>
       </div>
 
-      <div className="border-b-2 border-gray-300 pb-2 mb-4 mt-6">
-        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">PBA - Grupo 2-A</h3>
-      </div>
+      <SectionHeader title="PBA - Grupo 2-A" />
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
@@ -346,9 +333,7 @@ export function ConnectivityTab({
         </div>
       </div>
 
-      <div className="border-b-2 border-gray-300 pb-2 mb-4 mt-6">
-        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Estado General PBA</h3>
-      </div>
+      <SectionHeader title="Estado General PBA" />
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
@@ -371,11 +356,7 @@ export function ConnectivityTab({
         </div>
       </div>
 
-      <div className="border-b-2 border-gray-300 pb-2 mb-4 mt-6">
-        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
-          Infraestructura Tecnológica
-        </h3>
-      </div>
+      <SectionHeader title="Infraestructura Tecnológica" />
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">

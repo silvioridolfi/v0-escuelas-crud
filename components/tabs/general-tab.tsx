@@ -7,9 +7,11 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { updateGeneral } from "@/app/actions/update-general"
 import { useRouter } from "next/navigation"
-import { Lock, AlertTriangle, ChevronRight } from "lucide-react"
+import { AlertTriangle, ChevronRight, Lock } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import type { Establecimiento as EstablecimientoFull } from "@/lib/establecimiento"
+import { SectionHeader } from "@/components/tabs/section-header"
+import { EditSectionToggle } from "@/components/tabs/edit-section-toggle"
 
 type SharedPredioSibling = { id: string; cue: number; nombre: string }
 
@@ -34,15 +36,14 @@ export function GeneralTab({
   establecimiento,
   isGovernmentBuilding = false,
   sharedPredio = [],
-  isEditing = false,
 }: {
   establecimiento: Establecimiento
   isGovernmentBuilding?: boolean
   sharedPredio?: SharedPredioSibling[]
-  isEditing?: boolean
 }) {
   const router = useRouter()
   const { toast } = useToast()
+  const [isEditing, setIsEditing] = useState(false)
   const [formData, setFormData] = useState({
     nombre: establecimiento.nombre,
     alias: establecimiento.alias || "",
@@ -105,9 +106,9 @@ export function GeneralTab({
 
   return (
     <div className="space-y-6 py-4">
-      <div className="border-b-2 border-gray-300 pb-2 mb-4">
-        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Identificación</h3>
-      </div>
+      <EditSectionToggle isEditing={isEditing} onToggle={() => setIsEditing((v) => !v)} />
+
+      <SectionHeader title="Identificación" />
 
       <div className="grid gap-4 md:grid-cols-2">
         {/* CUE - Read only */}
@@ -164,9 +165,7 @@ export function GeneralTab({
         </div>
       )}
 
-      <div className="border-b-2 border-gray-300 pb-2 mb-4 mt-6">
-        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Información General</h3>
-      </div>
+      <SectionHeader title="Información General" />
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2 md:col-span-2">
@@ -230,9 +229,7 @@ export function GeneralTab({
         </div>
       </div>
 
-      <div className="border-b-2 border-gray-300 pb-2 mb-4 mt-6">
-        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Coordenadas</h3>
-      </div>
+      <SectionHeader title="Coordenadas" />
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
@@ -260,9 +257,7 @@ export function GeneralTab({
         </div>
       </div>
 
-      <div className="border-b-2 border-gray-300 pb-2 mb-4 mt-6">
-        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Clasificación</h3>
-      </div>
+      <SectionHeader title="Clasificación" />
 
       <div className="grid gap-4 md:grid-cols-2">
         {!isGovernmentBuilding && (

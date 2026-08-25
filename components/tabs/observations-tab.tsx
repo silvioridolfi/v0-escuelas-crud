@@ -7,17 +7,13 @@ import { Button } from "@/components/ui/button"
 import { updateObservations } from "@/app/actions/update-observations"
 import { useRouter } from "next/navigation"
 import type { Establecimiento as EstablecimientoFull } from "@/lib/establecimiento"
+import { EditSectionToggle } from "@/components/tabs/edit-section-toggle"
 
 type Establecimiento = Pick<EstablecimientoFull, "id" | "observaciones">
 
-export function ObservationsTab({
-  establecimiento,
-  isEditing = false,
-}: {
-  establecimiento: Establecimiento
-  isEditing?: boolean
-}) {
+export function ObservationsTab({ establecimiento }: { establecimiento: Establecimiento }) {
   const router = useRouter()
+  const [isEditing, setIsEditing] = useState(false)
   const [observaciones, setObservaciones] = useState(establecimiento.observaciones || "")
   const [isSaving, setIsSaving] = useState(false)
   const [message, setMessage] = useState("")
@@ -42,6 +38,8 @@ export function ObservationsTab({
 
   return (
     <div className="space-y-6 py-4">
+      <EditSectionToggle isEditing={isEditing} onToggle={() => setIsEditing((v) => !v)} />
+
       <div className="space-y-2">
         <Label htmlFor="observaciones">Observaciones</Label>
         <Textarea
