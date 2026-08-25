@@ -382,6 +382,7 @@ const metricCards = (
           <div className="mb-4">
             <h2 className="text-lg font-semibold text-[#417099]">Buscador de establecimientos</h2>
             <p className="text-sm text-slate-600">Busca por CUE, PREDIO, tipo de escuela, o nombre</p>
+            <p className="mt-1 text-xs text-slate-400">Datos actualizados según Mapa Escolar</p>
           </div>
           <Card className="relative overflow-hidden border border-slate-200/60 shadow-lg bg-white">
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#00AEC3] to-[#e81f76]" />
