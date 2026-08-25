@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { updateGeneral } from "@/app/actions/update-general"
 import { useRouter } from "next/navigation"
-import { AlertTriangle, ChevronRight, Lock } from "lucide-react"
+import { AlertTriangle, ChevronRight, Lock, Pencil } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import type { Establecimiento as EstablecimientoFull } from "@/lib/establecimiento"
 import { SectionHeader } from "@/components/tabs/section-header"
@@ -44,12 +44,14 @@ export function GeneralTab({
   const router = useRouter()
   const { toast } = useToast()
   const [isEditing, setIsEditing] = useState(false)
+  const [predioUnlocked, setPredioUnlocked] = useState(false)
   const [formData, setFormData] = useState({
     nombre: establecimiento.nombre,
     alias: establecimiento.alias || "",
     distrito: establecimiento.distrito,
     ciudad: establecimiento.ciudad,
     direccion: establecimiento.direccion,
+    predio: establecimiento.predio?.toString() || "",
     lat: establecimiento.lat?.toString() || "",
     lon: establecimiento.lon?.toString() || "",
     fed_a_cargo: establecimiento.fed_a_cargo,
@@ -76,6 +78,7 @@ export function GeneralTab({
     try {
       const dataToSave = {
         ...formData,
+        predio: formData.predio.trim() ? Number.parseInt(formData.predio, 10) : null,
         fed_a_cargo: formData.fed_a_cargo === "NONE" ? null : formData.fed_a_cargo,
       }
       const result = await updateGeneral(establecimiento.id, dataToSave)
@@ -106,7 +109,19 @@ export function GeneralTab({
 
   return (
     <div className="space-y-6 py-4">
-      <EditSectionToggle isEditing={isEditing} onToggle={() => setIsEditing((v) => !v)} />
+      <EditSectionToggle
+        isEditing={isEditing}
+        onToggle={() =>
+          setIsEditing((v) => {
+            if (v) {
+              // al salir de edición sin guardar: re-bloquear Predio y descartar cambios sin guardar
+              setPredioUnlocked(false)
+              setFormData((prev) => ({ ...prev, predio: establecimiento.predio?.toString() || "" }))
+            }
+            return !v
+          })
+        }
+      />
 
       <SectionHeader title="Identificación" />
 
@@ -120,18 +135,43 @@ export function GeneralTab({
           <p className="text-xs text-muted-foreground">Campo no editable</p>
         </div>
 
-        {/* PREDIO - Read only */}
+        {/* PREDIO - Bloqueado por defecto; se desbloquea puntualmente con confirmación */}
         <div className="space-y-2">
           <Label htmlFor="predio" className="flex items-center gap-2">
-            Predio <Lock className="h-3 w-3 text-muted-foreground" />
+            Predio
+            {predioUnlocked ? (
+              <Pencil className="h-3 w-3 text-[#00AEC3]" />
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  const confirmed = window.confirm(
+                    "Vas a modificar el N° de Predio, que agrupa establecimientos que comparten el mismo edificio. Este cambio puede afectar cómo se muestran los establecimientos relacionados. ¿Confirmar?",
+                  )
+                  if (confirmed) {
+                    setPredioUnlocked(true)
+                    setIsEditing(true)
+                  }
+                }}
+                className="inline-flex items-center text-muted-foreground hover:text-[#00AEC3]"
+                title="Desbloquear Predio para editar"
+              >
+                <Lock className="h-3 w-3" />
+              </button>
+            )}
           </Label>
           <Input
             id="predio"
-            value={establecimiento.predio || "Sin datos"}
-            disabled
-            className="bg-muted cursor-not-allowed"
+            type="number"
+            value={predioUnlocked ? formData.predio : establecimiento.predio || ""}
+            onChange={(e) => setFormData({ ...formData, predio: e.target.value })}
+            disabled={!predioUnlocked}
+            placeholder="Sin datos"
+            className={!predioUnlocked ? "bg-muted cursor-not-allowed" : ""}
           />
-          <p className="text-xs text-muted-foreground">Campo no editable</p>
+          <p className="text-xs text-muted-foreground">
+            {predioUnlocked ? "Editando — se guarda junto al resto de la sección" : "Click en el candado para editar"}
+          </p>
         </div>
       </div>
 
