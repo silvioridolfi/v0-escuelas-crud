@@ -18,7 +18,7 @@ function FichaRow({
       <Icon className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" />
       <div className="min-w-0">
         <p className="text-xs text-slate-400">{label}</p>
-        <p className="truncate text-sm text-slate-700">{value}</p>
+        <p className="break-words text-sm text-slate-700">{value}</p>
       </div>
     </div>
   )
