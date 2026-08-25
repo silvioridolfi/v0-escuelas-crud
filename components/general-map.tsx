@@ -9,32 +9,34 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge"
 import type { MapPoint } from "@/app/actions/get-map-points"
 
-const iconEstablecimiento = new L.Icon({
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-})
+// Pines propios en SVG (en vez de las variantes de color de Leaflet, que
+// son casi indistinguibles entre sí) -- teal para establecimientos,
+// índigo para organismos, mismos colores que los tags del buscador.
+function pinIcon(color: string) {
+  const svg = `
+    <svg width="26" height="36" viewBox="0 0 26 36" xmlns="http://www.w3.org/2000/svg">
+      <path d="M13 0C5.8 0 0 5.8 0 13c0 9.5 13 23 13 23s13-13.5 13-23C26 5.8 20.2 0 13 0z" fill="${color}"/>
+      <circle cx="13" cy="13" r="5.5" fill="white"/>
+    </svg>
+  `
+  return L.divIcon({
+    html: svg,
+    className: "",
+    iconSize: [26, 36],
+    iconAnchor: [13, 36],
+    popupAnchor: [0, -32],
+  })
+}
 
-const iconOrganismo = new L.Icon({
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  iconSize: [20, 33],
-  iconAnchor: [10, 33],
-  popupAnchor: [1, -28],
-  shadowSize: [33, 33],
-  className: "hue-rotate-[220deg]",
-})
+const iconEstablecimiento = pinIcon("#00AEC3")
+const iconOrganismo = pinIcon("#6366f1")
 
-// Centro aproximado de Región 1 (La Plata)
-const DEFAULT_CENTER: [number, number] = [-34.95, -57.95]
+// Centro aproximado de La Plata
+const DEFAULT_CENTER: [number, number] = [-34.92, -57.95]
+const DEFAULT_DISTRITO = "LA PLATA"
 
 export function GeneralMap({ points }: { points: MapPoint[] }) {
-  const [distritoFilter, setDistritoFilter] = useState<string>("ALL")
+  const [distritoFilter, setDistritoFilter] = useState<string>(DEFAULT_DISTRITO)
   const [fedFilter, setFedFilter] = useState<string>("ALL")
 
   useEffect(() => {
@@ -90,10 +92,21 @@ export function GeneralMap({ points }: { points: MapPoint[] }) {
         <Badge variant="outline" className="border-slate-300 text-slate-600">
           {filtered.length.toLocaleString("es-AR")} puntos
         </Badge>
+
+        <div className="ml-auto flex items-center gap-3 text-xs text-slate-500">
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block h-2.5 w-2.5 rounded-full bg-[#00AEC3]" />
+            Establecimientos
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block h-2.5 w-2.5 rounded-full bg-[#6366f1]" />
+            Organismos
+          </span>
+        </div>
       </div>
 
       <div className="h-[70vh] w-full overflow-hidden rounded-lg border border-slate-200 shadow-sm">
-        <MapContainer center={DEFAULT_CENTER} zoom={10} scrollWheelZoom style={{ height: "100%", width: "100%" }} className="z-0">
+        <MapContainer center={DEFAULT_CENTER} zoom={11} scrollWheelZoom style={{ height: "100%", width: "100%" }} className="z-0">
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
