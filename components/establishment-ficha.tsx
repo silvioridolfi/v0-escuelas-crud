@@ -1,5 +1,5 @@
 import type React from "react"
-import { Building2, MapPin, Users, GraduationCap, UserRound } from "lucide-react"
+import { Building2, MapPin, Users, GraduationCap, UserRound, Landmark } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import type { Establecimiento } from "@/lib/establecimiento"
 
@@ -53,6 +53,7 @@ export function EstablishmentFicha({
         <div className="divide-y divide-slate-100">
           <FichaRow icon={MapPin} label="Distrito / Ciudad" value={`${establecimiento.distrito} · ${establecimiento.ciudad}`} />
           <FichaRow icon={MapPin} label="Dirección" value={establecimiento.direccion} />
+          <FichaRow icon={Landmark} label="Dependencia" value={establecimiento.dependencia_completa} />
           {!isGovernmentBuilding && (
             <>
               <FichaRow icon={UserRound} label="FED a cargo" value={establecimiento.fed_a_cargo || "Sin asignar"} />

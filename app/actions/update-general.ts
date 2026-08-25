@@ -11,6 +11,7 @@ export async function updateGeneral(
     distrito: string
     ciudad: string
     direccion: string
+    predio: number | null
     lat: string
     lon: string
     fed_a_cargo: string | null
@@ -28,6 +29,7 @@ export async function updateGeneral(
       distrito: data.distrito,
       ciudad: data.ciudad,
       direccion: data.direccion,
+      predio: data.predio,
       lat: data.lat ? Number.parseFloat(data.lat) : null,
       lon: data.lon ? Number.parseFloat(data.lon) : null,
       fed_a_cargo: data.fed_a_cargo,

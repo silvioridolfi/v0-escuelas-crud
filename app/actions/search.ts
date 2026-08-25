@@ -26,6 +26,7 @@ export type SearchResult = {
   es_establecimiento_educativo?: boolean
   plan_enlace?: string | null
   plan_piso_tecnologico?: string | null
+  dependencia_completa?: string | null
   lat?: number | null
   lon?: number | null
   sharedWith?: Array<{ id: string; cue: number; nombre: string }>
@@ -223,7 +224,8 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
 
     const establishmentFields = `
       id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, predio, 
-      direccion, fed_a_cargo, es_establecimiento_educativo, plan_enlace, plan_piso_tecnologico, lat, lon
+      direccion, fed_a_cargo, es_establecimiento_educativo, plan_enlace, plan_piso_tecnologico, lat, lon,
+      dependencia_completa
     `
 
     if (searchType.type === "cue") {

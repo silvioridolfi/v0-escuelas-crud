@@ -21,6 +21,7 @@ export type Establecimiento = {
   nivel: string
   modalidad: string
   tipo_establecimiento: string
+  dependencia_completa: string | null
   ambito: string
   matricula: number
   varones: number
