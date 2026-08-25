@@ -4,7 +4,8 @@ import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
-import { Search, Building2, MapPin, Users, Plus, ChevronRight } from "lucide-react"
+import Link from "next/link"
+import { Search, Building2, MapPin, Users, Plus, ChevronRight, Map } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -13,6 +14,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { searchEstablecimientos, getAllOrganismos, type SearchResult } from "@/app/actions/search"
 import { SearchResults } from "@/components/search-results"
+import { SavedSearches } from "@/components/saved-searches"
 import { useRouter } from "next/navigation"
 import { getFedBadgeColor, formatFedDisplay } from "@/lib/badge-colors"
 
@@ -379,10 +381,18 @@ const metricCards = (
         <div className="flex flex-1 flex-col gap-8">
 
         <section>
-          <div className="mb-4">
-            <h2 className="text-lg font-semibold text-[#417099]">Buscador de establecimientos</h2>
-            <p className="text-sm text-slate-600">Busca por CUE, PREDIO, tipo de escuela, o nombre</p>
-            <p className="mt-1 text-xs text-slate-400">Datos actualizados según Mapa Escolar</p>
+          <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <h2 className="text-lg font-semibold text-[#417099]">Buscador de establecimientos</h2>
+              <p className="text-sm text-slate-600">Busca por CUE, PREDIO, tipo de escuela, o nombre</p>
+              <p className="mt-1 text-xs text-slate-400">Datos actualizados según Mapa Escolar</p>
+            </div>
+            <Link href="/mapa">
+              <Button variant="outline" size="sm" className="gap-1.5 border-slate-300 text-slate-600 hover:border-[#00AEC3]/50 hover:text-[#00AEC3]">
+                <Map className="h-4 w-4" />
+                Ver mapa general
+              </Button>
+            </Link>
           </div>
           <Card className="relative overflow-hidden border border-slate-200/60 shadow-lg bg-white">
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#00AEC3] to-[#e81f76]" />
@@ -421,6 +431,13 @@ const metricCards = (
                   )}
                 </div>
               </div>
+              <SavedSearches
+                currentTerm={searchTerm}
+                onSelect={(term) => {
+                  setSearchTerm(term)
+                  handleSearch(term)
+                }}
+              />
             </CardContent>
           </Card>
         </section>
@@ -462,19 +479,43 @@ const metricCards = (
             <DialogDescription>Cantidad de establecimientos asignados a cada FED</DialogDescription>
           </DialogHeader>
           <div className="max-h-[60vh] space-y-2 overflow-y-auto pr-1">
-            {metrics.fedBreakdown.map((item) => (
-              <div
-                key={item.fed}
-                className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-md border border-slate-200 bg-slate-50/50 px-3 py-2.5"
-              >
-                <Badge className={`${getFedBadgeColor(item.fed)} min-w-0 justify-self-start border text-left text-xs whitespace-normal`}>
-                  {formatFedDisplay(item.fed)}
-                </Badge>
-                <span className="whitespace-nowrap text-right text-sm font-semibold text-slate-700">
-                  {item.count.toLocaleString("es-AR")} {item.count === 1 ? "escuela" : "escuelas"}
-                </span>
-              </div>
-            ))}
+            {metrics.fedBreakdown.map((item) => {
+              const isUnassigned = item.fed === "Sin FED asignado"
+              const rowContent = (
+                <>
+                  <Badge className={`${getFedBadgeColor(item.fed)} min-w-0 justify-self-start border text-left text-xs whitespace-normal`}>
+                    {formatFedDisplay(item.fed)}
+                  </Badge>
+                  <span className="whitespace-nowrap text-right text-sm font-semibold text-slate-700">
+                    {item.count.toLocaleString("es-AR")} {item.count === 1 ? "escuela" : "escuelas"}
+                  </span>
+                </>
+              )
+              if (isUnassigned) {
+                return (
+                  <div
+                    key={item.fed}
+                    className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-md border border-slate-200 bg-slate-50/50 px-3 py-2.5"
+                  >
+                    {rowContent}
+                  </div>
+                )
+              }
+              return (
+                <button
+                  key={item.fed}
+                  type="button"
+                  onClick={() => {
+                    setOpenDialog(null)
+                    setSearchTerm(item.fed)
+                    handleSearch(item.fed)
+                  }}
+                  className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-md border border-slate-200 bg-slate-50/50 px-3 py-2.5 text-left transition-colors hover:border-[#417099]/40 hover:bg-slate-100"
+                >
+                  {rowContent}
+                </button>
+              )
+            })}
           </div>
         </DialogContent>
       </Dialog>
@@ -505,15 +546,21 @@ const metricCards = (
           </DialogHeader>
           <div className="max-h-[60vh] space-y-2 overflow-y-auto pr-1">
             {metrics.distritoBreakdown.map((item) => (
-              <div
+              <button
                 key={item.distrito}
-                className="flex items-center justify-between gap-3 rounded-md border border-slate-200 bg-slate-50/50 px-3 py-2"
+                type="button"
+                onClick={() => {
+                  setOpenDialog(null)
+                  setSearchTerm(item.distrito)
+                  handleSearch(item.distrito)
+                }}
+                className="flex w-full items-center justify-between gap-3 rounded-md border border-slate-200 bg-slate-50/50 px-3 py-2 text-left transition-colors hover:border-[#00AEC3]/40 hover:bg-slate-100"
               >
                 <span className="text-sm font-medium text-slate-700">{item.distrito}</span>
                 <span className="text-sm font-semibold text-[#417099]">
                   {item.count.toLocaleString("es-AR")} {item.count === 1 ? "establecimiento" : "establecimientos"}
                 </span>
-              </div>
+              </button>
             ))}
           </div>
         </DialogContent>

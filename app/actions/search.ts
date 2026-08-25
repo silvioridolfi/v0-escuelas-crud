@@ -397,6 +397,7 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
           `alias.ilike.%${term}%`,
           `distrito.ilike.%${term}%`,
           `ciudad.ilike.%${term}%`,
+          `fed_a_cargo.ilike.%${term}%`,
         ])
         .join(",")
 
