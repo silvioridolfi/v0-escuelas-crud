@@ -160,7 +160,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                       )}
                       {result.nivel && (
                         <Badge
-                          className={`${getNivelBadgeColor(result.nivel)} w-full justify-start whitespace-normal break-words text-left border text-xs`}
+                          className={`${getNivelBadgeColor(result.nivel)} max-w-full justify-start whitespace-normal break-words text-left border text-xs`}
                         >
                           {result.nivel}
                         </Badge>
