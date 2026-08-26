@@ -26,7 +26,7 @@ import { HistorialTab } from "@/components/tabs/historial-tab"
 import { splitEstablishmentName } from "@/lib/school-name"
 import { deleteEstablishment } from "@/app/actions/delete-establishment"
 import type { Establecimiento } from "@/lib/establecimiento"
-import { EstablishmentFicha } from "@/components/establishment-ficha"
+import { EstablishmentHero } from "@/components/establishment-hero"
 
 type Contacto = {
   id: string
@@ -179,78 +179,76 @@ export function EstablishmentEditor({
         </div>
       </header>
 
-      <div className="container mx-auto flex flex-col gap-6 px-4 py-6 sm:py-8 lg:flex-row lg:items-start lg:gap-8">
-        <EstablishmentFicha
+      <div className="container mx-auto flex flex-col gap-6 px-4 py-6 sm:py-8">
+        <EstablishmentHero
           establecimiento={establecimiento}
           isGovernmentBuilding={isGovernmentBuilding}
           contactoPrimario={contactos[0] || null}
         />
 
-        <div className="min-w-0 flex-1">
-          <Card className="overflow-hidden rounded-xl border-slate-200 bg-white shadow-sm">
-            <CardContent className="p-4 sm:p-6">
-              <Tabs value={activeTab} onValueChange={setActiveTab}>
-                <div className="mb-6 flex gap-5 overflow-x-auto border-b border-slate-200 sm:gap-6">
-                  {tabsConfig.map((tab) => {
-                    const Icon = tab.icon
-                    const isActive = activeTab === tab.value
-                    return (
-                      <button
-                        key={tab.value}
-                        onClick={() => setActiveTab(tab.value)}
-                        className={`flex shrink-0 items-center gap-1.5 border-b-2 pb-3 pt-1 text-sm font-medium transition-colors ${
-                          isActive
-                            ? `${tab.color} border-current`
-                            : "border-transparent text-slate-500 hover:text-slate-800"
-                        }`}
-                      >
-                        <Icon className="h-4 w-4 shrink-0" />
-                        <span className="whitespace-nowrap">{tab.label}</span>
-                      </button>
-                    )
-                  })}
-                </div>
+        <Card className="overflow-hidden rounded-xl border-slate-200 bg-white shadow-sm">
+          <CardContent className="p-4 sm:p-6">
+            <Tabs value={activeTab} onValueChange={setActiveTab}>
+              <div className="mb-6 flex gap-5 overflow-x-auto border-b border-slate-200 sm:gap-6">
+                {tabsConfig.map((tab) => {
+                  const Icon = tab.icon
+                  const isActive = activeTab === tab.value
+                  return (
+                    <button
+                      key={tab.value}
+                      onClick={() => setActiveTab(tab.value)}
+                      className={`flex shrink-0 items-center gap-1.5 border-b-2 pb-3 pt-1 text-sm font-medium transition-colors ${
+                        isActive
+                          ? `${tab.color} border-current`
+                          : "border-transparent text-slate-500 hover:text-slate-800"
+                      }`}
+                    >
+                      <Icon className="h-4 w-4 shrink-0" />
+                      <span className="whitespace-nowrap">{tab.label}</span>
+                    </button>
+                  )
+                })}
+              </div>
 
-                <div className="pt-2">
-                  <TabsContent value="general" className="m-0">
-                    <GeneralTab
-                      establecimiento={establecimiento}
-                      isGovernmentBuilding={isGovernmentBuilding}
-                      sharedPredio={sharedPredio}
-                    />
-                  </TabsContent>
-                  {!isGovernmentBuilding && (
-                    <>
-                      <TabsContent value="connectivity" className="m-0">
-                        <ConnectivityTab establecimiento={establecimiento} />
-                      </TabsContent>
-                      <TabsContent value="academic" className="m-0">
-                        <AcademicTab establecimiento={establecimiento} />
-                      </TabsContent>
-                    </>
-                  )}
-                  <TabsContent value="contact" className="m-0">
-                    <ContactTab
-                      cue={establecimiento.cue}
-                      contactos={contactos}
-                      distrito={establecimiento.distrito}
-                      fedACargo={establecimiento.fed_a_cargo}
-                    />
-                  </TabsContent>
-                  <TabsContent value="location" className="m-0">
-                    <LocationTab establecimiento={establecimiento} />
-                  </TabsContent>
-                  <TabsContent value="observations" className="m-0">
-                    <ObservationsTab establecimiento={establecimiento} />
-                  </TabsContent>
-                  <TabsContent value="historial" className="m-0">
-                    <HistorialTab establecimientoId={establecimiento.id} />
-                  </TabsContent>
-                </div>
-              </Tabs>
-            </CardContent>
-          </Card>
-        </div>
+              <div className="pt-2">
+                <TabsContent value="general" className="m-0">
+                  <GeneralTab
+                    establecimiento={establecimiento}
+                    isGovernmentBuilding={isGovernmentBuilding}
+                    sharedPredio={sharedPredio}
+                  />
+                </TabsContent>
+                {!isGovernmentBuilding && (
+                  <>
+                    <TabsContent value="connectivity" className="m-0">
+                      <ConnectivityTab establecimiento={establecimiento} />
+                    </TabsContent>
+                    <TabsContent value="academic" className="m-0">
+                      <AcademicTab establecimiento={establecimiento} />
+                    </TabsContent>
+                  </>
+                )}
+                <TabsContent value="contact" className="m-0">
+                  <ContactTab
+                    cue={establecimiento.cue}
+                    contactos={contactos}
+                    distrito={establecimiento.distrito}
+                    fedACargo={establecimiento.fed_a_cargo}
+                  />
+                </TabsContent>
+                <TabsContent value="location" className="m-0">
+                  <LocationTab establecimiento={establecimiento} />
+                </TabsContent>
+                <TabsContent value="observations" className="m-0">
+                  <ObservationsTab establecimiento={establecimiento} />
+                </TabsContent>
+                <TabsContent value="historial" className="m-0">
+                  <HistorialTab establecimientoId={establecimiento.id} />
+                </TabsContent>
+              </div>
+            </Tabs>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Delete Confirmation Dialog */}
