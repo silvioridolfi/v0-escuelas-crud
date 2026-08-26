@@ -187,7 +187,7 @@ export function EstablishmentEditor({
         />
 
         <div className="min-w-0 flex-1">
-          <Card className="overflow-hidden border-slate-200 bg-white shadow-lg">
+          <Card className="overflow-hidden rounded-xl border-slate-200 bg-white shadow-sm">
             <CardContent className="p-4 sm:p-6">
               <Tabs value={activeTab} onValueChange={setActiveTab}>
                 <div className="mb-6 flex gap-5 overflow-x-auto border-b border-slate-200 sm:gap-6">
