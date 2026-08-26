@@ -51,7 +51,7 @@ export function AcademicTab({ establecimiento }: { establecimiento: Establecimie
     <div className="space-y-6 py-4">
       <EditSectionToggle isEditing={isEditing} onToggle={() => setIsEditing((v) => !v)} />
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         <div className="space-y-2">
           <Label htmlFor="nivel">Nivel</Label>
           <Input

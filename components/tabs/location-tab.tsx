@@ -29,7 +29,7 @@ export function LocationTab({ establecimiento }: { establecimiento: Establecimie
         <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Ubicación</h3>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         <div className="space-y-2">
           <Label>Latitud</Label>
           <p className="text-sm text-foreground">{establecimiento.lat ?? "Sin datos"}</p>
