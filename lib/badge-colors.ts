@@ -67,9 +67,9 @@ export function getNivelBadgeColor(nivel: string | null | undefined): string {
  */
 export function formatFedDisplay(fedName: string | null | undefined): string {
   if (!fedName) {
-    return "FED Asignado: Sin FED asignado"
+    return "FED: Sin asignar"
   }
-  return `FED Asignado: ${fedName}`
+  return `FED: ${fedName}`
 }
 
 /**

@@ -239,7 +239,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                   </div>
 
                   {!isOrganismo && !isGovernmentBuilding && (
-                    <div className="grid grid-cols-2 gap-2 border-y border-slate-100 py-2.5">
+                    <div className="grid grid-cols-2 gap-2 border-t border-slate-100 pt-2.5">
                       <div>
                         <p className="text-[10px] uppercase tracking-wide text-slate-400">Matrícula</p>
                         <p className="text-base font-semibold text-slate-800">
