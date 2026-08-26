@@ -1,5 +1,5 @@
 import type React from "react"
-import { Building2, MapPin, Users, GraduationCap, UserRound, Landmark, Wifi, Phone, Mail, FileWarning, Layers, Clock } from "lucide-react"
+import { Building2, MapPin, Users, GraduationCap, UserRound, Landmark, Wifi, Phone, Mail, FileWarning, Layers, Clock, AlertTriangle } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import type { Establecimiento } from "@/lib/establecimiento"
 
@@ -81,10 +81,16 @@ export function EstablishmentFicha({
   const nombreContacto = contactoPrimario
     ? [contactoPrimario.nombre, contactoPrimario.apellido].filter(Boolean).join(" ")
     : null
+  const isClosedOrContext =
+    establecimiento.tipo_establecimiento === "Escuela cerrada" || establecimiento.tipo_establecimiento === "Contexto de encierro"
 
   return (
     <aside className="lg:w-96 lg:shrink-0">
-      <div className="rounded-xl border border-slate-200/60 bg-white p-5 shadow-sm transition-shadow hover:shadow-md lg:sticky lg:top-6">
+      <div
+        className={`rounded-xl border bg-white p-5 shadow-sm transition-shadow hover:shadow-md lg:sticky lg:top-6 ${
+          isClosedOrContext ? "border-red-300" : "border-slate-200/60"
+        }`}
+      >
         <div className="mb-4 flex items-center gap-3">
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#417099]/10">
             <Building2 className="h-5 w-5 text-[#417099]" />
@@ -94,6 +100,13 @@ export function EstablishmentFicha({
             <p className="text-sm font-semibold text-slate-800">{establecimiento.cue}</p>
           </div>
         </div>
+
+        {isClosedOrContext && (
+          <Badge variant="secondary" className="mb-2 flex w-fit items-center gap-1 bg-red-100 text-red-800 hover:bg-red-100">
+            <AlertTriangle className="h-3 w-3" />
+            {establecimiento.tipo_establecimiento}
+          </Badge>
+        )}
 
         {isGovernmentBuilding && (
           <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 hover:bg-amber-100">
