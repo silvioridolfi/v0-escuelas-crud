@@ -238,6 +238,21 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                     </div>
                   </div>
 
+                  {!isOrganismo && !isGovernmentBuilding && (
+                    <div className="grid grid-cols-2 gap-2 border-y border-slate-100 py-2.5">
+                      <div>
+                        <p className="text-[10px] uppercase tracking-wide text-slate-400">Matrícula</p>
+                        <p className="text-base font-semibold text-slate-800">
+                          {result.matricula ? result.matricula.toLocaleString("es-AR") : "—"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] uppercase tracking-wide text-slate-400">Secciones</p>
+                        <p className="text-base font-semibold text-slate-800">{result.secciones ?? "—"}</p>
+                      </div>
+                    </div>
+                  )}
+
                   {isOrganismo ? (
                     <div className="space-y-1.5 pt-1 border-t border-slate-200">
                       <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Contacto</div>
