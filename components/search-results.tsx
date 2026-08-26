@@ -80,6 +80,8 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
           const isOrganismo = result.entity_type === "organismo"
           const primaryContact = result.contactos?.[0]
           const isGovernmentBuilding = result.es_establecimiento_educativo === false
+          const isClosedOrContext =
+            result.tipo_establecimiento === "Escuela cerrada" || result.tipo_establecimiento === "Contexto de encierro"
           const isRegional = result.subtipo_organizacion === "Jefatura Regional"
           const isDistrital = result.subtipo_organizacion === "Jefatura Distrital"
           const { primary: nombrePrimary, secondary: nombreSecondary } = splitEstablishmentName(result.nombre)
@@ -90,7 +92,11 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
               style={{ animationDelay: `${Math.min(index, 8) * 40}ms`, animationFillMode: "backwards" }}
               className="relative overflow-hidden border border-slate-200/60 bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:border-[#00AEC3]/30 flex flex-col h-full rounded-xl animate-in fade-in slide-in-from-bottom-1 duration-300"
             >
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#e81f76] via-[#00AEC3] to-[#417099]" />
+              <div
+                className={`absolute top-0 left-0 right-0 h-1 ${
+                  isClosedOrContext ? "bg-red-500" : "bg-gradient-to-r from-[#e81f76] via-[#00AEC3] to-[#417099]"
+                }`}
+              />
 
               <CardHeader className="pb-3 pt-5 flex-shrink-0">
                 <span
@@ -102,8 +108,18 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                         : "bg-teal-50 text-teal-700"
                   }`}
                 >
-                  {isOrganismo ? "Organismo" : isGovernmentBuilding ? "Edificio gubernamental" : "Establecimiento"}
+                  {isOrganismo
+                    ? "Organismo"
+                    : isGovernmentBuilding
+                      ? result.tipo_establecimiento || "Edificio gubernamental"
+                      : "Establecimiento"}
                 </span>
+                {isClosedOrContext && (
+                  <span className="mb-1.5 flex w-fit items-center gap-1 rounded-full bg-red-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-red-700">
+                    <AlertTriangle className="h-2.5 w-2.5" />
+                    {result.tipo_establecimiento}
+                  </span>
+                )}
                 <CardTitle className="text-base leading-tight text-balance text-slate-800 min-h-[3rem]">
                   <span className="block">{nombrePrimary}</span>
                   {nombreSecondary && (
@@ -137,20 +153,21 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                       <Badge className="bg-[#417099] text-white hover:bg-[#417099]/90 font-mono text-xs">
                         CUE {result.cue}
                       </Badge>
-                      <Badge variant="outline" className="border-slate-300 text-slate-600 font-mono text-xs">
-                        PREDIO {result.predio}
-                      </Badge>
+                      {!isGovernmentBuilding && result.predio && (
+                        <Badge variant="outline" className="border-slate-300 text-slate-600 font-mono text-xs">
+                          PREDIO {result.predio}
+                        </Badge>
+                      )}
                       {result.nivel && (
-                        <Badge className={`${getNivelBadgeColor(result.nivel)} border text-xs`}>{result.nivel}</Badge>
+                        <Badge
+                          className={`${getNivelBadgeColor(result.nivel)} w-full justify-start whitespace-normal break-words text-left border text-xs`}
+                        >
+                          {result.nivel}
+                        </Badge>
                       )}
                       {result.fed_a_cargo && (
                         <Badge className={`${getFedBadgeColor(result.fed_a_cargo)} border text-xs`}>
                           {formatFedDisplay(result.fed_a_cargo)}
-                        </Badge>
-                      )}
-                      {isGovernmentBuilding && (
-                        <Badge className="bg-amber-500/10 text-amber-700 border border-amber-500/30 text-xs">
-                          Edificio Gubernamental
                         </Badge>
                       )}
                       {parsePlanTokens(result.plan_enlace).map((token, i) => (
@@ -220,6 +237,21 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                       </div>
                     </div>
                   </div>
+
+                  {!isOrganismo && !isGovernmentBuilding && (
+                    <div className="grid grid-cols-2 gap-2 border-t border-slate-100 pt-2.5">
+                      <div>
+                        <p className="text-[10px] uppercase tracking-wide text-slate-400">Matrícula</p>
+                        <p className="text-base font-semibold text-slate-800">
+                          {result.matricula ? result.matricula.toLocaleString("es-AR") : "—"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] uppercase tracking-wide text-slate-400">Secciones</p>
+                        <p className="text-base font-semibold text-slate-800">{result.secciones ?? "—"}</p>
+                      </div>
+                    </div>
+                  )}
 
                   {isOrganismo ? (
                     <div className="space-y-1.5 pt-1 border-t border-slate-200">
