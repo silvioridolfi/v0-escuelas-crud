@@ -84,7 +84,7 @@ export function EstablishmentFicha({
 
   return (
     <aside className="lg:w-96 lg:shrink-0">
-      <div className="rounded-lg border border-slate-200/60 bg-white p-5 shadow-md lg:sticky lg:top-6">
+      <div className="rounded-xl border border-slate-200/60 bg-white p-5 shadow-sm transition-shadow hover:shadow-md lg:sticky lg:top-6">
         <div className="mb-4 flex items-center gap-3">
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#417099]/10">
             <Building2 className="h-5 w-5 text-[#417099]" />

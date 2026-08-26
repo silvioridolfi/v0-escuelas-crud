@@ -30,20 +30,30 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
 
   if (isSearching) {
     return (
-      <Card className="border border-slate-200/60 shadow-md bg-white">
-        <CardContent className="flex min-h-[200px] items-center justify-center">
-          <div className="text-center">
-            <div className="mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-[#00AEC3]" />
-            <p className="text-slate-600">Buscando establecimientos...</p>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div
+            key={i}
+            style={{ animationDelay: `${i * 60}ms` }}
+            className="animate-pulse rounded-xl border border-slate-200/60 bg-white p-5 shadow-sm"
+          >
+            <div className="mb-3 h-4 w-20 rounded-full bg-slate-100" />
+            <div className="mb-2 h-5 w-3/4 rounded bg-slate-200" />
+            <div className="mb-4 h-4 w-1/2 rounded bg-slate-100" />
+            <div className="space-y-2">
+              <div className="h-3 w-full rounded bg-slate-100" />
+              <div className="h-3 w-5/6 rounded bg-slate-100" />
+              <div className="h-3 w-2/3 rounded bg-slate-100" />
+            </div>
           </div>
-        </CardContent>
-      </Card>
+        ))}
+      </div>
     )
   }
 
   if (results.length === 0) {
     return (
-      <Card className="border border-slate-200/60 shadow-md bg-white">
+      <Card className="rounded-xl border border-slate-200/60 shadow-sm bg-white">
         <CardContent className="flex min-h-[200px] items-center justify-center">
           <div className="text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 border border-slate-200">
@@ -66,7 +76,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
         </p>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {results.map((result) => {
+        {results.map((result, index) => {
           const isOrganismo = result.entity_type === "organismo"
           const primaryContact = result.contactos?.[0]
           const isGovernmentBuilding = result.es_establecimiento_educativo === false
@@ -77,7 +87,8 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
           return (
             <Card
               key={result.id}
-              className="relative overflow-hidden border border-slate-200/60 bg-white shadow-sm hover:shadow-lg transition-all hover:border-[#00AEC3]/30 flex flex-col h-full rounded-xl"
+              style={{ animationDelay: `${Math.min(index, 8) * 40}ms`, animationFillMode: "backwards" }}
+              className="relative overflow-hidden border border-slate-200/60 bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:border-[#00AEC3]/30 flex flex-col h-full rounded-xl animate-in fade-in slide-in-from-bottom-1 duration-300"
             >
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#e81f76] via-[#00AEC3] to-[#417099]" />
 

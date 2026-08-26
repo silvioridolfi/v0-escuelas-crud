@@ -196,7 +196,7 @@ const metricCards = (
       setOpenDialog("fed")
     }
   }}
-  className="group relative min-w-[240px] shrink-0 overflow-hidden border border-slate-200/60 bg-white shadow-md transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEC3] lg:min-w-0 lg:shrink"
+  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEC3] lg:min-w-0 lg:shrink"
 >
   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#00AEC3] to-[#417099]" />
   <CardHeader className="pb-3">
@@ -228,7 +228,7 @@ const metricCards = (
       handleOpenOrganismos()
     }
   }}
-  className="group relative min-w-[240px] shrink-0 overflow-hidden border border-slate-200/60 bg-white shadow-md transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6366f1] lg:min-w-0 lg:shrink"
+  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6366f1] lg:min-w-0 lg:shrink"
 >
   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#6366f1] to-[#8b5cf6]" />
   <CardHeader className="pb-3">
@@ -258,7 +258,7 @@ const metricCards = (
       setOpenDialog("distritos")
     }
   }}
-  className="group relative min-w-[240px] shrink-0 overflow-hidden border border-slate-200/60 bg-white shadow-md transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#417099] lg:min-w-0 lg:shrink"
+  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#417099] lg:min-w-0 lg:shrink"
 >
   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#417099] to-[#00AEC3]" />
   <CardHeader className="pb-3">
@@ -288,7 +288,7 @@ const metricCards = (
       setOpenDialog("matricula")
     }
   }}
-  className="group relative min-w-[240px] shrink-0 overflow-hidden border border-slate-200/60 bg-white shadow-md transition-shadow hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e81f76] lg:min-w-0 lg:shrink"
+  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e81f76] lg:min-w-0 lg:shrink"
 >
   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#e81f76] to-[#417099]" />
   <CardHeader className="pb-3">
@@ -353,7 +353,7 @@ const metricCards = (
         <aside className="lg:w-72 lg:shrink-0">
           {/* Mobile: fila horizontal scrolleable, colapsable */}
           <div className="lg:hidden">
-            <Accordion type="single" collapsible className="rounded-lg border border-slate-200/60 bg-white px-4 shadow-md">
+            <Accordion type="single" collapsible className="rounded-xl border border-slate-200/60 bg-white px-4 shadow-sm">
               <AccordionItem value="metrics" className="border-b-0">
                 <AccordionTrigger className="hover:no-underline">
                   <div className="text-left">
@@ -369,7 +369,7 @@ const metricCards = (
           </div>
 
           {/* Desktop: siempre visibles, apiladas verticalmente */}
-          <div className="hidden rounded-lg border border-slate-200/60 bg-white p-4 shadow-md lg:block">
+          <div className="hidden rounded-xl border border-slate-200/60 bg-white p-4 shadow-sm lg:block">
             <div className="mb-4">
               <h2 className="text-lg font-semibold text-[#417099]">Métricas Generales</h2>
               <p className="text-sm text-slate-600">Resumen estadístico del sistema</p>
@@ -394,7 +394,7 @@ const metricCards = (
               </Button>
             </Link>
           </div>
-          <Card className="relative overflow-hidden border border-slate-200/60 shadow-lg bg-white">
+          <Card className="relative overflow-hidden rounded-xl border border-slate-200/60 shadow-sm bg-white">
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#00AEC3] to-[#e81f76]" />
             <CardContent className="pt-6 pb-6 bg-slate-50/50">
               <div className="flex flex-col gap-2 sm:flex-row">
