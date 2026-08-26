@@ -97,7 +97,7 @@ export function EstablishmentFicha({
 
         {isGovernmentBuilding && (
           <Badge variant="secondary" className="mb-4 bg-amber-100 text-amber-800 hover:bg-amber-100">
-            Edificio Gubernamental
+            {establecimiento.tipo_establecimiento || "Edificio Gubernamental"}
           </Badge>
         )}
 

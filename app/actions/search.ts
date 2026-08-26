@@ -24,6 +24,7 @@ export type SearchResult = {
   matricula?: number
   fed_a_cargo?: string
   es_establecimiento_educativo?: boolean
+  tipo_establecimiento?: string | null
   plan_enlace?: string | null
   plan_piso_tecnologico?: string | null
   dependencia_completa?: string | null
@@ -224,7 +225,7 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
 
     const establishmentFields = `
       id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, predio, 
-      direccion, fed_a_cargo, es_establecimiento_educativo, plan_enlace, plan_piso_tecnologico, lat, lon,
+      direccion, fed_a_cargo, es_establecimiento_educativo, tipo_establecimiento, plan_enlace, plan_piso_tecnologico, lat, lon,
       dependencia_completa
     `
 

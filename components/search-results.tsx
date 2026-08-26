@@ -102,7 +102,11 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                         : "bg-teal-50 text-teal-700"
                   }`}
                 >
-                  {isOrganismo ? "Organismo" : isGovernmentBuilding ? "Edificio gubernamental" : "Establecimiento"}
+                  {isOrganismo
+                    ? "Organismo"
+                    : isGovernmentBuilding
+                      ? result.tipo_establecimiento || "Edificio gubernamental"
+                      : "Establecimiento"}
                 </span>
                 <CardTitle className="text-base leading-tight text-balance text-slate-800 min-h-[3rem]">
                   <span className="block">{nombrePrimary}</span>
@@ -146,11 +150,6 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                       {result.fed_a_cargo && (
                         <Badge className={`${getFedBadgeColor(result.fed_a_cargo)} border text-xs`}>
                           {formatFedDisplay(result.fed_a_cargo)}
-                        </Badge>
-                      )}
-                      {isGovernmentBuilding && (
-                        <Badge className="bg-amber-500/10 text-amber-700 border border-amber-500/30 text-xs">
-                          Edificio Gubernamental
                         </Badge>
                       )}
                       {parsePlanTokens(result.plan_enlace).map((token, i) => (
