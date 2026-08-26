@@ -135,44 +135,46 @@ export function GeneralTab({
           <p className="text-xs text-muted-foreground">Campo no editable</p>
         </div>
 
-        {/* PREDIO - Bloqueado por defecto; se desbloquea puntualmente con confirmación */}
-        <div className="space-y-2">
-          <Label htmlFor="predio" className="flex items-center gap-2">
-            Predio
-            {predioUnlocked ? (
-              <Pencil className="h-3 w-3 text-[#00AEC3]" />
-            ) : (
-              <button
-                type="button"
-                onClick={() => {
-                  const confirmed = window.confirm(
-                    "Vas a modificar el N° de Predio, que agrupa establecimientos que comparten el mismo edificio. Este cambio puede afectar cómo se muestran los establecimientos relacionados. ¿Confirmar?",
-                  )
-                  if (confirmed) {
-                    setPredioUnlocked(true)
-                    setIsEditing(true)
-                  }
-                }}
-                className="inline-flex items-center text-muted-foreground hover:text-[#00AEC3]"
-                title="Desbloquear Predio para editar"
-              >
-                <Lock className="h-3 w-3" />
-              </button>
-            )}
-          </Label>
-          <Input
-            id="predio"
-            type="number"
-            value={predioUnlocked ? formData.predio : establecimiento.predio || ""}
-            onChange={(e) => setFormData({ ...formData, predio: e.target.value })}
-            disabled={!predioUnlocked}
-            placeholder="Sin datos"
-            className={!predioUnlocked ? "bg-muted cursor-not-allowed" : ""}
-          />
-          <p className="text-xs text-muted-foreground">
-            {predioUnlocked ? "Editando — se guarda junto al resto de la sección" : "Click en el candado para editar"}
-          </p>
-        </div>
+        {/* PREDIO - No aplica a Nivel Central/Jefaturas, solo a establecimientos educativos */}
+        {!isGovernmentBuilding && (
+          <div className="space-y-2">
+            <Label htmlFor="predio" className="flex items-center gap-2">
+              Predio
+              {predioUnlocked ? (
+                <Pencil className="h-3 w-3 text-[#00AEC3]" />
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    const confirmed = window.confirm(
+                      "Vas a modificar el N° de Predio, que agrupa establecimientos que comparten el mismo edificio. Este cambio puede afectar cómo se muestran los establecimientos relacionados. ¿Confirmar?",
+                    )
+                    if (confirmed) {
+                      setPredioUnlocked(true)
+                      setIsEditing(true)
+                    }
+                  }}
+                  className="inline-flex items-center text-muted-foreground hover:text-[#00AEC3]"
+                  title="Desbloquear Predio para editar"
+                >
+                  <Lock className="h-3 w-3" />
+                </button>
+              )}
+            </Label>
+            <Input
+              id="predio"
+              type="number"
+              value={predioUnlocked ? formData.predio : establecimiento.predio || ""}
+              onChange={(e) => setFormData({ ...formData, predio: e.target.value })}
+              disabled={!predioUnlocked}
+              placeholder="Sin datos"
+              className={!predioUnlocked ? "bg-muted cursor-not-allowed" : ""}
+            />
+            <p className="text-xs text-muted-foreground">
+              {predioUnlocked ? "Editando — se guarda junto al resto de la sección" : "Click en el candado para editar"}
+            </p>
+          </div>
+        )}
       </div>
 
       {sharedPredio.length > 0 && (

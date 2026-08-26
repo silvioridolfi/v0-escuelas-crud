@@ -153,11 +153,17 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                       <Badge className="bg-[#417099] text-white hover:bg-[#417099]/90 font-mono text-xs">
                         CUE {result.cue}
                       </Badge>
-                      <Badge variant="outline" className="border-slate-300 text-slate-600 font-mono text-xs">
-                        PREDIO {result.predio}
-                      </Badge>
+                      {!isGovernmentBuilding && result.predio && (
+                        <Badge variant="outline" className="border-slate-300 text-slate-600 font-mono text-xs">
+                          PREDIO {result.predio}
+                        </Badge>
+                      )}
                       {result.nivel && (
-                        <Badge className={`${getNivelBadgeColor(result.nivel)} border text-xs`}>{result.nivel}</Badge>
+                        <Badge
+                          className={`${getNivelBadgeColor(result.nivel)} w-full justify-start whitespace-normal break-words text-left border text-xs`}
+                        >
+                          {result.nivel}
+                        </Badge>
                       )}
                       {result.fed_a_cargo && (
                         <Badge className={`${getFedBadgeColor(result.fed_a_cargo)} border text-xs`}>
