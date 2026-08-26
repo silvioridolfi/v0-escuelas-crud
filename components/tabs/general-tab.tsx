@@ -125,7 +125,7 @@ export function GeneralTab({
 
       <SectionHeader title="Identificación" />
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2">
         {/* CUE - Read only */}
         <div className="space-y-2">
           <Label htmlFor="cue" className="flex items-center gap-2">
@@ -207,7 +207,7 @@ export function GeneralTab({
 
       <SectionHeader title="Información General" />
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2 md:col-span-2">
           <Label htmlFor="nombre">Nombre</Label>
           <Input
@@ -271,7 +271,7 @@ export function GeneralTab({
 
       <SectionHeader title="Coordenadas" />
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="lat">Latitud</Label>
           <Input
@@ -299,7 +299,7 @@ export function GeneralTab({
 
       <SectionHeader title="Clasificación" />
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2">
         {!isGovernmentBuilding && (
           <div className="space-y-2">
             <Label htmlFor="fed_a_cargo">FED Asignado</Label>

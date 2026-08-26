@@ -111,7 +111,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
 
       <SectionHeader title="Plan de Enlace" />
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="plan_enlace">Plan de Enlace</Label>
           <Input
@@ -161,7 +161,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
 
       <SectionHeader title="PNCE - Plan Nacional de Conectividad Escolar" />
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="pnce_estado">PNCE (Estado)</Label>
           <Input
@@ -212,7 +212,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
 
       <SectionHeader title="PBA - Grupo 1" />
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="pba_grupo_1_estado">PBA - Grupo 1 (Estado)</Label>
           <Input
@@ -253,7 +253,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
 
       <SectionHeader title="PBA 2019" />
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="pba_2019_estado">PBA 2019 (Estado)</Label>
           <Input
@@ -285,7 +285,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
 
       <SectionHeader title="PBA - Grupo 2-A" />
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="pba_grupo_2_a_estado">PBA - Grupo 2-A (Estado)</Label>
           <Input
@@ -335,7 +335,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
 
       <SectionHeader title="Estado General PBA" />
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="estado_instalacion_pba">Estado General de Instalación (PBA)</Label>
           <Input
@@ -358,7 +358,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
 
       <SectionHeader title="Infraestructura Tecnológica" />
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="plan_piso_tecnologico">Plan Piso Tecnológico</Label>
           <Input
