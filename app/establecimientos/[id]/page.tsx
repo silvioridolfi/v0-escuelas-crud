@@ -32,6 +32,7 @@ export default async function EstablishmentPage({ params }: { params: Promise<{ 
     .from("contactos")
     .select("*")
     .eq("cue", establecimiento.cue)
+    .order("es_principal", { ascending: false })
     .order("apellido", { ascending: true })
 
   let sharedPredio: Array<{ id: string; cue: number; nombre: string }> = []

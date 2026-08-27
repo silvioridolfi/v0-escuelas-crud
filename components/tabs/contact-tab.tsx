@@ -7,9 +7,9 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { createContact, updateContact, deleteContact } from "@/app/actions/contact-actions"
+import { createContact, updateContact, deleteContact, setPrincipalContact } from "@/app/actions/contact-actions"
 import { useRouter } from "next/navigation"
-import { Plus, Pencil, Trash2, X } from "lucide-react"
+import { Plus, Pencil, Trash2, X, Star } from "lucide-react"
 import { EditSectionToggle } from "@/components/tabs/edit-section-toggle"
 
 type Contacto = {
@@ -22,6 +22,7 @@ type Contacto = {
   correo: string | null
   distrito: string | null
   fed_a_cargo: string | null
+  es_principal?: boolean
 }
 
 export function ContactTab({
@@ -119,6 +120,24 @@ export function ContactTab({
     }
   }
 
+  const handleSetPrincipal = async (id: string) => {
+    setIsSaving(true)
+    setMessage("")
+    try {
+      const result = await setPrincipalContact(id, cue)
+      if (result.success) {
+        setMessage("Contacto principal actualizado")
+        router.refresh()
+      } else {
+        setMessage(`Error: ${result.error}`)
+      }
+    } catch (error) {
+      setMessage("Error al actualizar")
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
   const startCreating = () => {
     setIsCreating(true)
     setEditingId(null)
@@ -155,13 +174,31 @@ export function ContactTab({
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div>
-                    <CardTitle className="text-base">
+                    <CardTitle className="flex items-center gap-2 text-base">
                       {contacto.nombre} {contacto.apellido}
+                      {contacto.es_principal && (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800">
+                          <Star className="h-2.5 w-2.5 fill-amber-500 text-amber-500" />
+                          Principal
+                        </span>
+                      )}
                     </CardTitle>
                     {contacto.cargo && <CardDescription>{contacto.cargo}</CardDescription>}
                   </div>
                   {isEditMode && editingId !== contacto.id && !isCreating && (
                     <div className="flex gap-2">
+                      {!contacto.es_principal && (
+                        <Button
+                          onClick={() => handleSetPrincipal(contacto.id)}
+                          size="icon"
+                          variant="ghost"
+                          className="h-8 w-8 text-amber-500 hover:text-amber-600"
+                          disabled={isSaving}
+                          title="Marcar como contacto principal"
+                        >
+                          <Star className="h-4 w-4" />
+                        </Button>
+                      )}
                       <Button
                         onClick={() => handleEdit(contacto)}
                         size="icon"

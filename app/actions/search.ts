@@ -46,6 +46,7 @@ export type SearchResult = {
   contactos?: Array<{
     nombre: string
     apellido: string
+    cargo: string
     telefono: string
     correo: string
   }>
@@ -81,8 +82,9 @@ async function attachSharedPredioInfo(
     cues.length > 0
       ? supabase
           .from("contactos")
-          .select("cue, nombre, apellido, telefono, correo")
+          .select("cue, nombre, apellido, cargo, telefono, correo, es_principal")
           .in("cue", cues)
+          .order("es_principal", { ascending: false })
           .order("apellido", { ascending: true })
       : Promise.resolve({ data: [], error: null }),
   ])
@@ -107,6 +109,7 @@ async function attachSharedPredioInfo(
     existing.push({
       nombre: contact.nombre || "",
       apellido: contact.apellido || "",
+      cargo: contact.cargo || "",
       telefono: contact.telefono || "",
       correo: contact.correo || "",
     })

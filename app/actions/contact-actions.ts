@@ -15,6 +15,14 @@ export async function createContact(
 ) {
   const supabase = createAdminClient()
 
+  // Si es el primer contacto que se carga para este establecimiento, lo
+  // marcamos como principal automáticamente (así no hace falta un paso extra
+  // para escuelas con un solo contacto).
+  const { count } = await supabase
+    .from("contactos")
+    .select("id", { count: "exact", head: true })
+    .eq("cue", cue)
+
   const { error } = await supabase.from("contactos").insert({
     cue,
     nombre: data.nombre || null,
@@ -24,6 +32,7 @@ export async function createContact(
     correo: data.correo || null,
     distrito: null,
     fed_a_cargo: null,
+    es_principal: (count || 0) === 0,
   })
 
   if (error) {
@@ -72,6 +81,33 @@ export async function deleteContact(id: string) {
 
   if (error) {
     return { success: false, error: error.message }
+  }
+
+  revalidatePath(`/establecimientos/[id]`, "page")
+  return { success: true }
+}
+
+// Marca un contacto como principal (el que aparece en las cards del
+// buscador). Primero le saca la marca al que la tuviera antes -- nunca
+// puede haber dos contactos principales al mismo tiempo para el mismo cue
+// (reforzado también por un índice único parcial en la base).
+export async function setPrincipalContact(id: string, cue: number) {
+  const supabase = createAdminClient()
+
+  const { error: clearError } = await supabase
+    .from("contactos")
+    .update({ es_principal: false })
+    .eq("cue", cue)
+    .eq("es_principal", true)
+
+  if (clearError) {
+    return { success: false, error: clearError.message }
+  }
+
+  const { error: setError } = await supabase.from("contactos").update({ es_principal: true }).eq("id", id)
+
+  if (setError) {
+    return { success: false, error: setError.message }
   }
 
   revalidatePath(`/establecimientos/[id]`, "page")

@@ -12,6 +12,7 @@ type Contacto = {
   correo: string | null
   distrito: string | null
   fed_a_cargo: string | null
+  es_principal?: boolean
 }
 
 export function ContactSection({

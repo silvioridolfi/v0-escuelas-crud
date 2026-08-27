@@ -335,6 +335,9 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                                   {[primaryContact.nombre, primaryContact.apellido].filter(Boolean).join(" ")}
                                 </p>
                               )}
+                              {primaryContact.cargo && (
+                                <p className="truncate text-xs text-slate-500">{primaryContact.cargo}</p>
+                              )}
                               {primaryContact.telefono && (
                                 <p className="flex items-center gap-1 text-xs text-slate-600">
                                   <Phone className="h-3 w-3 shrink-0" />

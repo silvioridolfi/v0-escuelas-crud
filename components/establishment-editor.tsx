@@ -38,6 +38,7 @@ type Contacto = {
   correo: string | null
   distrito: string | null
   fed_a_cargo: string | null
+  es_principal?: boolean
 }
 
 type SharedPredioSibling = { id: string; cue: number; nombre: string }
