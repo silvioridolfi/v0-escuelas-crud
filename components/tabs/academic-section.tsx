@@ -5,6 +5,7 @@ import { Users, GraduationCap, Calendar } from "lucide-react"
 import { StatTile } from "@/components/tabs/hero-widgets"
 import { EditSectionToggle } from "@/components/tabs/edit-section-toggle"
 import { AcademicTab } from "@/components/tabs/academic-tab"
+import { formatTurno } from "@/lib/badge-colors"
 import type { Establecimiento as EstablecimientoFull } from "@/lib/establecimiento"
 
 type Establecimiento = Pick<
@@ -33,7 +34,7 @@ export function AcademicSection({ establecimiento }: { establecimiento: Establec
             iconColor="text-indigo-600"
             iconBg="bg-indigo-50"
           />
-          <StatTile icon={Calendar} label="Turno" value={establecimiento.turnos} iconColor="text-[#417099]" iconBg="bg-[#417099]/10" />
+          <StatTile icon={Calendar} label="Turno" value={formatTurno(establecimiento.turnos)} iconColor="text-[#417099]" iconBg="bg-[#417099]/10" />
           <StatTile
             icon={Users}
             label="Matrícula"

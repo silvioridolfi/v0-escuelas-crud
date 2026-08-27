@@ -102,3 +102,26 @@ export function getPlanTokenBadgeColor(token: string): string {
   }
   return "bg-gray-500/10 text-gray-700 border-gray-500/20"
 }
+
+/**
+ * Normaliza el campo de turnos para mostrar: saca comillas sueltas que
+ * a veces vienen cargadas en el dato original (ej: '"DOBLE ESCOLARIDAD"')
+ * y lo pasa a Title Case (ej: "MAÑANA, TARDE" -> "Mañana, Tarde").
+ */
+export function formatTurno(turnos: string | null | undefined): string | null {
+  if (!turnos) return null
+  const sinComillas = turnos.replace(/["']/g, "").trim()
+  if (!sinComillas) return null
+
+  return sinComillas
+    .split(",")
+    .map((parte) =>
+      parte
+        .trim()
+        .toLowerCase()
+        .split(" ")
+        .map((palabra) => (palabra ? palabra[0].toUpperCase() + palabra.slice(1) : palabra))
+        .join(" "),
+    )
+    .join(", ")
+}

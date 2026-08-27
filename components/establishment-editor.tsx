@@ -75,19 +75,19 @@ export function EstablishmentEditor({
   }
 
   const allTabsConfig = [
-    { value: "general", label: "General", icon: FileText, color: "text-[#417099]", showForGovBuilding: true },
-    { value: "connectivity", label: "Conectividad", icon: Wifi, color: "text-[#00AEC3]", showForGovBuilding: false },
-    { value: "academic", label: "Académico", icon: GraduationCap, color: "text-[#e81f76]", showForGovBuilding: false },
-    { value: "contact", label: "Contacto", icon: Users, color: "text-[#417099]", showForGovBuilding: true },
-    { value: "location", label: "Ubicación", icon: MapPin, color: "text-emerald-600", showForGovBuilding: true },
-    { value: "observations", label: "Observaciones", icon: FileWarning, color: "text-amber-600", showForGovBuilding: true },
-    { value: "historial", label: "Historial", icon: History, color: "text-violet-600", showForGovBuilding: true },
+    { value: "general", label: "General", icon: FileText, color: "text-[#417099]", bgColor: "bg-[#417099]/10", showForGovBuilding: true },
+    { value: "connectivity", label: "Conectividad", icon: Wifi, color: "text-[#00AEC3]", bgColor: "bg-[#00AEC3]/10", showForGovBuilding: false },
+    { value: "academic", label: "Académico", icon: GraduationCap, color: "text-[#e81f76]", bgColor: "bg-[#e81f76]/10", showForGovBuilding: false },
+    { value: "contact", label: "Contacto", icon: Users, color: "text-[#417099]", bgColor: "bg-[#417099]/10", showForGovBuilding: true },
+    { value: "location", label: "Ubicación", icon: MapPin, color: "text-emerald-600", bgColor: "bg-emerald-50", showForGovBuilding: true },
+    { value: "observations", label: "Observaciones", icon: FileWarning, color: "text-amber-600", bgColor: "bg-amber-50", showForGovBuilding: true },
+    { value: "historial", label: "Historial", icon: History, color: "text-violet-600", bgColor: "bg-violet-50", showForGovBuilding: true },
   ]
 
   const tabsConfig = isGovernmentBuilding ? allTabsConfig.filter((tab) => tab.showForGovBuilding) : allTabsConfig
 
   const tabNav = (
-    <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 sm:justify-start">
+    <div className="-mx-1 flex items-center gap-1.5 overflow-x-auto px-1 sm:flex-wrap sm:justify-center sm:overflow-visible">
       {tabsConfig.map((tab) => {
         const Icon = tab.icon
         const isActive = activeTab === tab.value
@@ -95,11 +95,11 @@ export function EstablishmentEditor({
           <button
             key={tab.value}
             onClick={() => setActiveTab(tab.value)}
-            className={`flex items-center gap-1 whitespace-nowrap text-xs font-medium transition-colors ${
-              isActive ? tab.color : "text-slate-400 hover:text-slate-600"
+            className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2.5 text-xs font-medium transition-all active:scale-95 ${
+              isActive ? `${tab.color} ${tab.bgColor}` : "text-slate-400 hover:bg-slate-50 hover:text-slate-600"
             }`}
           >
-            <Icon className="h-3.5 w-3.5" />
+            <Icon className="h-4 w-4 shrink-0" />
             {tab.label}
           </button>
         )

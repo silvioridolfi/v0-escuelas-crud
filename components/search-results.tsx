@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Server, GraduationCap, Users, Calendar } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { getFedBadgeColor, formatFedDisplay, parsePlanTokens, getPlanTokenBadgeColor } from "@/lib/badge-colors"
+import { getFedBadgeColor, formatFedDisplay, formatTurno, parsePlanTokens, getPlanTokenBadgeColor } from "@/lib/badge-colors"
 import { splitEstablishmentName } from "@/lib/school-name"
 import type { SearchResult } from "@/app/actions/search"
 
@@ -276,7 +276,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                         iconColor="text-indigo-600"
                         iconBg="bg-indigo-50"
                       />
-                      <StatTileCompact icon={Calendar} label="Turno" value={result.turnos} iconColor="text-[#417099]" iconBg="bg-[#417099]/10" />
+                      <StatTileCompact icon={Calendar} label="Turno" value={formatTurno(result.turnos)} iconColor="text-[#417099]" iconBg="bg-[#417099]/10" />
                       <StatTileCompact
                         icon={User}
                         label="Matrícula"
