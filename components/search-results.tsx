@@ -1,12 +1,13 @@
 "use client"
 
+import type React from "react"
 import { useState } from "react"
 import dynamic from "next/dynamic"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Server, GraduationCap } from "lucide-react"
+import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Server, GraduationCap, Users, Calendar } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { getFedBadgeColor, formatFedDisplay, parsePlanTokens, getPlanTokenBadgeColor } from "@/lib/badge-colors"
 import { splitEstablishmentName } from "@/lib/school-name"
@@ -20,6 +21,32 @@ const LocationMap = dynamic(() => import("@/components/tabs/location-map").then(
     </div>
   ),
 })
+
+function StatTileCompact({
+  icon: Icon,
+  label,
+  value,
+  iconColor,
+  iconBg,
+}: {
+  icon: React.ComponentType<{ className?: string }>
+  label: string
+  value: string | number | null | undefined
+  iconColor: string
+  iconBg: string
+}) {
+  return (
+    <div className="flex items-center gap-2 rounded-lg border border-slate-100 bg-slate-50/60 p-2">
+      <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md ${iconBg}`}>
+        <Icon className={`h-3.5 w-3.5 ${iconColor}`} />
+      </div>
+      <div className="min-w-0">
+        <p className="text-[9px] uppercase tracking-wide text-slate-400">{label}</p>
+        <p className="truncate text-sm font-semibold leading-tight text-slate-800">{value || "—"}</p>
+      </div>
+    </div>
+  )
+}
 
 export function SearchResults({ results, isSearching }: { results: SearchResult[]; isSearching: boolean }) {
   const router = useRouter()
@@ -140,15 +167,6 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                   )}
                 </CardTitle>
 
-                {!isOrganismo && (result.nivel || result.modalidad) && (
-                  <p className="mt-1 flex items-center gap-1 text-xs text-slate-600">
-                    <GraduationCap className="h-3 w-3 shrink-0 text-indigo-500" />
-                    <span className="truncate">
-                      {[result.nivel, result.modalidad].filter(Boolean).join(" · ")}
-                    </span>
-                  </p>
-                )}
-
                 <div className="flex flex-wrap gap-2 mt-2">
                   {isOrganismo ? (
                     <>
@@ -250,26 +268,22 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
 
                   {!isOrganismo && !isGovernmentBuilding && (
                     <div className="grid grid-cols-2 gap-2 border-t border-slate-100 pt-2.5">
-                      <div className="flex items-center gap-2 rounded-lg border border-slate-100 bg-slate-50/60 p-2">
-                        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#e81f76]/10">
-                          <User className="h-3.5 w-3.5 text-[#e81f76]" />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-[9px] uppercase tracking-wide text-slate-400">Matrícula</p>
-                          <p className="text-sm font-semibold leading-tight text-slate-800">
-                            {result.matricula ? result.matricula.toLocaleString("es-AR") : "—"}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 rounded-lg border border-slate-100 bg-slate-50/60 p-2">
-                        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-indigo-50">
-                          <Building className="h-3.5 w-3.5 text-indigo-600" />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-[9px] uppercase tracking-wide text-slate-400">Secciones</p>
-                          <p className="text-sm font-semibold leading-tight text-slate-800">{result.secciones ?? "—"}</p>
-                        </div>
-                      </div>
+                      <StatTileCompact icon={Users} label="Nivel" value={result.nivel} iconColor="text-teal-600" iconBg="bg-teal-50" />
+                      <StatTileCompact
+                        icon={GraduationCap}
+                        label="Modalidad"
+                        value={result.modalidad}
+                        iconColor="text-indigo-600"
+                        iconBg="bg-indigo-50"
+                      />
+                      <StatTileCompact icon={Calendar} label="Turno" value={result.turnos} iconColor="text-[#417099]" iconBg="bg-[#417099]/10" />
+                      <StatTileCompact
+                        icon={User}
+                        label="Matrícula"
+                        value={result.matricula ? result.matricula.toLocaleString("es-AR") : null}
+                        iconColor="text-[#e81f76]"
+                        iconBg="bg-[#e81f76]/10"
+                      />
                     </div>
                   )}
 

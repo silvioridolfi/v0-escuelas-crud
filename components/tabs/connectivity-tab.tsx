@@ -8,7 +8,6 @@ import { updateConnectivity } from "@/app/actions/update-connectivity"
 import { useRouter } from "next/navigation"
 import type { Establecimiento as EstablecimientoFull } from "@/lib/establecimiento"
 import { SectionHeader } from "@/components/tabs/section-header"
-import { EditSectionToggle } from "@/components/tabs/edit-section-toggle"
 
 type Establecimiento = Pick<
   EstablecimientoFull,
@@ -45,9 +44,16 @@ type Establecimiento = Pick<
   | "tipo_mejora"
 >
 
-export function ConnectivityTab({ establecimiento }: { establecimiento: Establecimiento }) {
+export function ConnectivityTab({
+  establecimiento,
+  isEditing,
+  onSaved,
+}: {
+  establecimiento: Establecimiento
+  isEditing: boolean
+  onSaved?: () => void
+}) {
   const router = useRouter()
-  const [isEditing, setIsEditing] = useState(false)
   const [formData, setFormData] = useState({
     plan_enlace: establecimiento.plan_enlace || "",
     subplan_enlace: establecimiento.subplan_enlace || "",
@@ -95,6 +101,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
       if (result.success) {
         setMessage("Guardado exitosamente")
         router.refresh()
+        onSaved?.()
       } else {
         setMessage(`Error: ${result.error}`)
       }
@@ -106,8 +113,7 @@ export function ConnectivityTab({ establecimiento }: { establecimiento: Establec
   }
 
   return (
-    <div className="space-y-6 py-4">
-      <EditSectionToggle isEditing={isEditing} onToggle={() => setIsEditing((v) => !v)} />
+    <div className="space-y-6">
 
       <SectionHeader title="Plan de Enlace" />
 

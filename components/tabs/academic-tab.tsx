@@ -7,16 +7,22 @@ import { Button } from "@/components/ui/button"
 import { updateAcademic } from "@/app/actions/update-academic"
 import { useRouter } from "next/navigation"
 import type { Establecimiento as EstablecimientoFull } from "@/lib/establecimiento"
-import { EditSectionToggle } from "@/components/tabs/edit-section-toggle"
 
 type Establecimiento = Pick<
   EstablecimientoFull,
   "id" | "nivel" | "modalidad" | "matricula" | "varones" | "mujeres" | "secciones" | "turnos"
 >
 
-export function AcademicTab({ establecimiento }: { establecimiento: Establecimiento }) {
+export function AcademicTab({
+  establecimiento,
+  isEditing,
+  onSaved,
+}: {
+  establecimiento: Establecimiento
+  isEditing: boolean
+  onSaved?: () => void
+}) {
   const router = useRouter()
-  const [isEditing, setIsEditing] = useState(false)
   const [formData, setFormData] = useState({
     nivel: establecimiento.nivel,
     modalidad: establecimiento.modalidad,
@@ -37,6 +43,7 @@ export function AcademicTab({ establecimiento }: { establecimiento: Establecimie
       if (result.success) {
         setMessage("Guardado exitosamente")
         router.refresh()
+        onSaved?.()
       } else {
         setMessage(`Error: ${result.error}`)
       }
@@ -48,9 +55,7 @@ export function AcademicTab({ establecimiento }: { establecimiento: Establecimie
   }
 
   return (
-    <div className="space-y-6 py-4">
-      <EditSectionToggle isEditing={isEditing} onToggle={() => setIsEditing((v) => !v)} />
-
+    <div className="space-y-6">
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="nivel">Nivel</Label>

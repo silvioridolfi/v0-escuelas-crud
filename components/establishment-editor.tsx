@@ -17,10 +17,10 @@ import {
 import { ArrowLeft, FileText, Wifi, GraduationCap, Users, FileWarning, Trash2, MapPin, History } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { GeneralTab } from "@/components/tabs/general-tab"
-import { ConnectivityTab } from "@/components/tabs/connectivity-tab"
-import { AcademicTab } from "@/components/tabs/academic-tab"
+import { ConnectivitySection } from "@/components/tabs/connectivity-section"
+import { AcademicSection } from "@/components/tabs/academic-section"
 import { ObservationsTab } from "@/components/tabs/observations-tab"
-import { ContactTab } from "@/components/tabs/contact-tab"
+import { ContactSection } from "@/components/tabs/contact-section"
 import { LocationTab } from "@/components/tabs/location-tab"
 import { HistorialTab } from "@/components/tabs/historial-tab"
 import { splitEstablishmentName } from "@/lib/school-name"
@@ -151,13 +151,7 @@ export function EstablishmentEditor({
           <div className={`h-1 ${isClosedOrContext ? "bg-red-500" : "bg-gradient-to-r from-[#e81f76] via-[#00AEC3] to-[#417099]"}`} />
 
           <CardContent className="p-5 sm:p-6">
-            <EstablishmentHero
-              establecimiento={establecimiento}
-              isGovernmentBuilding={isGovernmentBuilding}
-              contactoPrimario={contactos[0] || null}
-              sharedPredio={sharedPredio}
-              centerSlot={tabNav}
-            />
+            <EstablishmentHero establecimiento={establecimiento} centerSlot={tabNav} />
 
             <div className="mt-6 border-t border-slate-200 pt-6">
               <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -167,15 +161,15 @@ export function EstablishmentEditor({
                 {!isGovernmentBuilding && (
                   <>
                     <TabsContent value="connectivity" className="m-0">
-                      <ConnectivityTab establecimiento={establecimiento} />
+                      <ConnectivitySection establecimiento={establecimiento} sharedPredio={sharedPredio} />
                     </TabsContent>
                     <TabsContent value="academic" className="m-0">
-                      <AcademicTab establecimiento={establecimiento} />
+                      <AcademicSection establecimiento={establecimiento} />
                     </TabsContent>
                   </>
                 )}
                 <TabsContent value="contact" className="m-0">
-                  <ContactTab
+                  <ContactSection
                     cue={establecimiento.cue}
                     contactos={contactos}
                     distrito={establecimiento.distrito}
