@@ -42,7 +42,7 @@ function StatTileCompact({
       </div>
       <div className="min-w-0">
         <p className="text-[9px] uppercase tracking-wide text-slate-400">{label}</p>
-        <p className="truncate text-sm font-semibold leading-tight text-slate-800">{value || "—"}</p>
+        <p className="break-words text-sm font-semibold leading-tight text-slate-800">{value || "—"}</p>
       </div>
     </div>
   )
@@ -143,7 +143,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                       <p className="text-[9px] font-medium uppercase tracking-wide text-slate-400">
                         {isOrganismo ? "Código" : isGovernmentBuilding ? "Nivel Central" : "CUE"}
                       </p>
-                      <p className="truncate text-xs font-semibold text-slate-700">
+                      <p className="truncate text-sm font-bold text-slate-800">
                         {isOrganismo ? result.codigo : result.cue}
                       </p>
                     </div>
@@ -320,29 +320,35 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                     </div>
                   ) : (
                     <>
-                      {primaryContact && (
-                        <div className="space-y-1.5 pt-1 border-t border-slate-200">
-                          <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Contacto</div>
-                          <div className="flex items-start gap-1.5">
-                            <User className="h-3.5 w-3.5 text-[#417099] mt-0.5 shrink-0" />
-                            <div>
-                              <div className="text-sm text-slate-700 font-medium">
-                                {primaryContact.nombre} {primaryContact.apellido}
-                              </div>
+                      {primaryContact && (primaryContact.nombre || primaryContact.telefono || primaryContact.correo) && (
+                        <div className="border-t border-slate-100 pt-2.5">
+                          <p className="mb-1.5 text-[9px] font-medium uppercase tracking-wide text-slate-400">
+                            Contacto
+                          </p>
+                          <div className="flex items-start gap-2 rounded-lg border border-slate-100 bg-slate-50/60 p-2">
+                            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#417099]/10">
+                              <User className="h-3.5 w-3.5 text-[#417099]" />
+                            </div>
+                            <div className="min-w-0 space-y-0.5">
+                              {(primaryContact.nombre || primaryContact.apellido) && (
+                                <p className="truncate text-sm font-semibold leading-tight text-slate-800">
+                                  {[primaryContact.nombre, primaryContact.apellido].filter(Boolean).join(" ")}
+                                </p>
+                              )}
+                              {primaryContact.telefono && (
+                                <p className="flex items-center gap-1 text-xs text-slate-600">
+                                  <Phone className="h-3 w-3 shrink-0" />
+                                  <span className="truncate">{primaryContact.telefono}</span>
+                                </p>
+                              )}
+                              {primaryContact.correo && (
+                                <p className="flex items-center gap-1 text-xs text-slate-600">
+                                  <Mail className="h-3 w-3 shrink-0" />
+                                  <span className="truncate">{primaryContact.correo}</span>
+                                </p>
+                              )}
                             </div>
                           </div>
-                          {primaryContact.telefono && (
-                            <div className="flex items-center gap-1.5 text-xs text-slate-600">
-                              <Phone className="h-3 w-3" />
-                              {primaryContact.telefono}
-                            </div>
-                          )}
-                          {primaryContact.correo && (
-                            <div className="flex items-center gap-1.5 text-xs text-slate-600">
-                              <Mail className="h-3 w-3" />
-                              {primaryContact.correo}
-                            </div>
-                          )}
                         </div>
                       )}
                     </>
