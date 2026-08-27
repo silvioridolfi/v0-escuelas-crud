@@ -86,11 +86,13 @@ export function EstablishmentHero({
   isGovernmentBuilding,
   contactoPrimario,
   sharedPredio = [],
+  centerSlot,
 }: {
   establecimiento: Establecimiento
   isGovernmentBuilding: boolean
   contactoPrimario?: ContactoPrimario
   sharedPredio?: SharedPredioSibling[]
+  centerSlot?: React.ReactNode
 }) {
   const router = useRouter()
   const isClosedOrContext =
@@ -123,6 +125,8 @@ export function EstablishmentHero({
             </div>
           </div>
         </div>
+
+        {centerSlot && <div className="order-3 w-full sm:order-none sm:w-auto sm:flex-1">{centerSlot}</div>}
 
         <span
           className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${

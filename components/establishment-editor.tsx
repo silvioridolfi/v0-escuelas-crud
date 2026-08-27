@@ -1,8 +1,8 @@
 "use client"
 
-import type React from "react"
 import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
+import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import {
   AlertDialog,
@@ -42,27 +42,6 @@ type Contacto = {
 
 type SharedPredioSibling = { id: string; cue: number; nombre: string }
 
-function SectionTitle({
-  icon: Icon,
-  label,
-  color,
-  bgColor,
-}: {
-  icon: React.ComponentType<{ className?: string }>
-  label: string
-  color: string
-  bgColor: string
-}) {
-  return (
-    <div className="mb-4 flex items-center gap-2.5">
-      <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${bgColor}`}>
-        <Icon className={`h-4 w-4 ${color}`} />
-      </div>
-      <h3 className="text-base font-semibold text-slate-800">{label}</h3>
-    </div>
-  )
-}
-
 export function EstablishmentEditor({
   establecimiento,
   contactos,
@@ -73,10 +52,13 @@ export function EstablishmentEditor({
   sharedPredio?: SharedPredioSibling[]
 }) {
   const router = useRouter()
+  const [activeTab, setActiveTab] = useState("general")
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
   const isGovernmentBuilding = establecimiento.es_establecimiento_educativo === false
+  const isClosedOrContext =
+    establecimiento.tipo_establecimiento === "Escuela cerrada" || establecimiento.tipo_establecimiento === "Contexto de encierro"
   const { primary: nombrePrimary, secondary: nombreSecondary } = splitEstablishmentName(establecimiento.nombre)
 
   const handleDelete = async () => {
@@ -90,6 +72,39 @@ export function EstablishmentEditor({
       setIsDeleting(false)
     }
   }
+
+  const allTabsConfig = [
+    { value: "general", label: "General", icon: FileText, color: "text-[#417099]", showForGovBuilding: true },
+    { value: "connectivity", label: "Conectividad", icon: Wifi, color: "text-[#00AEC3]", showForGovBuilding: false },
+    { value: "academic", label: "Académico", icon: GraduationCap, color: "text-[#e81f76]", showForGovBuilding: false },
+    { value: "contact", label: "Contacto", icon: Users, color: "text-[#417099]", showForGovBuilding: true },
+    { value: "location", label: "Ubicación", icon: MapPin, color: "text-emerald-600", showForGovBuilding: true },
+    { value: "observations", label: "Observaciones", icon: FileWarning, color: "text-amber-600", showForGovBuilding: true },
+    { value: "historial", label: "Historial", icon: History, color: "text-violet-600", showForGovBuilding: true },
+  ]
+
+  const tabsConfig = isGovernmentBuilding ? allTabsConfig.filter((tab) => tab.showForGovBuilding) : allTabsConfig
+
+  const tabNav = (
+    <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 sm:justify-start">
+      {tabsConfig.map((tab) => {
+        const Icon = tab.icon
+        const isActive = activeTab === tab.value
+        return (
+          <button
+            key={tab.value}
+            onClick={() => setActiveTab(tab.value)}
+            className={`flex items-center gap-1 whitespace-nowrap text-xs font-medium transition-colors ${
+              isActive ? tab.color : "text-slate-400 hover:text-slate-600"
+            }`}
+          >
+            <Icon className="h-3.5 w-3.5" />
+            {tab.label}
+          </button>
+        )
+      })}
+    </div>
+  )
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
@@ -132,22 +147,8 @@ export function EstablishmentEditor({
       </header>
 
       <div className="container mx-auto px-4 py-6 sm:py-8">
-        <Card
-          className={`overflow-hidden rounded-xl border bg-white shadow-sm ${
-            establecimiento.tipo_establecimiento === "Escuela cerrada" ||
-            establecimiento.tipo_establecimiento === "Contexto de encierro"
-              ? "border-red-200"
-              : "border-slate-200"
-          }`}
-        >
-          <div
-            className={`h-1 ${
-              establecimiento.tipo_establecimiento === "Escuela cerrada" ||
-              establecimiento.tipo_establecimiento === "Contexto de encierro"
-                ? "bg-red-500"
-                : "bg-gradient-to-r from-[#e81f76] via-[#00AEC3] to-[#417099]"
-            }`}
-          />
+        <Card className={`overflow-hidden rounded-xl border bg-white shadow-sm ${isClosedOrContext ? "border-red-200" : "border-slate-200"}`}>
+          <div className={`h-1 ${isClosedOrContext ? "bg-red-500" : "bg-gradient-to-r from-[#e81f76] via-[#00AEC3] to-[#417099]"}`} />
 
           <CardContent className="p-5 sm:p-6">
             <EstablishmentHero
@@ -155,50 +156,42 @@ export function EstablishmentEditor({
               isGovernmentBuilding={isGovernmentBuilding}
               contactoPrimario={contactos[0] || null}
               sharedPredio={sharedPredio}
+              centerSlot={tabNav}
             />
 
-            <div className="mt-8 border-t border-slate-200 pt-6">
-              <SectionTitle icon={FileText} label="Datos generales" color="text-[#417099]" bgColor="bg-[#417099]/10" />
-              <GeneralTab establecimiento={establecimiento} isGovernmentBuilding={isGovernmentBuilding} />
-            </div>
-
-            {!isGovernmentBuilding && (
-              <>
-                <div className="mt-8 border-t border-slate-200 pt-6">
-                  <SectionTitle icon={GraduationCap} label="Académico" color="text-[#e81f76]" bgColor="bg-[#e81f76]/10" />
-                  <AcademicTab establecimiento={establecimiento} />
-                </div>
-
-                <div className="mt-8 border-t border-slate-200 pt-6">
-                  <SectionTitle icon={Wifi} label="Conectividad" color="text-[#00AEC3]" bgColor="bg-[#00AEC3]/10" />
-                  <ConnectivityTab establecimiento={establecimiento} />
-                </div>
-              </>
-            )}
-
-            <div className="mt-8 border-t border-slate-200 pt-6">
-              <SectionTitle icon={Users} label="Contacto" color="text-[#417099]" bgColor="bg-[#417099]/10" />
-              <ContactTab
-                cue={establecimiento.cue}
-                contactos={contactos}
-                distrito={establecimiento.distrito}
-                fedACargo={establecimiento.fed_a_cargo}
-              />
-            </div>
-
-            <div className="mt-8 border-t border-slate-200 pt-6">
-              <SectionTitle icon={MapPin} label="Ubicación" color="text-emerald-600" bgColor="bg-emerald-50" />
-              <LocationTab establecimiento={establecimiento} />
-            </div>
-
-            <div className="mt-8 border-t border-slate-200 pt-6">
-              <SectionTitle icon={FileWarning} label="Observaciones" color="text-amber-600" bgColor="bg-amber-50" />
-              <ObservationsTab establecimiento={establecimiento} />
-            </div>
-
-            <div className="mt-8 border-t border-slate-200 pt-6">
-              <SectionTitle icon={History} label="Historial" color="text-violet-600" bgColor="bg-violet-50" />
-              <HistorialTab establecimientoId={establecimiento.id} />
+            <div className="mt-6 border-t border-slate-200 pt-6">
+              <Tabs value={activeTab} onValueChange={setActiveTab}>
+                <TabsContent value="general" className="m-0">
+                  <GeneralTab establecimiento={establecimiento} isGovernmentBuilding={isGovernmentBuilding} />
+                </TabsContent>
+                {!isGovernmentBuilding && (
+                  <>
+                    <TabsContent value="connectivity" className="m-0">
+                      <ConnectivityTab establecimiento={establecimiento} />
+                    </TabsContent>
+                    <TabsContent value="academic" className="m-0">
+                      <AcademicTab establecimiento={establecimiento} />
+                    </TabsContent>
+                  </>
+                )}
+                <TabsContent value="contact" className="m-0">
+                  <ContactTab
+                    cue={establecimiento.cue}
+                    contactos={contactos}
+                    distrito={establecimiento.distrito}
+                    fedACargo={establecimiento.fed_a_cargo}
+                  />
+                </TabsContent>
+                <TabsContent value="location" className="m-0">
+                  <LocationTab establecimiento={establecimiento} />
+                </TabsContent>
+                <TabsContent value="observations" className="m-0">
+                  <ObservationsTab establecimiento={establecimiento} />
+                </TabsContent>
+                <TabsContent value="historial" className="m-0">
+                  <HistorialTab establecimientoId={establecimiento.id} />
+                </TabsContent>
+              </Tabs>
             </div>
           </CardContent>
         </Card>

@@ -6,9 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Server } from "lucide-react"
+import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Server, GraduationCap } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { getFedBadgeColor, getNivelBadgeColor, formatFedDisplay, parsePlanTokens, getPlanTokenBadgeColor } from "@/lib/badge-colors"
+import { getFedBadgeColor, formatFedDisplay, parsePlanTokens, getPlanTokenBadgeColor } from "@/lib/badge-colors"
 import { splitEstablishmentName } from "@/lib/school-name"
 import type { SearchResult } from "@/app/actions/search"
 
@@ -99,39 +99,59 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
               />
 
               <CardHeader className="pb-3 pt-5 flex-shrink-0">
-                <span
-                  className={`mb-1.5 inline-flex w-fit items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
-                    isOrganismo
-                      ? "bg-indigo-50 text-indigo-700"
-                      : isGovernmentBuilding
-                        ? "bg-amber-50 text-amber-700"
-                        : "bg-teal-50 text-teal-700"
-                  }`}
-                >
-                  {isOrganismo
-                    ? "Organismo"
-                    : isGovernmentBuilding
-                      ? result.tipo_establecimiento || "Edificio gubernamental"
-                      : "Establecimiento"}
-                </span>
-                {isClosedOrContext && (
-                  <span className="mb-1.5 flex w-fit items-center gap-1 rounded-full bg-red-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-red-700">
-                    <AlertTriangle className="h-2.5 w-2.5" />
-                    {result.tipo_establecimiento}
+                <div className="mb-2 flex items-start justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <div
+                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
+                        isOrganismo ? "bg-indigo-50" : isGovernmentBuilding ? "bg-amber-50" : "bg-teal-50"
+                      }`}
+                    >
+                      {isOrganismo ? (
+                        <Building className="h-4 w-4 text-indigo-600" />
+                      ) : (
+                        <Building2 className={`h-4 w-4 ${isGovernmentBuilding ? "text-amber-600" : "text-teal-600"}`} />
+                      )}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[9px] font-medium uppercase tracking-wide text-slate-400">
+                        {isOrganismo ? "Código" : isGovernmentBuilding ? "Nivel Central" : "CUE"}
+                      </p>
+                      <p className="truncate text-xs font-semibold text-slate-700">
+                        {isOrganismo ? result.codigo : result.cue}
+                      </p>
+                    </div>
+                  </div>
+                  <span
+                    className={`inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide ${
+                      isClosedOrContext ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-700"
+                    }`}
+                  >
+                    <span className={`h-1 w-1 rounded-full ${isClosedOrContext ? "bg-red-500" : "bg-emerald-500"}`} />
+                    {isClosedOrContext ? "" : "ACTIVA"}
+                    {isClosedOrContext && <AlertTriangle className="h-2.5 w-2.5" />}
+                    {isClosedOrContext && result.tipo_establecimiento}
                   </span>
-                )}
+                </div>
+
                 <CardTitle className="text-base leading-tight text-balance text-slate-800 min-h-[3rem]">
                   <span className="block">{nombrePrimary}</span>
                   {nombreSecondary && (
                     <span className="mt-0.5 block text-sm font-normal text-slate-600">{nombreSecondary}</span>
                   )}
                 </CardTitle>
+
+                {!isOrganismo && (result.nivel || result.modalidad) && (
+                  <p className="mt-1 flex items-center gap-1 text-xs text-slate-600">
+                    <GraduationCap className="h-3 w-3 shrink-0 text-indigo-500" />
+                    <span className="truncate">
+                      {[result.nivel, result.modalidad].filter(Boolean).join(" · ")}
+                    </span>
+                  </p>
+                )}
+
                 <div className="flex flex-wrap gap-2 mt-2">
                   {isOrganismo ? (
                     <>
-                      <Badge className="bg-slate-700 text-white hover:bg-slate-700/90 font-mono text-xs uppercase">
-                        {result.codigo}
-                      </Badge>
                       <Badge variant="outline" className="border-slate-300 text-slate-700 text-xs">
                         {result.tipo_organizacion}
                       </Badge>
@@ -150,19 +170,9 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                     </>
                   ) : (
                     <>
-                      <Badge className="bg-[#417099] text-white hover:bg-[#417099]/90 font-mono text-xs">
-                        CUE {result.cue}
-                      </Badge>
                       {!isGovernmentBuilding && result.predio && (
                         <Badge variant="outline" className="border-slate-300 text-slate-600 font-mono text-xs">
                           PREDIO {result.predio}
-                        </Badge>
-                      )}
-                      {result.nivel && (
-                        <Badge
-                          className={`${getNivelBadgeColor(result.nivel)} max-w-full justify-start whitespace-normal break-words text-left border text-xs`}
-                        >
-                          {result.nivel}
                         </Badge>
                       )}
                       {result.fed_a_cargo && (
