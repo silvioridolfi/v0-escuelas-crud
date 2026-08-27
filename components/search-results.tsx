@@ -240,15 +240,25 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
 
                   {!isOrganismo && !isGovernmentBuilding && (
                     <div className="grid grid-cols-2 gap-2 border-t border-slate-100 pt-2.5">
-                      <div>
-                        <p className="text-[10px] uppercase tracking-wide text-slate-400">Matrícula</p>
-                        <p className="text-base font-semibold text-slate-800">
-                          {result.matricula ? result.matricula.toLocaleString("es-AR") : "—"}
-                        </p>
+                      <div className="flex items-center gap-2 rounded-lg border border-slate-100 bg-slate-50/60 p-2">
+                        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#e81f76]/10">
+                          <User className="h-3.5 w-3.5 text-[#e81f76]" />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-[9px] uppercase tracking-wide text-slate-400">Matrícula</p>
+                          <p className="text-sm font-semibold leading-tight text-slate-800">
+                            {result.matricula ? result.matricula.toLocaleString("es-AR") : "—"}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-[10px] uppercase tracking-wide text-slate-400">Secciones</p>
-                        <p className="text-base font-semibold text-slate-800">{result.secciones ?? "—"}</p>
+                      <div className="flex items-center gap-2 rounded-lg border border-slate-100 bg-slate-50/60 p-2">
+                        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-indigo-50">
+                          <Building className="h-3.5 w-3.5 text-indigo-600" />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-[9px] uppercase tracking-wide text-slate-400">Secciones</p>
+                          <p className="text-sm font-semibold leading-tight text-slate-800">{result.secciones ?? "—"}</p>
+                        </div>
                       </div>
                     </div>
                   )}
