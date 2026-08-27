@@ -1,14 +1,15 @@
 "use client"
 
+import type React from "react"
 import { useState } from "react"
 import dynamic from "next/dynamic"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Server } from "lucide-react"
+import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Server, GraduationCap, Users, Calendar } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { getFedBadgeColor, getNivelBadgeColor, formatFedDisplay, parsePlanTokens, getPlanTokenBadgeColor } from "@/lib/badge-colors"
+import { getFedBadgeColor, formatFedDisplay, parsePlanTokens, getPlanTokenBadgeColor } from "@/lib/badge-colors"
 import { splitEstablishmentName } from "@/lib/school-name"
 import type { SearchResult } from "@/app/actions/search"
 
@@ -20,6 +21,32 @@ const LocationMap = dynamic(() => import("@/components/tabs/location-map").then(
     </div>
   ),
 })
+
+function StatTileCompact({
+  icon: Icon,
+  label,
+  value,
+  iconColor,
+  iconBg,
+}: {
+  icon: React.ComponentType<{ className?: string }>
+  label: string
+  value: string | number | null | undefined
+  iconColor: string
+  iconBg: string
+}) {
+  return (
+    <div className="flex items-center gap-2 rounded-lg border border-slate-100 bg-slate-50/60 p-2">
+      <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md ${iconBg}`}>
+        <Icon className={`h-3.5 w-3.5 ${iconColor}`} />
+      </div>
+      <div className="min-w-0">
+        <p className="text-[9px] uppercase tracking-wide text-slate-400">{label}</p>
+        <p className="break-words text-sm font-semibold leading-tight text-slate-800">{value || "—"}</p>
+      </div>
+    </div>
+  )
+}
 
 export function SearchResults({ results, isSearching }: { results: SearchResult[]; isSearching: boolean }) {
   const router = useRouter()
@@ -99,39 +126,50 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
               />
 
               <CardHeader className="pb-3 pt-5 flex-shrink-0">
-                <span
-                  className={`mb-1.5 inline-flex w-fit items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
-                    isOrganismo
-                      ? "bg-indigo-50 text-indigo-700"
-                      : isGovernmentBuilding
-                        ? "bg-amber-50 text-amber-700"
-                        : "bg-teal-50 text-teal-700"
-                  }`}
-                >
-                  {isOrganismo
-                    ? "Organismo"
-                    : isGovernmentBuilding
-                      ? result.tipo_establecimiento || "Edificio gubernamental"
-                      : "Establecimiento"}
-                </span>
-                {isClosedOrContext && (
-                  <span className="mb-1.5 flex w-fit items-center gap-1 rounded-full bg-red-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-red-700">
-                    <AlertTriangle className="h-2.5 w-2.5" />
-                    {result.tipo_establecimiento}
+                <div className="mb-2 flex items-start justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <div
+                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
+                        isOrganismo ? "bg-indigo-50" : isGovernmentBuilding ? "bg-amber-50" : "bg-teal-50"
+                      }`}
+                    >
+                      {isOrganismo ? (
+                        <Building className="h-4 w-4 text-indigo-600" />
+                      ) : (
+                        <Building2 className={`h-4 w-4 ${isGovernmentBuilding ? "text-amber-600" : "text-teal-600"}`} />
+                      )}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[9px] font-medium uppercase tracking-wide text-slate-400">
+                        {isOrganismo ? "Código" : isGovernmentBuilding ? "Nivel Central" : "CUE"}
+                      </p>
+                      <p className="truncate text-sm font-bold text-slate-800">
+                        {isOrganismo ? result.codigo : result.cue}
+                      </p>
+                    </div>
+                  </div>
+                  <span
+                    className={`inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide ${
+                      isClosedOrContext ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-700"
+                    }`}
+                  >
+                    <span className={`h-1 w-1 rounded-full ${isClosedOrContext ? "bg-red-500" : "bg-emerald-500"}`} />
+                    {isClosedOrContext ? "" : "ACTIVA"}
+                    {isClosedOrContext && <AlertTriangle className="h-2.5 w-2.5" />}
+                    {isClosedOrContext && result.tipo_establecimiento}
                   </span>
-                )}
+                </div>
+
                 <CardTitle className="text-base leading-tight text-balance text-slate-800 min-h-[3rem]">
                   <span className="block">{nombrePrimary}</span>
                   {nombreSecondary && (
                     <span className="mt-0.5 block text-sm font-normal text-slate-600">{nombreSecondary}</span>
                   )}
                 </CardTitle>
+
                 <div className="flex flex-wrap gap-2 mt-2">
                   {isOrganismo ? (
                     <>
-                      <Badge className="bg-slate-700 text-white hover:bg-slate-700/90 font-mono text-xs uppercase">
-                        {result.codigo}
-                      </Badge>
                       <Badge variant="outline" className="border-slate-300 text-slate-700 text-xs">
                         {result.tipo_organizacion}
                       </Badge>
@@ -150,19 +188,9 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                     </>
                   ) : (
                     <>
-                      <Badge className="bg-[#417099] text-white hover:bg-[#417099]/90 font-mono text-xs">
-                        CUE {result.cue}
-                      </Badge>
                       {!isGovernmentBuilding && result.predio && (
                         <Badge variant="outline" className="border-slate-300 text-slate-600 font-mono text-xs">
                           PREDIO {result.predio}
-                        </Badge>
-                      )}
-                      {result.nivel && (
-                        <Badge
-                          className={`${getNivelBadgeColor(result.nivel)} max-w-full justify-start whitespace-normal break-words text-left border text-xs`}
-                        >
-                          {result.nivel}
                         </Badge>
                       )}
                       {result.fed_a_cargo && (
@@ -240,16 +268,22 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
 
                   {!isOrganismo && !isGovernmentBuilding && (
                     <div className="grid grid-cols-2 gap-2 border-t border-slate-100 pt-2.5">
-                      <div>
-                        <p className="text-[10px] uppercase tracking-wide text-slate-400">Matrícula</p>
-                        <p className="text-base font-semibold text-slate-800">
-                          {result.matricula ? result.matricula.toLocaleString("es-AR") : "—"}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-[10px] uppercase tracking-wide text-slate-400">Secciones</p>
-                        <p className="text-base font-semibold text-slate-800">{result.secciones ?? "—"}</p>
-                      </div>
+                      <StatTileCompact icon={Users} label="Nivel" value={result.nivel} iconColor="text-teal-600" iconBg="bg-teal-50" />
+                      <StatTileCompact
+                        icon={GraduationCap}
+                        label="Modalidad"
+                        value={result.modalidad}
+                        iconColor="text-indigo-600"
+                        iconBg="bg-indigo-50"
+                      />
+                      <StatTileCompact icon={Calendar} label="Turno" value={result.turnos} iconColor="text-[#417099]" iconBg="bg-[#417099]/10" />
+                      <StatTileCompact
+                        icon={User}
+                        label="Matrícula"
+                        value={result.matricula ? result.matricula.toLocaleString("es-AR") : null}
+                        iconColor="text-[#e81f76]"
+                        iconBg="bg-[#e81f76]/10"
+                      />
                     </div>
                   )}
 
@@ -286,29 +320,35 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                     </div>
                   ) : (
                     <>
-                      {primaryContact && (
-                        <div className="space-y-1.5 pt-1 border-t border-slate-200">
-                          <div className="text-xs font-medium text-slate-500 uppercase tracking-wide">Contacto</div>
-                          <div className="flex items-start gap-1.5">
-                            <User className="h-3.5 w-3.5 text-[#417099] mt-0.5 shrink-0" />
-                            <div>
-                              <div className="text-sm text-slate-700 font-medium">
-                                {primaryContact.nombre} {primaryContact.apellido}
-                              </div>
+                      {primaryContact && (primaryContact.nombre || primaryContact.telefono || primaryContact.correo) && (
+                        <div className="border-t border-slate-100 pt-2.5">
+                          <p className="mb-1.5 text-[9px] font-medium uppercase tracking-wide text-slate-400">
+                            Contacto
+                          </p>
+                          <div className="flex items-start gap-2 rounded-lg border border-slate-100 bg-slate-50/60 p-2">
+                            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#417099]/10">
+                              <User className="h-3.5 w-3.5 text-[#417099]" />
+                            </div>
+                            <div className="min-w-0 space-y-0.5">
+                              {(primaryContact.nombre || primaryContact.apellido) && (
+                                <p className="truncate text-sm font-semibold leading-tight text-slate-800">
+                                  {[primaryContact.nombre, primaryContact.apellido].filter(Boolean).join(" ")}
+                                </p>
+                              )}
+                              {primaryContact.telefono && (
+                                <p className="flex items-center gap-1 text-xs text-slate-600">
+                                  <Phone className="h-3 w-3 shrink-0" />
+                                  <span className="truncate">{primaryContact.telefono}</span>
+                                </p>
+                              )}
+                              {primaryContact.correo && (
+                                <p className="flex items-center gap-1 text-xs text-slate-600">
+                                  <Mail className="h-3 w-3 shrink-0" />
+                                  <span className="truncate">{primaryContact.correo}</span>
+                                </p>
+                              )}
                             </div>
                           </div>
-                          {primaryContact.telefono && (
-                            <div className="flex items-center gap-1.5 text-xs text-slate-600">
-                              <Phone className="h-3 w-3" />
-                              {primaryContact.telefono}
-                            </div>
-                          )}
-                          {primaryContact.correo && (
-                            <div className="flex items-center gap-1.5 text-xs text-slate-600">
-                              <Mail className="h-3 w-3" />
-                              {primaryContact.correo}
-                            </div>
-                          )}
                         </div>
                       )}
                     </>

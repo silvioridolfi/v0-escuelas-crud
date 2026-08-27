@@ -7,13 +7,11 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { updateGeneral } from "@/app/actions/update-general"
 import { useRouter } from "next/navigation"
-import { AlertTriangle, ChevronRight, Lock, Pencil } from "lucide-react"
+import { Lock, Pencil } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import type { Establecimiento as EstablecimientoFull } from "@/lib/establecimiento"
 import { SectionHeader } from "@/components/tabs/section-header"
 import { EditSectionToggle } from "@/components/tabs/edit-section-toggle"
-
-type SharedPredioSibling = { id: string; cue: number; nombre: string }
 
 type Establecimiento = Pick<
   EstablecimientoFull,
@@ -35,11 +33,9 @@ type Establecimiento = Pick<
 export function GeneralTab({
   establecimiento,
   isGovernmentBuilding = false,
-  sharedPredio = [],
 }: {
   establecimiento: Establecimiento
   isGovernmentBuilding?: boolean
-  sharedPredio?: SharedPredioSibling[]
 }) {
   const router = useRouter()
   const { toast } = useToast()
@@ -176,36 +172,6 @@ export function GeneralTab({
           </div>
         )}
       </div>
-
-      {sharedPredio.length > 0 && (
-        <div className="rounded-lg border border-amber-400/50 bg-amber-50 p-4">
-          <div className="flex items-start gap-3">
-            <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
-            <div className="flex-1 space-y-2">
-              <p className="text-sm font-semibold text-amber-800">
-                Este establecimiento comparte el N° de predio ({establecimiento.predio}) con{" "}
-                {sharedPredio.length === 1 ? "otro establecimiento" : `${sharedPredio.length} establecimientos`}:
-              </p>
-              <div className="space-y-1.5">
-                {sharedPredio.map((sibling) => (
-                  <button
-                    key={sibling.id}
-                    type="button"
-                    onClick={() => router.push(`/establecimientos/${sibling.id}`)}
-                    className="group flex w-full items-center justify-between gap-2 rounded-md border border-amber-300 bg-white px-3 py-2 text-left transition-colors hover:border-amber-500 hover:bg-amber-100/60"
-                  >
-                    <span className="text-sm text-slate-800">
-                      <span className="font-medium">{sibling.nombre}</span>
-                      <span className="ml-2 text-xs text-slate-500">CUE {sibling.cue}</span>
-                    </span>
-                    <ChevronRight className="h-4 w-4 shrink-0 text-amber-600 transition-transform group-hover:translate-x-0.5" />
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       <SectionHeader title="Información General" />
 

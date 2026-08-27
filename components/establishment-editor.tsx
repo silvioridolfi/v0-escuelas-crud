@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { Card, CardContent } from "@/components/ui/card"
+import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import {
   AlertDialog,
@@ -17,16 +17,16 @@ import {
 import { ArrowLeft, FileText, Wifi, GraduationCap, Users, FileWarning, Trash2, MapPin, History } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { GeneralTab } from "@/components/tabs/general-tab"
-import { ConnectivityTab } from "@/components/tabs/connectivity-tab"
-import { AcademicTab } from "@/components/tabs/academic-tab"
+import { ConnectivitySection } from "@/components/tabs/connectivity-section"
+import { AcademicSection } from "@/components/tabs/academic-section"
 import { ObservationsTab } from "@/components/tabs/observations-tab"
-import { ContactTab } from "@/components/tabs/contact-tab"
+import { ContactSection } from "@/components/tabs/contact-section"
 import { LocationTab } from "@/components/tabs/location-tab"
 import { HistorialTab } from "@/components/tabs/historial-tab"
 import { splitEstablishmentName } from "@/lib/school-name"
 import { deleteEstablishment } from "@/app/actions/delete-establishment"
 import type { Establecimiento } from "@/lib/establecimiento"
-import { EstablishmentFicha } from "@/components/establishment-ficha"
+import { EstablishmentHero } from "@/components/establishment-hero"
 
 type Contacto = {
   id: string
@@ -57,6 +57,8 @@ export function EstablishmentEditor({
   const [isDeleting, setIsDeleting] = useState(false)
 
   const isGovernmentBuilding = establecimiento.es_establecimiento_educativo === false
+  const isClosedOrContext =
+    establecimiento.tipo_establecimiento === "Escuela cerrada" || establecimiento.tipo_establecimiento === "Contexto de encierro"
   const { primary: nombrePrimary, secondary: nombreSecondary } = splitEstablishmentName(establecimiento.nombre)
 
   const handleDelete = async () => {
@@ -72,72 +74,37 @@ export function EstablishmentEditor({
   }
 
   const allTabsConfig = [
-    {
-      value: "general",
-      label: "General",
-      icon: FileText,
-      color: "text-[#417099]",
-      bgColor: "bg-[#417099]/10",
-      borderColor: "border-[#417099]",
-      showForGovBuilding: true,
-    },
-    {
-      value: "connectivity",
-      label: "Conectividad",
-      icon: Wifi,
-      color: "text-[#00AEC3]",
-      bgColor: "bg-[#00AEC3]/10",
-      borderColor: "border-[#00AEC3]",
-      showForGovBuilding: false,
-    },
-    {
-      value: "academic",
-      label: "Académico",
-      icon: GraduationCap,
-      color: "text-[#e81f76]",
-      bgColor: "bg-[#e81f76]/10",
-      borderColor: "border-[#e81f76]",
-      showForGovBuilding: false,
-    },
-    {
-      value: "contact",
-      label: "Contacto",
-      icon: Users,
-      color: "text-[#417099]",
-      bgColor: "bg-[#417099]/10",
-      borderColor: "border-[#417099]",
-      showForGovBuilding: true,
-    },
-    {
-      value: "location",
-      label: "Ubicación",
-      icon: MapPin,
-      color: "text-emerald-600",
-      bgColor: "bg-emerald-50",
-      borderColor: "border-emerald-500",
-      showForGovBuilding: true,
-    },
-    {
-      value: "observations",
-      label: "Observaciones",
-      icon: FileWarning,
-      color: "text-amber-600",
-      bgColor: "bg-amber-50",
-      borderColor: "border-amber-500",
-      showForGovBuilding: true,
-    },
-    {
-      value: "historial",
-      label: "Historial",
-      icon: History,
-      color: "text-violet-600",
-      bgColor: "bg-violet-50",
-      borderColor: "border-violet-500",
-      showForGovBuilding: true,
-    },
+    { value: "general", label: "General", icon: FileText, color: "text-[#417099]", showForGovBuilding: true },
+    { value: "connectivity", label: "Conectividad", icon: Wifi, color: "text-[#00AEC3]", showForGovBuilding: false },
+    { value: "academic", label: "Académico", icon: GraduationCap, color: "text-[#e81f76]", showForGovBuilding: false },
+    { value: "contact", label: "Contacto", icon: Users, color: "text-[#417099]", showForGovBuilding: true },
+    { value: "location", label: "Ubicación", icon: MapPin, color: "text-emerald-600", showForGovBuilding: true },
+    { value: "observations", label: "Observaciones", icon: FileWarning, color: "text-amber-600", showForGovBuilding: true },
+    { value: "historial", label: "Historial", icon: History, color: "text-violet-600", showForGovBuilding: true },
   ]
 
   const tabsConfig = isGovernmentBuilding ? allTabsConfig.filter((tab) => tab.showForGovBuilding) : allTabsConfig
+
+  const tabNav = (
+    <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 sm:justify-start">
+      {tabsConfig.map((tab) => {
+        const Icon = tab.icon
+        const isActive = activeTab === tab.value
+        return (
+          <button
+            key={tab.value}
+            onClick={() => setActiveTab(tab.value)}
+            className={`flex items-center gap-1 whitespace-nowrap text-xs font-medium transition-colors ${
+              isActive ? tab.color : "text-slate-400 hover:text-slate-600"
+            }`}
+          >
+            <Icon className="h-3.5 w-3.5" />
+            {tab.label}
+          </button>
+        )
+      })}
+    </div>
+  )
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
@@ -179,78 +146,49 @@ export function EstablishmentEditor({
         </div>
       </header>
 
-      <div className="container mx-auto flex flex-col gap-6 px-4 py-6 sm:py-8 lg:flex-row lg:items-start lg:gap-8">
-        <EstablishmentFicha
-          establecimiento={establecimiento}
-          isGovernmentBuilding={isGovernmentBuilding}
-          contactoPrimario={contactos[0] || null}
-        />
+      <div className="container mx-auto px-4 py-6 sm:py-8">
+        <Card className={`overflow-hidden rounded-xl border bg-white shadow-sm ${isClosedOrContext ? "border-red-200" : "border-slate-200"}`}>
+          <div className={`h-1 ${isClosedOrContext ? "bg-red-500" : "bg-gradient-to-r from-[#e81f76] via-[#00AEC3] to-[#417099]"}`} />
 
-        <div className="min-w-0 flex-1">
-          <Card className="overflow-hidden rounded-xl border-slate-200 bg-white shadow-sm">
-            <CardContent className="p-4 sm:p-6">
+          <CardContent className="p-5 sm:p-6">
+            <EstablishmentHero establecimiento={establecimiento} centerSlot={tabNav} />
+
+            <div className="mt-6 border-t border-slate-200 pt-6">
               <Tabs value={activeTab} onValueChange={setActiveTab}>
-                <div className="mb-6 flex gap-5 overflow-x-auto border-b border-slate-200 sm:gap-6">
-                  {tabsConfig.map((tab) => {
-                    const Icon = tab.icon
-                    const isActive = activeTab === tab.value
-                    return (
-                      <button
-                        key={tab.value}
-                        onClick={() => setActiveTab(tab.value)}
-                        className={`flex shrink-0 items-center gap-1.5 border-b-2 pb-3 pt-1 text-sm font-medium transition-colors ${
-                          isActive
-                            ? `${tab.color} border-current`
-                            : "border-transparent text-slate-500 hover:text-slate-800"
-                        }`}
-                      >
-                        <Icon className="h-4 w-4 shrink-0" />
-                        <span className="whitespace-nowrap">{tab.label}</span>
-                      </button>
-                    )
-                  })}
-                </div>
-
-                <div className="pt-2">
-                  <TabsContent value="general" className="m-0">
-                    <GeneralTab
-                      establecimiento={establecimiento}
-                      isGovernmentBuilding={isGovernmentBuilding}
-                      sharedPredio={sharedPredio}
-                    />
-                  </TabsContent>
-                  {!isGovernmentBuilding && (
-                    <>
-                      <TabsContent value="connectivity" className="m-0">
-                        <ConnectivityTab establecimiento={establecimiento} />
-                      </TabsContent>
-                      <TabsContent value="academic" className="m-0">
-                        <AcademicTab establecimiento={establecimiento} />
-                      </TabsContent>
-                    </>
-                  )}
-                  <TabsContent value="contact" className="m-0">
-                    <ContactTab
-                      cue={establecimiento.cue}
-                      contactos={contactos}
-                      distrito={establecimiento.distrito}
-                      fedACargo={establecimiento.fed_a_cargo}
-                    />
-                  </TabsContent>
-                  <TabsContent value="location" className="m-0">
-                    <LocationTab establecimiento={establecimiento} />
-                  </TabsContent>
-                  <TabsContent value="observations" className="m-0">
-                    <ObservationsTab establecimiento={establecimiento} />
-                  </TabsContent>
-                  <TabsContent value="historial" className="m-0">
-                    <HistorialTab establecimientoId={establecimiento.id} />
-                  </TabsContent>
-                </div>
+                <TabsContent value="general" className="m-0">
+                  <GeneralTab establecimiento={establecimiento} isGovernmentBuilding={isGovernmentBuilding} />
+                </TabsContent>
+                {!isGovernmentBuilding && (
+                  <>
+                    <TabsContent value="connectivity" className="m-0">
+                      <ConnectivitySection establecimiento={establecimiento} sharedPredio={sharedPredio} />
+                    </TabsContent>
+                    <TabsContent value="academic" className="m-0">
+                      <AcademicSection establecimiento={establecimiento} />
+                    </TabsContent>
+                  </>
+                )}
+                <TabsContent value="contact" className="m-0">
+                  <ContactSection
+                    cue={establecimiento.cue}
+                    contactos={contactos}
+                    distrito={establecimiento.distrito}
+                    fedACargo={establecimiento.fed_a_cargo}
+                  />
+                </TabsContent>
+                <TabsContent value="location" className="m-0">
+                  <LocationTab establecimiento={establecimiento} />
+                </TabsContent>
+                <TabsContent value="observations" className="m-0">
+                  <ObservationsTab establecimiento={establecimiento} />
+                </TabsContent>
+                <TabsContent value="historial" className="m-0">
+                  <HistorialTab establecimientoId={establecimiento.id} />
+                </TabsContent>
               </Tabs>
-            </CardContent>
-          </Card>
-        </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Delete Confirmation Dialog */}
