@@ -353,41 +353,12 @@ const metricCards = (
         </div>
       </header>
 
-      <div className="container mx-auto flex flex-1 flex-col gap-6 px-4 py-6 sm:py-8 lg:flex-row lg:items-start lg:gap-8">
-        <aside className="lg:w-72 lg:shrink-0">
-          {/* Mobile: fila horizontal scrolleable, colapsable */}
-          <div className="lg:hidden">
-            <Accordion type="single" collapsible className="rounded-xl border border-white/10 bg-white/10 backdrop-blur-sm px-4 shadow-lg">
-              <AccordionItem value="metrics" className="border-b-0">
-                <AccordionTrigger className="hover:no-underline">
-                  <div className="text-left">
-                    <h2 className="text-lg font-semibold text-[#417099]">Ver métricas</h2>
-                    <p className="text-sm font-normal text-gray-300">Resumen estadístico del sistema</p>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="flex gap-4 overflow-x-auto pb-2">{metricCards}</div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </div>
-
-          {/* Desktop: siempre visibles, apiladas verticalmente */}
-          <div className="hidden rounded-xl border border-white/10 bg-white/10 backdrop-blur-sm p-4 shadow-lg lg:block">
-            <div className="mb-4">
-              <h2 className="text-lg font-semibold text-[#417099]">Métricas Generales</h2>
-              <p className="text-sm text-gray-300">Resumen estadístico del sistema</p>
-            </div>
-            <div className="flex flex-col gap-4">{metricCards}</div>
-          </div>
-        </aside>
-
-        <div className="flex flex-1 flex-col gap-8">
-
-        <section>
+      {/* HERO: buscador a todo el ancho, debajo del header */}
+      <div className="border-b border-white/10 bg-white/5 backdrop-blur-sm">
+        <div className="container mx-auto px-4 py-6 sm:py-8">
           <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
             <div>
-              <h2 className="text-lg font-semibold text-[#417099]">Buscador de establecimientos</h2>
+              <h2 className="text-xl font-semibold text-white sm:text-2xl">Buscador de establecimientos</h2>
               <p className="text-sm text-gray-300">Busca por CUE, PREDIO, tipo de escuela, o nombre</p>
               <p className="mt-1 text-xs text-gray-400">Datos actualizados según Mapa Escolar</p>
             </div>
@@ -462,7 +433,39 @@ const metricCards = (
               />
             </CardContent>
           </Card>
-        </section>
+        </div>
+      </div>
+
+      <div className="container mx-auto flex flex-1 flex-col gap-6 px-4 py-6 sm:py-8 lg:flex-row lg:items-start lg:gap-8">
+        <aside className="lg:w-72 lg:shrink-0">
+          {/* Mobile: fila horizontal scrolleable, colapsable */}
+          <div className="lg:hidden">
+            <Accordion type="single" collapsible className="rounded-xl border border-white/10 bg-white/10 backdrop-blur-sm px-4 shadow-lg">
+              <AccordionItem value="metrics" className="border-b-0">
+                <AccordionTrigger className="hover:no-underline">
+                  <div className="text-left">
+                    <h2 className="text-lg font-semibold text-[#417099]">Ver métricas</h2>
+                    <p className="text-sm font-normal text-gray-300">Resumen estadístico del sistema</p>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="flex gap-4 overflow-x-auto pb-2">{metricCards}</div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+
+          {/* Desktop: siempre visibles, apiladas verticalmente */}
+          <div className="hidden rounded-xl border border-white/10 bg-white/10 backdrop-blur-sm p-4 shadow-lg lg:block">
+            <div className="mb-4">
+              <h2 className="text-lg font-semibold text-[#417099]">Métricas Generales</h2>
+              <p className="text-sm text-gray-300">Resumen estadístico del sistema</p>
+            </div>
+            <div className="flex flex-col gap-4">{metricCards}</div>
+          </div>
+        </aside>
+
+        <div className="flex flex-1 flex-col gap-8">
 
         {hasSearched && (
           <section>
