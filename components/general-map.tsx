@@ -62,7 +62,7 @@ export function GeneralMap({ points }: { points: MapPoint[] }) {
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center gap-3">
         <Select value={distritoFilter} onValueChange={setDistritoFilter}>
-          <SelectTrigger className="w-[220px] bg-card">
+          <SelectTrigger className="w-[220px] bg-white">
             <SelectValue placeholder="Distrito" />
           </SelectTrigger>
           <SelectContent>
@@ -76,7 +76,7 @@ export function GeneralMap({ points }: { points: MapPoint[] }) {
         </Select>
 
         <Select value={fedFilter} onValueChange={setFedFilter}>
-          <SelectTrigger className="w-[220px] bg-card">
+          <SelectTrigger className="w-[220px] bg-white">
             <SelectValue placeholder="FED a cargo" />
           </SelectTrigger>
           <SelectContent>
@@ -89,11 +89,11 @@ export function GeneralMap({ points }: { points: MapPoint[] }) {
           </SelectContent>
         </Select>
 
-        <Badge variant="outline" className="border-slate-300 text-slate-300">
+        <Badge variant="outline" className="border-slate-300 text-slate-600">
           {filtered.length.toLocaleString("es-AR")} puntos
         </Badge>
 
-        <div className="ml-auto flex items-center gap-3 text-xs text-slate-400">
+        <div className="ml-auto flex items-center gap-3 text-xs text-slate-500">
           <span className="flex items-center gap-1.5">
             <span className="inline-block h-2.5 w-2.5 rounded-full bg-[#00AEC3]" />
             Establecimientos
@@ -105,7 +105,7 @@ export function GeneralMap({ points }: { points: MapPoint[] }) {
         </div>
       </div>
 
-      <div className="h-[70vh] w-full overflow-hidden rounded-lg border border-slate-700/50 shadow-sm">
+      <div className="h-[70vh] w-full overflow-hidden rounded-lg border border-slate-200 shadow-sm">
         <MapContainer center={DEFAULT_CENTER} zoom={11} scrollWheelZoom style={{ height: "100%", width: "100%" }} className="z-0">
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -116,9 +116,9 @@ export function GeneralMap({ points }: { points: MapPoint[] }) {
               <Popup>
                 <div className="space-y-1 text-sm">
                   <p className="font-semibold">{p.nombre}</p>
-                  {p.cue && <p className="text-xs text-slate-400">CUE: {p.cue}</p>}
-                  {p.distrito && <p className="text-xs text-slate-400">{p.distrito}</p>}
-                  {p.fed_a_cargo && <p className="text-xs text-slate-400">FED: {p.fed_a_cargo}</p>}
+                  {p.cue && <p className="text-xs text-slate-500">CUE: {p.cue}</p>}
+                  {p.distrito && <p className="text-xs text-slate-500">{p.distrito}</p>}
+                  {p.fed_a_cargo && <p className="text-xs text-slate-500">FED: {p.fed_a_cargo}</p>}
                   {p.entity_type === "establecimiento" && (
                     <Link href={`/establecimientos/${p.id}`} className="text-xs font-medium text-[#00AEC3] hover:underline">
                       Ver ficha →

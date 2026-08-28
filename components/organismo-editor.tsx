@@ -88,7 +88,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
       toast({
         title: "✓ Cambios guardados",
         description: "Los cambios se guardaron exitosamente en la base de datos",
-        className: "bg-green-500/15 border-green-200 text-green-900",
+        className: "bg-green-50 border-green-200 text-green-900",
         duration: 3000,
       })
     } else {
@@ -126,12 +126,12 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                 onClick={() => router.push("/")}
                 variant="ghost"
                 size="icon"
-                className="shrink-0 text-white hover:bg-card/20"
+                className="shrink-0 text-white hover:bg-white/20"
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
               <div className="flex items-start gap-3 sm:items-center">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-card/90 shadow-md">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/90 shadow-md">
                   <Building className="h-6 w-6 text-[#417099]" />
                 </div>
                 <div>
@@ -140,7 +140,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                   </h1>
                   <div className="flex flex-wrap items-center gap-2">
                     <p className="text-sm text-white/90">Código Provincial: {organismo.codigo}</p>
-                    <Badge variant="outline" className="border-white/50 bg-card/90 text-slate-200">
+                    <Badge variant="outline" className="border-white/50 bg-white/90 text-slate-700">
                       {organismo.tipo_organizacion}
                     </Badge>
                     {organismo.subtipo_organizacion === "Jefatura Regional" && (
@@ -159,8 +159,8 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                 variant={isEditing ? "secondary" : "outline"}
                 className={
                   isEditing
-                    ? "w-full bg-card text-[#417099] hover:bg-card/90 shadow-md sm:w-auto"
-                    : "w-full border-white/60 bg-card/10 text-white hover:bg-card/20 shadow-md sm:w-auto"
+                    ? "w-full bg-white text-[#417099] hover:bg-white/90 shadow-md sm:w-auto"
+                    : "w-full border-white/60 bg-white/10 text-white hover:bg-white/20 shadow-md sm:w-auto"
                 }
               >
                 {isEditing ? (
@@ -187,7 +187,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                 <Button
                   onClick={handleSave}
                   disabled={isSaving}
-                  className="w-full bg-card/90 text-[#417099] hover:bg-card shadow-md sm:w-auto"
+                  className="w-full bg-white/90 text-[#417099] hover:bg-white shadow-md sm:w-auto"
                 >
                   <Save className="mr-2 h-4 w-4" />
                   {isSaving ? "Guardando..." : "Guardar Cambios"}
@@ -199,7 +199,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
       </header>
 
       {isEditing && (
-        <div className="border-b border-amber-200 bg-amber-500/15 px-4 py-2 text-center text-sm font-medium text-amber-300 sm:text-left">
+        <div className="border-b border-amber-200 bg-amber-50 px-4 py-2 text-center text-sm font-medium text-amber-800 sm:text-left">
           Modo de edición activo: los campos son editables. Recordá guardar los cambios al finalizar.
         </div>
       )}
@@ -219,7 +219,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       onChange={(e) => setFormData({ ...formData, codigo: e.target.value })}
                       placeholder="Ej: jr01, jd001, jd113"
                       disabled
-                      className="bg-slate-800/40"
+                      className="bg-slate-50"
                     />
                     <p className="text-xs text-muted-foreground">
                       Código único de identificación provincial (no editable)
@@ -228,7 +228,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
 
                   <div className="space-y-2">
                     <Label htmlFor="tipo">Tipo de Organismo</Label>
-                    <Input id="tipo" value="Organismo Descentralizado" disabled className="bg-slate-800/40" />
+                    <Input id="tipo" value="Organismo Descentralizado" disabled className="bg-slate-50" />
                     <p className="text-xs text-muted-foreground">Campo fijo para este tipo de entidad</p>
                   </div>
 
@@ -383,8 +383,8 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                   formData.longitud &&
                   !isNaN(Number(formData.latitud)) &&
                   !isNaN(Number(formData.longitud)) && (
-                    <div className="mt-4 p-3 bg-blue-500/15 border border-blue-200 rounded-md">
-                      <p className="text-sm text-blue-300">
+                    <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                      <p className="text-sm text-blue-800">
                         <a
                           href={`https://www.openstreetmap.org/?mlat=${formData.latitud}&mlon=${formData.longitud}#map=17/${formData.latitud}/${formData.longitud}`}
                           target="_blank"

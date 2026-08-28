@@ -23,12 +23,12 @@ export function EstablishmentHero({
           <div className="flex flex-wrap items-center gap-x-4 gap-y-0.5">
             <div>
               <p className="text-[10px] font-medium uppercase tracking-wide text-slate-400">CUE</p>
-              <p className="text-sm font-semibold text-slate-100">{establecimiento.cue}</p>
+              <p className="text-sm font-semibold text-slate-800">{establecimiento.cue}</p>
             </div>
             <div className="h-6 w-px bg-slate-200" />
             <div>
               <p className="text-[10px] font-medium uppercase tracking-wide text-slate-400">Distrito</p>
-              <p className="text-sm font-semibold text-slate-100">{establecimiento.distrito}</p>
+              <p className="text-sm font-semibold text-slate-800">{establecimiento.distrito}</p>
             </div>
           </div>
         </div>
@@ -37,7 +37,7 @@ export function EstablishmentHero({
 
         <span
           className={`inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold sm:justify-self-end ${
-            isClosedOrContext ? "bg-red-500/15 text-red-400" : "bg-emerald-500/15 text-emerald-400"
+            isClosedOrContext ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-700"
           }`}
         >
           <span className={`h-1.5 w-1.5 rounded-full ${isClosedOrContext ? "bg-red-500" : "bg-emerald-500"}`} />
@@ -46,8 +46,8 @@ export function EstablishmentHero({
       </div>
 
       {/* Nombre + dirección */}
-      <h2 className="mt-4 text-xl font-bold leading-tight text-slate-50 sm:text-2xl">{establecimiento.nombre}</h2>
-      <p className="mt-1.5 flex items-start gap-1.5 text-sm text-slate-300">
+      <h2 className="mt-4 text-xl font-bold leading-tight text-slate-900 sm:text-2xl">{establecimiento.nombre}</h2>
+      <p className="mt-1.5 flex items-start gap-1.5 text-sm text-slate-600">
         <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#00AEC3]" />
         {[establecimiento.direccion, establecimiento.ciudad, establecimiento.distrito].filter(Boolean).join(", ")}
       </p>

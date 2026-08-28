@@ -20,12 +20,12 @@ export function StatTile({
   iconBg: string
 }) {
   return (
-    <div className="rounded-lg border border-slate-700/50 bg-slate-800/40 p-3">
+    <div className="rounded-lg border border-slate-100 bg-slate-50/60 p-3">
       <div className={`mb-2 flex h-8 w-8 items-center justify-center rounded-md ${iconBg}`}>
         <Icon className={`h-4 w-4 ${iconColor}`} />
       </div>
       <p className="text-[10px] font-medium uppercase tracking-wide text-slate-400">{label}</p>
-      <p className="mt-0.5 text-sm font-semibold leading-snug text-slate-100 break-words">{value || "—"}</p>
+      <p className="mt-0.5 text-sm font-semibold leading-snug text-slate-800 break-words">{value || "—"}</p>
     </div>
   )
 }
@@ -47,7 +47,7 @@ export function PlanRow({
       <Icon className="h-4 w-4 shrink-0" style={{ color }} />
       <div>
         <p className="text-[10px] font-medium uppercase tracking-wide text-slate-400">{label}</p>
-        <p className="text-sm font-semibold text-slate-100">{value}</p>
+        <p className="text-sm font-semibold text-slate-800">{value}</p>
       </div>
     </div>
   )
