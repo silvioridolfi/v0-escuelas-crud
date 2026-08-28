@@ -2,16 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server"
 import { attachSharedPredioInfo, type SearchResult } from "@/app/actions/search"
-
-export type QuickFilterKey = "cerradas" | "contexto" | "sin_fed" | "sin_contacto" | "nuevos"
-
-export const QUICK_FILTERS: { key: QuickFilterKey; label: string }[] = [
-  { key: "cerradas", label: "Escuelas cerradas" },
-  { key: "contexto", label: "Contexto de encierro" },
-  { key: "sin_fed", label: "Sin FED asignado" },
-  { key: "sin_contacto", label: "Sin contacto" },
-  { key: "nuevos", label: "Nuevos establecimientos" },
-]
+import type { QuickFilterKey } from "@/lib/quick-filters-config"
 
 const establishmentFields = `
   id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, secciones, turnos, predio, 

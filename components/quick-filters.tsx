@@ -3,7 +3,8 @@
 import type React from "react"
 import { useEffect, useState } from "react"
 import { AlertTriangle, ShieldAlert, UserX, MailX, Sparkles, X } from "lucide-react"
-import { getQuickFilterCount, getQuickFilterResults, type QuickFilterKey, QUICK_FILTERS } from "@/app/actions/quick-filters"
+import { getQuickFilterCount, getQuickFilterResults } from "@/app/actions/quick-filters"
+import { type QuickFilterKey, QUICK_FILTERS } from "@/lib/quick-filters-config"
 import type { SearchResult } from "@/app/actions/search"
 
 const ICONS: Record<QuickFilterKey, React.ComponentType<{ className?: string }>> = {

@@ -16,7 +16,7 @@ import { searchEstablecimientos, getAllOrganismos, type SearchResult } from "@/a
 import { SearchResults } from "@/components/search-results"
 import { SavedSearches } from "@/components/saved-searches"
 import { QuickFilters } from "@/components/quick-filters"
-import type { QuickFilterKey } from "@/app/actions/quick-filters"
+import type { QuickFilterKey } from "@/lib/quick-filters-config"
 import { useRouter } from "next/navigation"
 import { getFedBadgeColor, formatFedDisplay } from "@/lib/badge-colors"
 
