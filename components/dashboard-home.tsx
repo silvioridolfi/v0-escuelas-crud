@@ -15,6 +15,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { searchEstablecimientos, getAllOrganismos, type SearchResult } from "@/app/actions/search"
 import { SearchResults } from "@/components/search-results"
 import { SavedSearches } from "@/components/saved-searches"
+import { QuickFilters } from "@/components/quick-filters"
+import type { QuickFilterKey } from "@/lib/quick-filters-config"
 import { useRouter } from "next/navigation"
 import { getFedBadgeColor, formatFedDisplay } from "@/lib/badge-colors"
 
@@ -40,6 +42,7 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
   const [results, setResults] = useState<SearchResult[]>([])
   const [isSearching, setIsSearching] = useState(false)
   const [hasSearched, setHasSearched] = useState(false)
+  const [activeQuickFilter, setActiveQuickFilter] = useState<QuickFilterKey | null>(null)
   const router = useRouter()
   const searchInputRef = useRef<HTMLInputElement>(null)
 
@@ -129,6 +132,7 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
     const searchValue = term !== undefined ? term : searchTerm
     if (!searchValue.trim()) return
 
+    setActiveQuickFilter(null)
     setIsSearching(true)
     setHasSearched(true)
     try {
@@ -394,6 +398,24 @@ const metricCards = (
               </Button>
             </Link>
           </div>
+
+          <div className="mb-4">
+            <QuickFilters
+              activeFilter={activeQuickFilter}
+              onSelect={(filter, quickResults) => {
+                setActiveQuickFilter(filter)
+                if (filter) {
+                  setSearchTerm("")
+                  setResults(quickResults)
+                  setHasSearched(true)
+                } else {
+                  setHasSearched(false)
+                  setResults([])
+                }
+              }}
+            />
+          </div>
+
           <Card className="relative overflow-hidden rounded-xl border border-slate-200/60 shadow-sm bg-white">
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#00AEC3] to-[#e81f76]" />
             <CardContent className="pt-6 pb-6 bg-slate-50/50">

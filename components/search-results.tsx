@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Server, GraduationCap, Users, Calendar } from "lucide-react"
+import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Server, GraduationCap, Users, Calendar, Layers } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { getFedBadgeColor, formatFedDisplay, formatTurno, parsePlanTokens, getPlanTokenBadgeColor } from "@/lib/badge-colors"
 import { splitEstablishmentName } from "@/lib/school-name"
@@ -284,6 +284,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                         iconColor="text-[#e81f76]"
                         iconBg="bg-[#e81f76]/10"
                       />
+                      <StatTileCompact icon={Layers} label="Secciones" value={result.secciones} iconColor="text-violet-600" iconBg="bg-violet-50" />
                     </div>
                   )}
 

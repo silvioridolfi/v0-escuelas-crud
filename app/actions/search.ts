@@ -59,7 +59,7 @@ export type SearchResult = {
  * another establecimiento, attaches the list of sibling establishments (id, cue, nombre)
  * so the UI can surface a "shares this predio with..." indicator.
  */
-async function attachSharedPredioInfo(
+export async function attachSharedPredioInfo(
   results: SearchResult[],
   supabase: Awaited<ReturnType<typeof createClient>>,
 ): Promise<SearchResult[]> {

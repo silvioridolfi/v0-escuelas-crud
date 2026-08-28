@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Users, GraduationCap, Calendar } from "lucide-react"
+import { Users, GraduationCap, Calendar, Layers } from "lucide-react"
 import { StatTile } from "@/components/tabs/hero-widgets"
 import { EditSectionToggle } from "@/components/tabs/edit-section-toggle"
 import { AcademicTab } from "@/components/tabs/academic-tab"
@@ -25,7 +25,7 @@ export function AcademicSection({ establecimiento }: { establecimiento: Establec
       {isEditing ? (
         <AcademicTab establecimiento={establecimiento} isEditing={isEditing} onSaved={() => setIsEditing(false)} />
       ) : (
-        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-5">
           <StatTile icon={Users} label="Nivel" value={establecimiento.nivel} iconColor="text-teal-600" iconBg="bg-teal-50" />
           <StatTile
             icon={GraduationCap}
@@ -42,6 +42,7 @@ export function AcademicSection({ establecimiento }: { establecimiento: Establec
             iconColor="text-[#e81f76]"
             iconBg="bg-[#e81f76]/10"
           />
+          <StatTile icon={Layers} label="Secciones" value={establecimiento.secciones} iconColor="text-violet-600" iconBg="bg-violet-50" />
         </div>
       )}
     </div>
