@@ -96,7 +96,7 @@ export function EstablishmentEditor({
             key={tab.value}
             onClick={() => setActiveTab(tab.value)}
             className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2.5 text-xs font-medium transition-all active:scale-95 ${
-              isActive ? `${tab.color} ${tab.bgColor}` : "text-slate-400 hover:bg-slate-50 hover:text-slate-600"
+              isActive ? `${tab.color} ${tab.bgColor}` : "text-slate-400 hover:bg-slate-800/40 hover:text-slate-300"
             }`}
           >
             <Icon className="h-4 w-4 shrink-0" />
@@ -118,7 +118,7 @@ export function EstablishmentEditor({
                 onClick={() => router.push("/")}
                 variant="ghost"
                 size="icon"
-                className="shrink-0 text-white hover:bg-white/20"
+                className="shrink-0 text-white hover:bg-card/20"
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
@@ -148,13 +148,13 @@ export function EstablishmentEditor({
       </header>
 
       <div className="container mx-auto px-4 py-6 sm:py-8">
-        <Card className={`overflow-hidden rounded-xl border bg-white shadow-sm ${isClosedOrContext ? "border-red-200" : "border-slate-200"}`}>
+        <Card className={`overflow-hidden rounded-xl border bg-card shadow-sm ${isClosedOrContext ? "border-red-200" : "border-slate-700/50"}`}>
           <div className={`h-1 ${isClosedOrContext ? "bg-red-500" : "bg-gradient-to-r from-[#e81f76] via-[#00AEC3] to-[#417099]"}`} />
 
           <CardContent className="p-5 sm:p-6">
             <EstablishmentHero establecimiento={establecimiento} centerSlot={tabNav} />
 
-            <div className="mt-6 border-t border-slate-200 pt-6">
+            <div className="mt-6 border-t border-slate-700/50 pt-6">
               <Tabs value={activeTab} onValueChange={setActiveTab}>
                 <TabsContent value="general" className="m-0">
                   <GeneralTab establecimiento={establecimiento} isGovernmentBuilding={isGovernmentBuilding} />

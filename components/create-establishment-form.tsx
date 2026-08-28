@@ -137,12 +137,12 @@ export function CreateEstablishmentForm() {
               onClick={() => router.push("/")}
               variant="ghost"
               size="icon"
-              className="shrink-0 text-white hover:bg-white/20"
+              className="shrink-0 text-white hover:bg-card/20"
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div className="flex items-start gap-3 sm:items-center">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/90 shadow-md">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-card/90 shadow-md">
                 <Building2 className="h-6 w-6 text-[#417099]" />
               </div>
               <div>

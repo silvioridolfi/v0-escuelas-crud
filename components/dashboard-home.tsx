@@ -15,6 +15,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { searchEstablecimientos, getAllOrganismos, type SearchResult } from "@/app/actions/search"
 import { SearchResults } from "@/components/search-results"
 import { SavedSearches } from "@/components/saved-searches"
+import { QuickFilters } from "@/components/quick-filters"
+import type { QuickFilterKey } from "@/app/actions/quick-filters"
 import { useRouter } from "next/navigation"
 import { getFedBadgeColor, formatFedDisplay } from "@/lib/badge-colors"
 
@@ -40,6 +42,7 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
   const [results, setResults] = useState<SearchResult[]>([])
   const [isSearching, setIsSearching] = useState(false)
   const [hasSearched, setHasSearched] = useState(false)
+  const [activeQuickFilter, setActiveQuickFilter] = useState<QuickFilterKey | null>(null)
   const router = useRouter()
   const searchInputRef = useRef<HTMLInputElement>(null)
 
@@ -129,6 +132,7 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
     const searchValue = term !== undefined ? term : searchTerm
     if (!searchValue.trim()) return
 
+    setActiveQuickFilter(null)
     setIsSearching(true)
     setHasSearched(true)
     try {
@@ -196,11 +200,11 @@ const metricCards = (
       setOpenDialog("fed")
     }
   }}
-  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEC3] lg:min-w-0 lg:shrink"
+  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-700/50/60 bg-card shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEC3] lg:min-w-0 lg:shrink"
 >
   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#00AEC3] to-[#417099]" />
   <CardHeader className="pb-3">
-    <CardTitle className="flex items-center justify-between gap-2 text-sm font-medium text-slate-600">
+    <CardTitle className="flex items-center justify-between gap-2 text-sm font-medium text-slate-300">
       <span className="flex items-center gap-2">
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#00AEC3]/10">
           <Building2 className="h-4 w-4 text-[#00AEC3]" />
@@ -228,11 +232,11 @@ const metricCards = (
       handleOpenOrganismos()
     }
   }}
-  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6366f1] lg:min-w-0 lg:shrink"
+  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-700/50/60 bg-card shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6366f1] lg:min-w-0 lg:shrink"
 >
   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#6366f1] to-[#8b5cf6]" />
   <CardHeader className="pb-3">
-    <CardTitle className="flex items-center justify-between gap-2 text-sm font-medium text-slate-600">
+    <CardTitle className="flex items-center justify-between gap-2 text-sm font-medium text-slate-300">
       <span className="flex items-center gap-2">
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#6366f1]/10">
           <Building2 className="h-4 w-4 text-[#6366f1]" />
@@ -258,11 +262,11 @@ const metricCards = (
       setOpenDialog("distritos")
     }
   }}
-  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#417099] lg:min-w-0 lg:shrink"
+  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-700/50/60 bg-card shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#417099] lg:min-w-0 lg:shrink"
 >
   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#417099] to-[#00AEC3]" />
   <CardHeader className="pb-3">
-    <CardTitle className="flex items-center justify-between gap-2 text-sm font-medium text-slate-600">
+    <CardTitle className="flex items-center justify-between gap-2 text-sm font-medium text-slate-300">
       <span className="flex items-center gap-2">
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#417099]/10">
           <MapPin className="h-4 w-4 text-[#417099]" />
@@ -288,11 +292,11 @@ const metricCards = (
       setOpenDialog("matricula")
     }
   }}
-  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e81f76] lg:min-w-0 lg:shrink"
+  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-700/50/60 bg-card shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e81f76] lg:min-w-0 lg:shrink"
 >
   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#e81f76] to-[#417099]" />
   <CardHeader className="pb-3">
-    <CardTitle className="flex items-center justify-between gap-2 text-sm font-medium text-slate-600">
+    <CardTitle className="flex items-center justify-between gap-2 text-sm font-medium text-slate-300">
       <span className="flex items-center gap-2">
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#e81f76]/10">
           <Users className="h-4 w-4 text-[#e81f76]" />
@@ -353,12 +357,12 @@ const metricCards = (
         <aside className="lg:w-72 lg:shrink-0">
           {/* Mobile: fila horizontal scrolleable, colapsable */}
           <div className="lg:hidden">
-            <Accordion type="single" collapsible className="rounded-xl border border-slate-200/60 bg-white px-4 shadow-sm">
+            <Accordion type="single" collapsible className="rounded-xl border border-slate-700/50/60 bg-card px-4 shadow-sm">
               <AccordionItem value="metrics" className="border-b-0">
                 <AccordionTrigger className="hover:no-underline">
                   <div className="text-left">
                     <h2 className="text-lg font-semibold text-[#417099]">Ver métricas</h2>
-                    <p className="text-sm font-normal text-slate-600">Resumen estadístico del sistema</p>
+                    <p className="text-sm font-normal text-slate-300">Resumen estadístico del sistema</p>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
@@ -369,10 +373,10 @@ const metricCards = (
           </div>
 
           {/* Desktop: siempre visibles, apiladas verticalmente */}
-          <div className="hidden rounded-xl border border-slate-200/60 bg-white p-4 shadow-sm lg:block">
+          <div className="hidden rounded-xl border border-slate-700/50/60 bg-card p-4 shadow-sm lg:block">
             <div className="mb-4">
               <h2 className="text-lg font-semibold text-[#417099]">Métricas Generales</h2>
-              <p className="text-sm text-slate-600">Resumen estadístico del sistema</p>
+              <p className="text-sm text-slate-300">Resumen estadístico del sistema</p>
             </div>
             <div className="flex flex-col gap-4">{metricCards}</div>
           </div>
@@ -384,19 +388,37 @@ const metricCards = (
           <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
             <div>
               <h2 className="text-lg font-semibold text-[#417099]">Buscador de establecimientos</h2>
-              <p className="text-sm text-slate-600">Busca por CUE, PREDIO, tipo de escuela, o nombre</p>
+              <p className="text-sm text-slate-300">Busca por CUE, PREDIO, tipo de escuela, o nombre</p>
               <p className="mt-1 text-xs text-slate-400">Datos actualizados según Mapa Escolar</p>
             </div>
             <Link href="/mapa">
-              <Button variant="outline" size="sm" className="gap-1.5 border-slate-300 text-slate-600 hover:border-[#00AEC3]/50 hover:text-[#00AEC3]">
+              <Button variant="outline" size="sm" className="gap-1.5 border-slate-300 text-slate-300 hover:border-[#00AEC3]/50 hover:text-[#00AEC3]">
                 <Map className="h-4 w-4" />
                 Ver mapa general
               </Button>
             </Link>
           </div>
-          <Card className="relative overflow-hidden rounded-xl border border-slate-200/60 shadow-sm bg-white">
+
+          <div className="mb-4">
+            <QuickFilters
+              activeFilter={activeQuickFilter}
+              onSelect={(filter, quickResults) => {
+                setActiveQuickFilter(filter)
+                if (filter) {
+                  setSearchTerm("")
+                  setResults(quickResults)
+                  setHasSearched(true)
+                } else {
+                  setHasSearched(false)
+                  setResults([])
+                }
+              }}
+            />
+          </div>
+
+          <Card className="relative overflow-hidden rounded-xl border border-slate-700/50/60 shadow-sm bg-card">
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#00AEC3] to-[#e81f76]" />
-            <CardContent className="pt-6 pb-6 bg-slate-50/50">
+            <CardContent className="pt-6 pb-6 bg-slate-800/30">
               <div className="flex flex-col gap-2 sm:flex-row">
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
@@ -408,7 +430,7 @@ const metricCards = (
                     value={searchTerm}
                     onChange={handleInputChange}
                     onKeyPress={handleKeyPress}
-                    className="pl-10 text-base border-slate-300 bg-white shadow-sm"
+                    className="pl-10 text-base border-slate-300 bg-card shadow-sm"
                     disabled={isSearching}
                   />
                 </div>
@@ -424,7 +446,7 @@ const metricCards = (
                     <Button
                       onClick={handleClearSearch}
                       variant="outline"
-                      className="flex-1 border-slate-300 hover:bg-slate-100 shadow-sm bg-transparent sm:flex-none"
+                      className="flex-1 border-slate-300 hover:bg-slate-800/60 shadow-sm bg-transparent sm:flex-none"
                     >
                       Limpiar
                     </Button>
@@ -446,7 +468,7 @@ const metricCards = (
           <section>
             <div className="mb-4">
               <h2 className="text-lg font-semibold text-[#417099]">Resultados</h2>
-              <p className="text-sm text-slate-600">Establecimientos encontrados</p>
+              <p className="text-sm text-slate-300">Establecimientos encontrados</p>
             </div>
             <SearchResults results={results} isSearching={isSearching} />
           </section>
@@ -454,14 +476,14 @@ const metricCards = (
 
         {!hasSearched && (
           <section>
-            <Card className="relative overflow-hidden border-2 border-dashed border-slate-300/60 shadow-sm bg-slate-50/30">
+            <Card className="relative overflow-hidden border-2 border-dashed border-slate-300/60 shadow-sm bg-slate-800/40/30">
               <CardContent className="flex min-h-[300px] items-center justify-center">
                 <div className="text-center">
-                  <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-slate-100/50 border border-slate-200">
+                  <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-slate-800/60/50 border border-slate-700/50">
                     <Search className="h-10 w-10 text-slate-300" />
                   </div>
-                  <p className="text-lg font-medium text-slate-700">Buscar establecimientos</p>
-                  <p className="mt-2 text-sm text-slate-500">
+                  <p className="text-lg font-medium text-slate-200">Buscar establecimientos</p>
+                  <p className="mt-2 text-sm text-slate-400">
                     Ingresa un término de búsqueda para encontrar establecimientos
                   </p>
                 </div>
@@ -486,7 +508,7 @@ const metricCards = (
                   <Badge className={`${getFedBadgeColor(item.fed)} min-w-0 justify-self-start border text-left text-xs whitespace-normal`}>
                     {formatFedDisplay(item.fed)}
                   </Badge>
-                  <span className="whitespace-nowrap text-right text-sm font-semibold text-slate-700">
+                  <span className="whitespace-nowrap text-right text-sm font-semibold text-slate-200">
                     {item.count.toLocaleString("es-AR")} {item.count === 1 ? "escuela" : "escuelas"}
                   </span>
                 </>
@@ -495,7 +517,7 @@ const metricCards = (
                 return (
                   <div
                     key={item.fed}
-                    className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-md border border-slate-200 bg-slate-50/50 px-3 py-2.5"
+                    className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-md border border-slate-700/50 bg-slate-800/30 px-3 py-2.5"
                   >
                     {rowContent}
                   </div>
@@ -510,7 +532,7 @@ const metricCards = (
                     setSearchTerm(item.fed)
                     handleSearch(item.fed)
                   }}
-                  className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-md border border-slate-200 bg-slate-50/50 px-3 py-2.5 text-left transition-colors hover:border-[#417099]/40 hover:bg-slate-100"
+                  className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-md border border-slate-700/50 bg-slate-800/30 px-3 py-2.5 text-left transition-colors hover:border-[#417099]/40 hover:bg-slate-800/60"
                 >
                   {rowContent}
                 </button>
@@ -528,7 +550,7 @@ const metricCards = (
           </DialogHeader>
           <div className="max-h-[70vh] overflow-y-auto pr-1">
             {isLoadingOrganismos ? (
-              <div className="flex min-h-[200px] items-center justify-center text-sm text-slate-500">
+              <div className="flex min-h-[200px] items-center justify-center text-sm text-slate-400">
                 Cargando organismos…
               </div>
             ) : (
@@ -554,9 +576,9 @@ const metricCards = (
                   setSearchTerm(item.distrito)
                   handleSearch(item.distrito)
                 }}
-                className="flex w-full items-center justify-between gap-3 rounded-md border border-slate-200 bg-slate-50/50 px-3 py-2 text-left transition-colors hover:border-[#00AEC3]/40 hover:bg-slate-100"
+                className="flex w-full items-center justify-between gap-3 rounded-md border border-slate-700/50 bg-slate-800/30 px-3 py-2 text-left transition-colors hover:border-[#00AEC3]/40 hover:bg-slate-800/60"
               >
-                <span className="text-sm font-medium text-slate-700">{item.distrito}</span>
+                <span className="text-sm font-medium text-slate-200">{item.distrito}</span>
                 <span className="text-sm font-semibold text-[#417099]">
                   {item.count.toLocaleString("es-AR")} {item.count === 1 ? "establecimiento" : "establecimientos"}
                 </span>
@@ -573,9 +595,9 @@ const metricCards = (
             <DialogDescription>Distribución de la matrícula total por género</DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
-            <div className="rounded-md border border-slate-200 bg-slate-50/50 px-4 py-3">
+            <div className="rounded-md border border-slate-700/50 bg-slate-800/30 px-4 py-3">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-slate-700">Varones</span>
+                <span className="text-sm font-medium text-slate-200">Varones</span>
                 <span className="text-lg font-bold text-[#417099]">
                   {metrics.matriculaByGender.varones.toLocaleString("es-AR")}
                 </span>
@@ -585,9 +607,9 @@ const metricCards = (
               </div>
               <p className="mt-1 text-xs text-slate-400">{varonesPct.toFixed(1)}% del total</p>
             </div>
-            <div className="rounded-md border border-slate-200 bg-slate-50/50 px-4 py-3">
+            <div className="rounded-md border border-slate-700/50 bg-slate-800/30 px-4 py-3">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-slate-700">Mujeres</span>
+                <span className="text-sm font-medium text-slate-200">Mujeres</span>
                 <span className="text-lg font-bold text-[#e81f76]">
                   {metrics.matriculaByGender.mujeres.toLocaleString("es-AR")}
                 </span>
@@ -597,9 +619,9 @@ const metricCards = (
               </div>
               <p className="mt-1 text-xs text-slate-400">{mujeresPct.toFixed(1)}% del total</p>
             </div>
-            <div className="flex items-center justify-between border-t border-slate-200 pt-3">
-              <span className="text-sm font-semibold text-slate-600">Total</span>
-              <span className="text-sm font-bold text-slate-800">
+            <div className="flex items-center justify-between border-t border-slate-700/50 pt-3">
+              <span className="text-sm font-semibold text-slate-300">Total</span>
+              <span className="text-sm font-bold text-slate-100">
                 {matriculaGenderTotal.toLocaleString("es-AR")}
               </span>
             </div>

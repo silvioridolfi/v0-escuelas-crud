@@ -20,7 +20,7 @@ export function EditSectionToggle({
         className={
           isEditing
             ? "bg-[#417099] text-white hover:bg-[#375d80]"
-            : "border-slate-300 text-slate-700 hover:bg-slate-50"
+            : "border-slate-300 text-slate-200 hover:bg-slate-800/40"
         }
       >
         {isEditing ? (

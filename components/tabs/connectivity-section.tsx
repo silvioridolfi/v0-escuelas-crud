@@ -85,8 +85,8 @@ export function ConnectivitySection({
           {hasSharedPredio && (
             <div className={!hasPlanes ? "sm:col-span-2" : ""}>
               <div className="mb-1.5 flex items-center gap-1.5">
-                <AlertTriangle className="h-3.5 w-3.5 text-amber-600" />
-                <p className="text-[10px] font-medium uppercase tracking-wide text-amber-700">
+                <AlertTriangle className="h-3.5 w-3.5 text-amber-400" />
+                <p className="text-[10px] font-medium uppercase tracking-wide text-amber-400">
                   Comparte predio ({establecimiento.predio})
                 </p>
               </div>
@@ -96,13 +96,13 @@ export function ConnectivitySection({
                     key={sibling.id}
                     type="button"
                     onClick={() => router.push(`/establecimientos/${sibling.id}`)}
-                    className="group flex w-full items-center justify-between gap-2 rounded-md border border-amber-200 bg-amber-50/50 px-2.5 py-1.5 text-left transition-colors hover:border-amber-400 hover:bg-amber-100/60"
+                    className="group flex w-full items-center justify-between gap-2 rounded-md border border-amber-500/30 bg-amber-500/15/50 px-2.5 py-1.5 text-left transition-colors hover:border-amber-500/60 hover:bg-amber-500/25/60"
                   >
-                    <span className="min-w-0 text-xs text-slate-800">
+                    <span className="min-w-0 text-xs text-slate-100">
                       <span className="font-medium">{sibling.nombre}</span>
-                      <span className="ml-1.5 text-slate-500">CUE {sibling.cue}</span>
+                      <span className="ml-1.5 text-slate-400">CUE {sibling.cue}</span>
                     </span>
-                    <ChevronRight className="h-3.5 w-3.5 shrink-0 text-amber-600 transition-transform group-hover:translate-x-0.5" />
+                    <ChevronRight className="h-3.5 w-3.5 shrink-0 text-amber-400 transition-transform group-hover:translate-x-0.5" />
                   </button>
                 ))}
               </div>

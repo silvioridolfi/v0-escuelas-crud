@@ -9,7 +9,7 @@ import type { MapPoint } from "@/app/actions/get-map-points"
 const GeneralMap = dynamic(() => import("@/components/general-map").then((mod) => mod.GeneralMap), {
   ssr: false,
   loading: () => (
-    <div className="flex h-[70vh] items-center justify-center rounded-lg border border-slate-200 bg-slate-100 text-sm text-muted-foreground">
+    <div className="flex h-[70vh] items-center justify-center rounded-lg border border-slate-700/50 bg-slate-800/60 text-sm text-muted-foreground">
       Cargando mapa…
     </div>
   ),
@@ -21,7 +21,7 @@ export function MapaPageClient({ points }: { points: MapPoint[] }) {
       <header className="border-b border-blue-200 bg-gradient-to-r from-[#417099] to-[#00AEC3] shadow-lg">
         <div className="container mx-auto flex items-center gap-4 px-4 py-4 sm:py-6">
           <Link href="/">
-            <Button variant="ghost" size="icon" className="shrink-0 text-white hover:bg-white/20">
+            <Button variant="ghost" size="icon" className="shrink-0 text-white hover:bg-card/20">
               <ArrowLeft className="h-5 w-5" />
             </Button>
           </Link>
