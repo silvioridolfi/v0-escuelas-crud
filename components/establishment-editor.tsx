@@ -36,6 +36,7 @@ type Contacto = {
   cargo: string | null
   telefono: string | null
   correo: string | null
+  correo_laboral: string | null
   distrito: string | null
   fed_a_cargo: string | null
   es_principal?: boolean

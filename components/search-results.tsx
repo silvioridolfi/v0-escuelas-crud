@@ -28,15 +28,17 @@ function StatTileCompact({
   value,
   iconColor,
   iconBg,
+  className = "",
 }: {
   icon: React.ComponentType<{ className?: string }>
   label: string
   value: string | number | null | undefined
   iconColor: string
   iconBg: string
+  className?: string
 }) {
   return (
-    <div className="flex items-center gap-2 rounded-lg border border-slate-100 bg-slate-50/60 p-2">
+    <div className={`flex items-center gap-2 rounded-lg border border-slate-100 bg-slate-50/60 p-2 ${className}`}>
       <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md ${iconBg}`}>
         <Icon className={`h-3.5 w-3.5 ${iconColor}`} />
       </div>
@@ -276,7 +278,6 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                         iconColor="text-indigo-600"
                         iconBg="bg-indigo-50"
                       />
-                      <StatTileCompact icon={Calendar} label="Turno" value={formatTurno(result.turnos)} iconColor="text-[#417099]" iconBg="bg-[#417099]/10" />
                       <StatTileCompact
                         icon={User}
                         label="Matrícula"
@@ -285,6 +286,14 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                         iconBg="bg-[#e81f76]/10"
                       />
                       <StatTileCompact icon={Layers} label="Secciones" value={result.secciones} iconColor="text-violet-600" iconBg="bg-violet-50" />
+                      <StatTileCompact
+                        icon={Calendar}
+                        label="Turno"
+                        value={formatTurno(result.turnos)}
+                        iconColor="text-[#417099]"
+                        iconBg="bg-[#417099]/10"
+                        className="col-span-2"
+                      />
                     </div>
                   )}
 
@@ -321,7 +330,8 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                     </div>
                   ) : (
                     <>
-                      {primaryContact && (primaryContact.nombre || primaryContact.telefono || primaryContact.correo) && (
+                      {primaryContact &&
+                        (primaryContact.nombre || primaryContact.telefono || primaryContact.correo || primaryContact.correo_laboral) && (
                         <div className="border-t border-slate-100 pt-2.5">
                           <p className="mb-1.5 text-[9px] font-medium uppercase tracking-wide text-slate-400">
                             Contacto
@@ -349,6 +359,12 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                                 <p className="flex items-center gap-1 text-xs text-slate-600">
                                   <Mail className="h-3 w-3 shrink-0" />
                                   <span className="truncate">{primaryContact.correo}</span>
+                                </p>
+                              )}
+                              {primaryContact.correo_laboral && (
+                                <p className="flex items-center gap-1 text-xs text-slate-600" title="Correo laboral personal">
+                                  <Mail className="h-3 w-3 shrink-0 text-[#00AEC3]" />
+                                  <span className="truncate">{primaryContact.correo_laboral}</span>
                                 </p>
                               )}
                             </div>

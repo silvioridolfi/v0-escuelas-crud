@@ -25,7 +25,7 @@ export function AcademicSection({ establecimiento }: { establecimiento: Establec
       {isEditing ? (
         <AcademicTab establecimiento={establecimiento} isEditing={isEditing} onSaved={() => setIsEditing(false)} />
       ) : (
-        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-5">
+        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
           <StatTile icon={Users} label="Nivel" value={establecimiento.nivel} iconColor="text-teal-600" iconBg="bg-teal-50" />
           <StatTile
             icon={GraduationCap}
@@ -34,7 +34,6 @@ export function AcademicSection({ establecimiento }: { establecimiento: Establec
             iconColor="text-indigo-600"
             iconBg="bg-indigo-50"
           />
-          <StatTile icon={Calendar} label="Turno" value={formatTurno(establecimiento.turnos)} iconColor="text-[#417099]" iconBg="bg-[#417099]/10" />
           <StatTile
             icon={Users}
             label="Matrícula"
@@ -43,6 +42,14 @@ export function AcademicSection({ establecimiento }: { establecimiento: Establec
             iconBg="bg-[#e81f76]/10"
           />
           <StatTile icon={Layers} label="Secciones" value={establecimiento.secciones} iconColor="text-violet-600" iconBg="bg-violet-50" />
+          <StatTile
+            icon={Calendar}
+            label="Turno"
+            value={formatTurno(establecimiento.turnos)}
+            iconColor="text-[#417099]"
+            iconBg="bg-[#417099]/10"
+            className="col-span-2 sm:col-span-4"
+          />
         </div>
       )}
     </div>
