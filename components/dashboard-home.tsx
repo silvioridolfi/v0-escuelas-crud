@@ -5,7 +5,7 @@ import type React from "react"
 import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Search, Building2, MapPin, Users, Plus, ChevronRight, Map } from "lucide-react"
+import { Search, Building2, MapPin, Users, Plus, ChevronRight, Map, SlidersHorizontal, ChevronDown } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -44,6 +44,7 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
   const [isSearching, setIsSearching] = useState(false)
   const [hasSearched, setHasSearched] = useState(false)
   const [activeQuickFilter, setActiveQuickFilter] = useState<QuickFilterKey | null>(null)
+  const [quickFiltersOpen, setQuickFiltersOpen] = useState(false)
   const router = useRouter()
   const searchInputRef = useRef<HTMLInputElement>(null)
 
@@ -380,21 +381,37 @@ const metricCards = (
             </Link>
           </div>
 
-          <div className={`transition-all duration-500 ease-in-out overflow-hidden ${hasSearched ? "mb-0 max-h-0 opacity-0" : "mb-4 max-h-40 opacity-100"}`}>
-            <QuickFilters
-              activeFilter={activeQuickFilter}
-              onSelect={(filter, quickResults) => {
-                setActiveQuickFilter(filter)
-                if (filter) {
-                  setSearchTerm("")
-                  setResults(quickResults)
-                  setHasSearched(true)
-                } else {
-                  setHasSearched(false)
-                  setResults([])
-                }
-              }}
-            />
+          <div className={`transition-all duration-500 ease-in-out overflow-hidden ${hasSearched ? "mb-0 max-h-0 opacity-0" : "mb-4 max-h-none opacity-100"}`}>
+            {/* Mobile: botón que colapsa/expande los accesos rápidos, para no empujar el buscador hacia abajo */}
+            <button
+              type="button"
+              onClick={() => setQuickFiltersOpen((v) => !v)}
+              className="mb-2 flex w-full items-center justify-between rounded-lg border border-slate-300 dark:border-white/20 bg-white dark:bg-white/10 px-3 py-2 text-sm font-medium text-slate-700 dark:text-gray-100 sm:hidden"
+            >
+              <span className="flex items-center gap-2">
+                <SlidersHorizontal className="h-4 w-4 text-[#00AEC3]" />
+                Accesos rápidos
+                {activeQuickFilter && <span className="h-1.5 w-1.5 rounded-full bg-[#e81f76]" />}
+              </span>
+              <ChevronDown className={`h-4 w-4 transition-transform ${quickFiltersOpen ? "rotate-180" : ""}`} />
+            </button>
+
+            <div className={`${quickFiltersOpen ? "block" : "hidden"} sm:block`}>
+              <QuickFilters
+                activeFilter={activeQuickFilter}
+                onSelect={(filter, quickResults) => {
+                  setActiveQuickFilter(filter)
+                  if (filter) {
+                    setSearchTerm("")
+                    setResults(quickResults)
+                    setHasSearched(true)
+                  } else {
+                    setHasSearched(false)
+                    setResults([])
+                  }
+                }}
+              />
+            </div>
           </div>
 
           <Card className="relative overflow-hidden rounded-xl border border-slate-200/60 shadow-sm bg-white dark:border-white/10 dark:shadow-lg dark:bg-white/10 dark:backdrop-blur-sm">
