@@ -98,7 +98,7 @@ export function getPlanTokenBadgeColor(token: string): string {
     return "bg-[#00AEC3]/10 text-[#00AEC3] border-[#00AEC3]/30"
   }
   if (normalized === "SIN ENLACE") {
-    return "bg-slate-200 text-slate-600 dark:text-slate-300 border-slate-300"
+    return "bg-slate-500/10 border-slate-500/20 text-slate-600 dark:text-slate-300"
   }
   return "bg-gray-500/10 text-gray-700 dark:text-gray-400 border-gray-500/20"
 }

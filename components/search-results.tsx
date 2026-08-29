@@ -131,14 +131,18 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                 <div className="mb-2 flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <div
-                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
-                        isOrganismo ? "bg-indigo-50 dark:bg-indigo-500/15" : isGovernmentBuilding ? "bg-amber-50 dark:bg-amber-500/15" : "bg-teal-50 dark:bg-teal-500/15"
+                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${
+                        isOrganismo
+                          ? "bg-indigo-500/10 border-indigo-500/20"
+                          : isGovernmentBuilding
+                            ? "bg-amber-500/10 border-amber-500/20"
+                            : "bg-teal-500/10 border-teal-500/20"
                       }`}
                     >
                       {isOrganismo ? (
-                        <Building className="h-4 w-4 text-indigo-600" />
+                        <Building className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                       ) : (
-                        <Building2 className={`h-4 w-4 ${isGovernmentBuilding ? "text-amber-600" : "text-teal-600"}`} />
+                        <Building2 className={`h-4 w-4 ${isGovernmentBuilding ? "text-amber-600 dark:text-amber-400" : "text-teal-600 dark:text-teal-400"}`} />
                       )}
                     </div>
                     <div className="min-w-0">
@@ -151,8 +155,10 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                     </div>
                   </div>
                   <span
-                    className={`inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide ${
-                      isClosedOrContext ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-700"
+                    className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide ${
+                      isClosedOrContext
+                        ? "bg-red-500/10 border-red-500/20 text-red-700 dark:text-red-400"
+                        : "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-400"
                     }`}
                   >
                     <span className={`h-1 w-1 rounded-full ${isClosedOrContext ? "bg-red-500" : "bg-emerald-500"}`} />
@@ -270,28 +276,28 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
 
                   {!isOrganismo && !isGovernmentBuilding && (
                     <div className="grid grid-cols-2 gap-2 border-t border-slate-100 dark:border-white/10 pt-2.5">
-                      <StatTileCompact icon={Users} label="Nivel" value={result.nivel} iconColor="text-teal-600 dark:text-teal-400" iconBg="bg-teal-50 dark:bg-teal-500/15" />
+                      <StatTileCompact icon={Users} label="Nivel" value={result.nivel} iconColor="text-teal-600 dark:text-teal-400" iconBg="bg-teal-500/10 border border-teal-500/20" />
                       <StatTileCompact
                         icon={GraduationCap}
                         label="Modalidad"
                         value={result.modalidad}
                         iconColor="text-indigo-600 dark:text-indigo-400"
-                        iconBg="bg-indigo-50 dark:bg-indigo-500/15"
+                        iconBg="bg-indigo-500/10 border border-indigo-500/20"
                       />
                       <StatTileCompact
                         icon={User}
                         label="Matrícula"
                         value={result.matricula ? result.matricula.toLocaleString("es-AR") : null}
                         iconColor="text-[#e81f76]"
-                        iconBg="bg-[#e81f76]/10"
+                        iconBg="bg-[#e81f76]/10 border border-[#e81f76]/25"
                       />
-                      <StatTileCompact icon={Layers} label="Secciones" value={result.secciones} iconColor="text-violet-600 dark:text-violet-400" iconBg="bg-violet-50 dark:bg-violet-500/15" />
+                      <StatTileCompact icon={Layers} label="Secciones" value={result.secciones} iconColor="text-violet-600 dark:text-violet-400" iconBg="bg-violet-500/10 border border-violet-500/20" />
                       <StatTileCompact
                         icon={Calendar}
                         label="Turno"
                         value={formatTurno(result.turnos)}
                         iconColor="text-[#417099]"
-                        iconBg="bg-[#417099]/10"
+                        iconBg="bg-[#417099]/10 border border-[#417099]/25"
                         className="col-span-2"
                       />
                     </div>

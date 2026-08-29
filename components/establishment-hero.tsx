@@ -36,8 +36,10 @@ export function EstablishmentHero({
         {centerSlot && <div className="flex justify-center">{centerSlot}</div>}
 
         <span
-          className={`inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold sm:justify-self-end ${
-            isClosedOrContext ? "bg-red-50 dark:bg-red-500/15 text-red-700 dark:text-red-400" : "bg-emerald-50 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-400"
+          className={`inline-flex w-fit items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold sm:justify-self-end ${
+            isClosedOrContext
+              ? "bg-red-500/10 border-red-500/20 text-red-700 dark:text-red-400"
+              : "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-400"
           }`}
         >
           <span className={`h-1.5 w-1.5 rounded-full ${isClosedOrContext ? "bg-red-500" : "bg-emerald-500"}`} />
