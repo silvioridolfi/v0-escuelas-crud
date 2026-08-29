@@ -202,6 +202,7 @@ export function ContactTab({
                           className="h-8 w-8 text-amber-500 hover:text-amber-600"
                           disabled={isSaving}
                           title="Marcar como contacto principal"
+                          aria-label="Marcar como contacto principal"
                         >
                           <Star className="h-4 w-4" />
                         </Button>
@@ -211,6 +212,7 @@ export function ContactTab({
                         size="icon"
                         variant="ghost"
                         className="h-8 w-8 text-[#417099]"
+                        aria-label={`Editar contacto ${contacto.nombre || ""}`}
                       >
                         <Pencil className="h-4 w-4" />
                       </Button>
@@ -220,6 +222,7 @@ export function ContactTab({
                         variant="ghost"
                         className="h-8 w-8 text-red-600"
                         disabled={isSaving}
+                        aria-label={`Eliminar contacto ${contacto.nombre || ""}`}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -270,7 +273,7 @@ export function ContactTab({
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle>Nuevo Contacto</CardTitle>
-              <Button onClick={handleCancelEdit} size="icon" variant="ghost" className="h-8 w-8">
+              <Button onClick={handleCancelEdit} size="icon" variant="ghost" className="h-8 w-8" aria-label="Cancelar">
                 <X className="h-4 w-4" />
               </Button>
             </div>

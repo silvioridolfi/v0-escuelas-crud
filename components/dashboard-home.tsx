@@ -39,6 +39,7 @@ type MetricDialog = "fed" | "organismos" | "distritos" | "matricula" | null
 
 export function DashboardHome({ metrics }: { metrics: Metrics }) {
   const [mounted, setMounted] = useState(false)
+  const [isMac, setIsMac] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [results, setResults] = useState<SearchResult[]>([])
   const [isSearching, setIsSearching] = useState(false)
@@ -99,6 +100,28 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
     // usuario pueda escribir de inmediato sin hacer clic.
     searchInputRef.current?.focus()
   }, [])
+
+  useEffect(() => {
+    setIsMac(/Mac|iPhone|iPod|iPad/.test(navigator.platform || navigator.userAgent))
+  }, [])
+
+  useEffect(() => {
+    // Atajos de teclado: Cmd/Ctrl+K enfoca el buscador desde cualquier lado
+    // de la página (aunque el foco esté en otro campo); Escape limpia la
+    // búsqueda si el foco está dentro del buscador.
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault()
+        searchInputRef.current?.focus()
+        searchInputRef.current?.select()
+      }
+      if (e.key === "Escape" && document.activeElement === searchInputRef.current && (searchTerm || activeQuickFilter)) {
+        handleClearSearch()
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [searchTerm, activeQuickFilter])
 
   useEffect(() => {
     if (!mounted) return
@@ -386,6 +409,8 @@ const metricCards = (
             <button
               type="button"
               onClick={() => setQuickFiltersOpen((v) => !v)}
+              aria-expanded={quickFiltersOpen}
+              aria-controls="quick-filters-panel"
               className="mb-2 flex w-full items-center justify-between rounded-lg border border-slate-300 dark:border-white/20 bg-white dark:bg-white/10 px-3 py-2 text-sm font-medium text-slate-700 dark:text-gray-100 sm:hidden"
             >
               <span className="flex items-center gap-2">
@@ -396,7 +421,7 @@ const metricCards = (
               <ChevronDown className={`h-4 w-4 transition-transform ${quickFiltersOpen ? "rotate-180" : ""}`} />
             </button>
 
-            <div className={`${quickFiltersOpen ? "block" : "hidden"} sm:block`}>
+            <div id="quick-filters-panel" className={`${quickFiltersOpen ? "block" : "hidden"} sm:block`}>
               <QuickFilters
                 activeFilter={activeQuickFilter}
                 onSelect={(filter, quickResults) => {
@@ -428,9 +453,14 @@ const metricCards = (
                     value={searchTerm}
                     onChange={handleInputChange}
                     onKeyPress={handleKeyPress}
-                    className="pl-10 text-base border-slate-300 bg-white shadow-sm dark:border-white/20 dark:bg-white/10"
+                    className="pl-10 pr-14 text-base border-slate-300 bg-white shadow-sm dark:border-white/20 dark:bg-white/10"
                     disabled={isSearching}
                   />
+                  {mounted && !searchTerm && (
+                    <kbd className="pointer-events-none absolute right-3 top-1/2 hidden -translate-y-1/2 rounded border border-slate-300 dark:border-white/20 bg-slate-50 dark:bg-white/10 px-1.5 py-0.5 text-[10px] font-medium text-slate-400 dark:text-gray-400 sm:inline-block">
+                      {isMac ? "⌘K" : "Ctrl+K"}
+                    </kbd>
+                  )}
                 </div>
                 <div className="flex gap-2">
                   <Button
@@ -463,7 +493,7 @@ const metricCards = (
         </div>
       </div>
 
-      <div className="container mx-auto flex flex-1 flex-col gap-6 px-4 py-6 sm:py-8 lg:flex-row lg:items-start lg:gap-8">
+      <div id="main-content" className="container mx-auto flex flex-1 flex-col gap-6 px-4 py-6 sm:py-8 lg:flex-row lg:items-start lg:gap-8">
         <aside
           className={`transition-all duration-500 ease-in-out lg:shrink-0 ${
             hasSearched

@@ -26,6 +26,7 @@ export function ThemeToggle() {
       size="icon"
       className="h-9 w-9 shrink-0 text-white hover:bg-white/20"
       title={isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+      aria-label={isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
     >
       {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
     </Button>

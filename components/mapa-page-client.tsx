@@ -23,7 +23,7 @@ export function MapaPageClient({ points }: { points: MapPoint[] }) {
         <div className="container mx-auto flex items-center justify-between gap-4 px-4 py-4 sm:py-6">
           <div className="flex items-center gap-4">
             <Link href="/">
-              <Button variant="ghost" size="icon" className="shrink-0 text-white hover:bg-white/20">
+              <Button variant="ghost" size="icon" aria-label="Volver al buscador" className="shrink-0 text-white hover:bg-white/20">
                 <ArrowLeft className="h-5 w-5" />
               </Button>
             </Link>
@@ -39,7 +39,7 @@ export function MapaPageClient({ points }: { points: MapPoint[] }) {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-6 sm:py-8">
+      <div id="main-content" className="container mx-auto px-4 py-6 sm:py-8">
         <GeneralMap points={points} />
       </div>
     </div>

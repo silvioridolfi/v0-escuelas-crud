@@ -75,6 +75,7 @@ export function SavedSearches({
             onClick={() => handleRemove(s.term)}
             className="text-slate-300 hover:text-red-500"
             title="Quitar de guardados"
+            aria-label={`Quitar "${s.name}" de búsquedas guardadas`}
           >
             <X className="h-3 w-3" />
           </button>

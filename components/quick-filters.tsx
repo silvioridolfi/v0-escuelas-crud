@@ -3,7 +3,7 @@
 import type React from "react"
 import { useEffect, useState } from "react"
 import { AlertTriangle, ShieldAlert, UserX, MailX, Sparkles, X } from "lucide-react"
-import { getQuickFilterCount, getQuickFilterResults } from "@/app/actions/quick-filters"
+import { getAllQuickFilterCounts, getQuickFilterResults } from "@/app/actions/quick-filters"
 import { type QuickFilterKey, QUICK_FILTERS } from "@/lib/quick-filters-config"
 import type { SearchResult } from "@/app/actions/search"
 
@@ -34,10 +34,7 @@ export function QuickFilters({
   const [loadingFilter, setLoadingFilter] = useState<QuickFilterKey | null>(null)
 
   useEffect(() => {
-    QUICK_FILTERS.forEach(async ({ key }) => {
-      const count = await getQuickFilterCount(key)
-      setCounts((prev) => ({ ...prev, [key]: count }))
-    })
+    getAllQuickFilterCounts().then(setCounts)
   }, [])
 
   const handleClick = async (key: QuickFilterKey) => {
@@ -63,7 +60,7 @@ export function QuickFilters({
             type="button"
             onClick={() => handleClick(key)}
             disabled={loadingFilter === key}
-            className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${
+            className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEC3] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 ${
               isActive ? `${COLORS[key]} ring-2 ring-offset-1` : `${COLORS[key]} opacity-80 hover:opacity-100`
             }`}
           >
