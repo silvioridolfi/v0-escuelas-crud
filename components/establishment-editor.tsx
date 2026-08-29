@@ -27,6 +27,7 @@ import { splitEstablishmentName } from "@/lib/school-name"
 import { deleteEstablishment } from "@/app/actions/delete-establishment"
 import type { Establecimiento } from "@/lib/establecimiento"
 import { EstablishmentHero } from "@/components/establishment-hero"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 type Contacto = {
   id: string
@@ -109,7 +110,7 @@ export function EstablishmentEditor({
   )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       {/* Header */}
       <header className="border-b border-blue-200 bg-gradient-to-r from-[#417099] to-[#00AEC3] shadow-lg">
         <div className="container mx-auto px-4 py-4 sm:py-6">
@@ -134,7 +135,8 @@ export function EstablishmentEditor({
                 </h1>
               </div>
             </div>
-            <div className="flex flex-col gap-2 sm:ml-auto sm:flex-row">
+            <div className="flex items-center gap-2 sm:ml-auto sm:flex-row">
+              <ThemeToggle />
               <Button
                 onClick={() => setShowDeleteDialog(true)}
                 variant="destructive"
@@ -149,13 +151,13 @@ export function EstablishmentEditor({
       </header>
 
       <div className="container mx-auto px-4 py-6 sm:py-8">
-        <Card className={`overflow-hidden rounded-xl border bg-white shadow-sm ${isClosedOrContext ? "border-red-200" : "border-slate-200"}`}>
+        <Card className={`overflow-hidden rounded-xl border bg-white dark:bg-white/10 dark:backdrop-blur-sm shadow-sm dark:shadow-lg ${isClosedOrContext ? "border-red-200 dark:border-red-500/30" : "border-slate-200 dark:border-white/10"}`}>
           <div className={`h-1 ${isClosedOrContext ? "bg-red-500" : "bg-gradient-to-r from-[#e81f76] via-[#00AEC3] to-[#417099]"}`} />
 
           <CardContent className="p-5 sm:p-6">
             <EstablishmentHero establecimiento={establecimiento} centerSlot={tabNav} />
 
-            <div className="mt-6 border-t border-slate-200 pt-6">
+            <div className="mt-6 border-t border-slate-200 dark:border-white/10 pt-6">
               <Tabs value={activeTab} onValueChange={setActiveTab}>
                 <TabsContent value="general" className="m-0">
                   <GeneralTab establecimiento={establecimiento} isGovernmentBuilding={isGovernmentBuilding} />

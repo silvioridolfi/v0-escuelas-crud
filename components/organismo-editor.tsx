@@ -140,7 +140,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                   </h1>
                   <div className="flex flex-wrap items-center gap-2">
                     <p className="text-sm text-white/90">Código Provincial: {organismo.codigo}</p>
-                    <Badge variant="outline" className="border-white/50 bg-white/90 text-slate-700">
+                    <Badge variant="outline" className="border-white/50 bg-white/90 text-slate-700 dark:text-gray-100">
                       {organismo.tipo_organizacion}
                     </Badge>
                     {organismo.subtipo_organizacion === "Jefatura Regional" && (
@@ -159,7 +159,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                 variant={isEditing ? "secondary" : "outline"}
                 className={
                   isEditing
-                    ? "w-full bg-white text-[#417099] hover:bg-white/90 shadow-md sm:w-auto"
+                    ? "w-full bg-white dark:bg-white/10 text-[#417099] hover:bg-white/90 shadow-md sm:w-auto"
                     : "w-full border-white/60 bg-white/10 text-white hover:bg-white/20 shadow-md sm:w-auto"
                 }
               >
@@ -219,7 +219,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       onChange={(e) => setFormData({ ...formData, codigo: e.target.value })}
                       placeholder="Ej: jr01, jd001, jd113"
                       disabled
-                      className="bg-slate-50"
+                      className="bg-slate-50 dark:bg-white/5"
                     />
                     <p className="text-xs text-muted-foreground">
                       Código único de identificación provincial (no editable)
@@ -228,7 +228,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
 
                   <div className="space-y-2">
                     <Label htmlFor="tipo">Tipo de Organismo</Label>
-                    <Input id="tipo" value="Organismo Descentralizado" disabled className="bg-slate-50" />
+                    <Input id="tipo" value="Organismo Descentralizado" disabled className="bg-slate-50 dark:bg-white/5" />
                     <p className="text-xs text-muted-foreground">Campo fijo para este tipo de entidad</p>
                   </div>
 

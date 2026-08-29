@@ -62,7 +62,7 @@ export function GeneralMap({ points }: { points: MapPoint[] }) {
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center gap-3">
         <Select value={distritoFilter} onValueChange={setDistritoFilter}>
-          <SelectTrigger className="w-[220px] bg-white">
+          <SelectTrigger className="w-[220px] bg-white dark:bg-white/10">
             <SelectValue placeholder="Distrito" />
           </SelectTrigger>
           <SelectContent>
@@ -76,7 +76,7 @@ export function GeneralMap({ points }: { points: MapPoint[] }) {
         </Select>
 
         <Select value={fedFilter} onValueChange={setFedFilter}>
-          <SelectTrigger className="w-[220px] bg-white">
+          <SelectTrigger className="w-[220px] bg-white dark:bg-white/10">
             <SelectValue placeholder="FED a cargo" />
           </SelectTrigger>
           <SelectContent>
@@ -89,11 +89,11 @@ export function GeneralMap({ points }: { points: MapPoint[] }) {
           </SelectContent>
         </Select>
 
-        <Badge variant="outline" className="border-slate-300 text-slate-600">
+        <Badge variant="outline" className="border-slate-300 text-slate-600 dark:text-gray-200">
           {filtered.length.toLocaleString("es-AR")} puntos
         </Badge>
 
-        <div className="ml-auto flex items-center gap-3 text-xs text-slate-500">
+        <div className="ml-auto flex items-center gap-3 text-xs text-slate-500 dark:text-gray-300">
           <span className="flex items-center gap-1.5">
             <span className="inline-block h-2.5 w-2.5 rounded-full bg-[#00AEC3]" />
             Establecimientos
@@ -116,9 +116,9 @@ export function GeneralMap({ points }: { points: MapPoint[] }) {
               <Popup>
                 <div className="space-y-1 text-sm">
                   <p className="font-semibold">{p.nombre}</p>
-                  {p.cue && <p className="text-xs text-slate-500">CUE: {p.cue}</p>}
-                  {p.distrito && <p className="text-xs text-slate-500">{p.distrito}</p>}
-                  {p.fed_a_cargo && <p className="text-xs text-slate-500">FED: {p.fed_a_cargo}</p>}
+                  {p.cue && <p className="text-xs text-slate-500 dark:text-gray-300">CUE: {p.cue}</p>}
+                  {p.distrito && <p className="text-xs text-slate-500 dark:text-gray-300">{p.distrito}</p>}
+                  {p.fed_a_cargo && <p className="text-xs text-slate-500 dark:text-gray-300">FED: {p.fed_a_cargo}</p>}
                   {p.entity_type === "establecimiento" && (
                     <Link href={`/establecimientos/${p.id}`} className="text-xs font-medium text-[#00AEC3] hover:underline">
                       Ver ficha →

@@ -22,12 +22,12 @@ export function StatTile({
   className?: string
 }) {
   return (
-    <div className={`rounded-lg border border-slate-100 bg-slate-50/60 p-3 ${className}`}>
+    <div className={`rounded-lg border border-slate-100 bg-slate-50/60 dark:border-white/10 dark:bg-white/5 p-3 ${className}`}>
       <div className={`mb-2 flex h-8 w-8 items-center justify-center rounded-md ${iconBg}`}>
         <Icon className={`h-4 w-4 ${iconColor}`} />
       </div>
-      <p className="text-[10px] font-medium uppercase tracking-wide text-slate-400">{label}</p>
-      <p className="mt-0.5 text-sm font-semibold leading-snug text-slate-800 break-words">{value || "—"}</p>
+      <p className="text-[10px] font-medium uppercase tracking-wide text-slate-400 dark:text-gray-400">{label}</p>
+      <p className="mt-0.5 text-sm font-semibold leading-snug text-slate-800 dark:text-white break-words">{value || "—"}</p>
     </div>
   )
 }
@@ -48,8 +48,8 @@ export function PlanRow({
     <div className="flex items-center gap-3 border-l-2 py-2 pl-3" style={{ borderColor: color }}>
       <Icon className="h-4 w-4 shrink-0" style={{ color }} />
       <div>
-        <p className="text-[10px] font-medium uppercase tracking-wide text-slate-400">{label}</p>
-        <p className="text-sm font-semibold text-slate-800">{value}</p>
+        <p className="text-[10px] font-medium uppercase tracking-wide text-slate-400 dark:text-gray-400">{label}</p>
+        <p className="text-sm font-semibold text-slate-800 dark:text-white">{value}</p>
       </div>
     </div>
   )
