@@ -48,7 +48,14 @@ export function AcademicSection({ establecimiento }: { establecimiento: Establec
             iconColor="text-[#e81f76]"
             iconBg="bg-[#e81f76]/10 border border-[#e81f76]/25"
           />
-          <StatTile icon={Layers} label="Secciones" value={establecimiento.secciones} iconColor="text-violet-600 dark:text-violet-400" iconBg="bg-violet-500/10 border border-violet-500/20" />
+          <StatTile
+            icon={Layers}
+            label="Secciones"
+            value={establecimiento.secciones}
+            iconColor="text-violet-600 dark:text-violet-400"
+            iconBg="bg-violet-500/10 border border-violet-500/20"
+            className="col-span-2 sm:col-span-1"
+          />
         </div>
       )}
     </div>

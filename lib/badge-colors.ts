@@ -92,7 +92,7 @@ export function parsePlanTokens(value: string | null | undefined): string[] {
 export function getPlanTokenBadgeColor(token: string): string {
   const normalized = token.toUpperCase()
   if (normalized === "PNCE") {
-    return "bg-[#417099]/10 text-[#417099] border-[#417099]/30"
+    return "bg-violet-500/10 text-violet-700 dark:text-violet-400 border-violet-500/20"
   }
   if (normalized === "PBA") {
     return "bg-[#00AEC3]/10 text-[#00AEC3] border-[#00AEC3]/30"

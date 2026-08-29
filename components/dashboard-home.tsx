@@ -343,7 +343,7 @@ const metricCards = (
                 <p className="text-sm text-white/90">Región 1</p>
               </div>
             </div>
-            <div className="flex items-center gap-2 sm:ml-auto">
+            <div className="flex flex-col gap-2 sm:ml-auto sm:flex-row sm:items-center">
               <ThemeToggle />
               <Button
                 onClick={() => router.push("/establecimientos/nuevo")}
@@ -378,7 +378,7 @@ const metricCards = (
             </Link>
           </div>
 
-          <div className={`transition-all duration-500 ease-in-out overflow-hidden ${hasSearched ? "mb-2 max-h-20" : "mb-4 max-h-40"}`}>
+          <div className={`transition-all duration-500 ease-in-out overflow-hidden ${hasSearched ? "mb-0 max-h-0 opacity-0" : "mb-4 max-h-40 opacity-100"}`}>
             <QuickFilters
               activeFilter={activeQuickFilter}
               onSelect={(filter, quickResults) => {

@@ -135,7 +135,7 @@ export function EstablishmentEditor({
                 </h1>
               </div>
             </div>
-            <div className="flex items-center gap-2 sm:ml-auto sm:flex-row">
+            <div className="flex flex-col gap-2 sm:ml-auto sm:flex-row sm:items-center">
               <ThemeToggle />
               <Button
                 onClick={() => setShowDeleteDialog(true)}
