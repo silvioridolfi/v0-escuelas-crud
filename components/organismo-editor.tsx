@@ -127,6 +127,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                 variant="ghost"
                 size="icon"
                 className="shrink-0 text-white hover:bg-white/20"
+                aria-label="Volver al buscador"
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>

@@ -1,17 +1,62 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import dynamic from "next/dynamic"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Network, GraduationCap, Users, Calendar, Layers } from "lucide-react"
+import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Network, GraduationCap, Users, Calendar, Layers, FileSpreadsheet } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { getFedBadgeColor, formatFedDisplay, formatTurno, parsePlanTokens, getPlanTokenBadgeColor } from "@/lib/badge-colors"
 import { splitEstablishmentName } from "@/lib/school-name"
 import type { SearchResult } from "@/app/actions/search"
+
+// Arma un .xlsx con los resultados actuales de la búsqueda/filtro y dispara
+// la descarga en el navegador. Import dinámico: xlsx es una librería
+// pesada, no tiene sentido incluirla en el bundle inicial de la página.
+async function exportResultsToExcel(results: SearchResult[]) {
+  if (results.length === 0) return
+
+  const XLSX = await import("xlsx")
+
+  const rows = results.map((r) => {
+    const isOrganismo = r.entity_type === "organismo"
+    const contacto = r.contactos?.[0]
+    return {
+      Tipo: isOrganismo ? "Organismo" : r.es_establecimiento_educativo === false ? "Nivel Central" : "Establecimiento",
+      "CUE / Código": isOrganismo ? r.codigo : r.cue,
+      Nombre: r.nombre,
+      Distrito: r.distrito,
+      Ciudad: r.ciudad,
+      Dirección: r.direccion || "",
+      Nivel: r.nivel || "",
+      Modalidad: r.modalidad || "",
+      Turno: formatTurno(r.turnos) || "",
+      Matrícula: r.matricula ?? "",
+      Secciones: r.secciones ?? "",
+      Predio: r.predio ?? "",
+      "FED a cargo": r.fed_a_cargo || "",
+      Estado:
+        r.tipo_establecimiento === "Escuela cerrada" || r.tipo_establecimiento === "Contexto de encierro"
+          ? r.tipo_establecimiento
+          : "Activa",
+      "Contacto (nombre)": contacto ? [contacto.nombre, contacto.apellido].filter(Boolean).join(" ") : "",
+      "Contacto (cargo)": contacto?.cargo || "",
+      "Contacto (teléfono)": contacto?.telefono || "",
+      "Contacto (correo institucional)": contacto?.correo || "",
+      "Contacto (correo laboral)": contacto?.correo_laboral || "",
+    }
+  })
+
+  const worksheet = XLSX.utils.json_to_sheet(rows)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Resultados")
+
+  const fecha = new Date().toISOString().slice(0, 10)
+  XLSX.writeFile(workbook, `establecimientos_${fecha}.xlsx`)
+}
 
 const LocationMap = dynamic(() => import("@/components/tabs/location-map").then((mod) => mod.LocationMap), {
   ssr: false,
@@ -53,9 +98,16 @@ function StatTileCompact({
 export function SearchResults({ results, isSearching }: { results: SearchResult[]; isSearching: boolean }) {
   const router = useRouter()
   const [mapResultId, setMapResultId] = useState<string | null>(null)
+  const [visibleCount, setVisibleCount] = useState(30)
   const mapResult = results.find((r) => r.id === mapResultId) || null
   const hasMapCoordinates = (r: SearchResult | null) =>
     !!r && typeof r.lat === "number" && typeof r.lon === "number" && !Number.isNaN(r.lat) && !Number.isNaN(r.lon)
+
+  // Si cambia la búsqueda (resultados nuevos), volver a mostrar solo los
+  // primeros 30 en vez de arrastrar el límite expandido de la búsqueda anterior.
+  useEffect(() => {
+    setVisibleCount(30)
+  }, [results])
 
   if (isSearching) {
     return (
@@ -98,14 +150,27 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2 px-1">
-        <div className="h-1 w-1 rounded-full bg-[#00AEC3]" />
-        <p className="text-sm font-medium text-slate-700 dark:text-gray-100">
-          {results.length} resultado{results.length !== 1 ? "s" : ""} encontrado{results.length !== 1 ? "s" : ""}
-        </p>
+      <div className="flex flex-wrap items-center justify-between gap-2 px-1">
+        <div className="flex items-center gap-2">
+          <div className="h-1 w-1 rounded-full bg-[#00AEC3]" />
+          <p className="text-sm font-medium text-slate-700 dark:text-gray-100">
+            {results.length > visibleCount
+              ? `${visibleCount} de ${results.length} resultados`
+              : `${results.length} resultado${results.length !== 1 ? "s" : ""} encontrado${results.length !== 1 ? "s" : ""}`}
+          </p>
+        </div>
+        <Button
+          onClick={() => exportResultsToExcel(results)}
+          variant="outline"
+          size="sm"
+          className="gap-1.5 border-slate-300 dark:border-white/20 text-slate-700 dark:text-gray-100 hover:border-[#00AEC3]/50 hover:text-[#00AEC3]"
+        >
+          <FileSpreadsheet className="h-4 w-4" />
+          Exportar a Excel
+        </Button>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {results.map((result, index) => {
+        {results.slice(0, visibleCount).map((result, index) => {
           const isOrganismo = result.entity_type === "organismo"
           const primaryContact = result.contactos?.[0]
           const isGovernmentBuilding = result.es_establecimiento_educativo === false
@@ -409,6 +474,18 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
           )
         })}
       </div>
+
+      {visibleCount < results.length && (
+        <div className="flex justify-center pt-2">
+          <Button
+            onClick={() => setVisibleCount((v) => v + 30)}
+            variant="outline"
+            className="border-slate-300 dark:border-white/20 text-slate-700 dark:text-gray-100 hover:border-[#00AEC3]/50 hover:text-[#00AEC3]"
+          >
+            Mostrar {Math.min(30, results.length - visibleCount)} más ({results.length - visibleCount} restantes)
+          </Button>
+        </div>
+      )}
 
       <Dialog open={mapResultId !== null} onOpenChange={(open) => !open && setMapResultId(null)}>
         <DialogContent className="max-w-[calc(100%-1.5rem)] p-0 sm:max-w-2xl">

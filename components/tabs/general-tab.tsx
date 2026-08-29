@@ -152,6 +152,7 @@ export function GeneralTab({
                   }}
                   className="inline-flex items-center text-muted-foreground hover:text-[#00AEC3]"
                   title="Desbloquear Predio para editar"
+                  aria-label="Desbloquear Predio para editar"
                 >
                   <Lock className="h-3 w-3" />
                 </button>

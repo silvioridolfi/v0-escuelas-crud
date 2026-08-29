@@ -4,6 +4,8 @@ import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -58,6 +60,7 @@ export function EstablishmentEditor({
   const [activeTab, setActiveTab] = useState("general")
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [deleteConfirmText, setDeleteConfirmText] = useState("")
 
   const isGovernmentBuilding = establecimiento.es_establecimiento_educativo === false
   const isClosedOrContext =
@@ -89,15 +92,18 @@ export function EstablishmentEditor({
   const tabsConfig = isGovernmentBuilding ? allTabsConfig.filter((tab) => tab.showForGovBuilding) : allTabsConfig
 
   const tabNav = (
-    <div className="-mx-1 flex items-center gap-1.5 overflow-x-auto px-1 sm:flex-wrap sm:justify-center sm:overflow-visible">
+    <div role="tablist" aria-label="Secciones del establecimiento" className="-mx-1 flex items-center gap-1.5 overflow-x-auto px-1 sm:flex-wrap sm:justify-center sm:overflow-visible">
       {tabsConfig.map((tab) => {
         const Icon = tab.icon
         const isActive = activeTab === tab.value
         return (
           <button
             key={tab.value}
+            role="tab"
+            aria-selected={isActive}
+            aria-controls={`panel-${tab.value}`}
             onClick={() => setActiveTab(tab.value)}
-            className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2.5 text-xs font-medium transition-all active:scale-95 ${
+            className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2.5 text-xs font-medium transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEC3] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 ${
               isActive ? `${tab.color} ${tab.bgColor}` : "text-slate-400 hover:bg-slate-50 hover:text-slate-600"
             }`}
           >
@@ -121,6 +127,7 @@ export function EstablishmentEditor({
                 variant="ghost"
                 size="icon"
                 className="shrink-0 text-white hover:bg-white/20"
+                aria-label="Volver al buscador"
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
@@ -151,7 +158,7 @@ export function EstablishmentEditor({
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-6 sm:py-8">
+      <div id="main-content" className="container mx-auto px-4 py-6 sm:py-8">
         <Card className={`overflow-hidden rounded-xl border bg-white dark:bg-white/10 dark:backdrop-blur-sm shadow-sm dark:shadow-lg ${isClosedOrContext ? "border-red-200 dark:border-red-500/30" : "border-slate-200 dark:border-white/10"}`}>
           <div className={`h-1 ${isClosedOrContext ? "bg-red-500" : "bg-gradient-to-r from-[#e81f76] via-[#00AEC3] to-[#417099]"}`} />
 
@@ -160,20 +167,20 @@ export function EstablishmentEditor({
 
             <div className="mt-6 border-t border-slate-200 dark:border-white/10 pt-6">
               <Tabs value={activeTab} onValueChange={setActiveTab}>
-                <TabsContent value="general" className="m-0">
+                <TabsContent value="general" id="panel-general" role="tabpanel" className="m-0">
                   <GeneralTab establecimiento={establecimiento} isGovernmentBuilding={isGovernmentBuilding} />
                 </TabsContent>
                 {!isGovernmentBuilding && (
                   <>
-                    <TabsContent value="connectivity" className="m-0">
+                    <TabsContent value="connectivity" id="panel-connectivity" role="tabpanel" className="m-0">
                       <ConnectivitySection establecimiento={establecimiento} sharedPredio={sharedPredio} />
                     </TabsContent>
-                    <TabsContent value="academic" className="m-0">
+                    <TabsContent value="academic" id="panel-academic" role="tabpanel" className="m-0">
                       <AcademicSection establecimiento={establecimiento} />
                     </TabsContent>
                   </>
                 )}
-                <TabsContent value="contact" className="m-0">
+                <TabsContent value="contact" id="panel-contact" role="tabpanel" className="m-0">
                   <ContactSection
                     cue={establecimiento.cue}
                     contactos={contactos}
@@ -181,13 +188,13 @@ export function EstablishmentEditor({
                     fedACargo={establecimiento.fed_a_cargo}
                   />
                 </TabsContent>
-                <TabsContent value="location" className="m-0">
+                <TabsContent value="location" id="panel-location" role="tabpanel" className="m-0">
                   <LocationTab establecimiento={establecimiento} />
                 </TabsContent>
-                <TabsContent value="observations" className="m-0">
+                <TabsContent value="observations" id="panel-observations" role="tabpanel" className="m-0">
                   <ObservationsTab establecimiento={establecimiento} />
                 </TabsContent>
-                <TabsContent value="historial" className="m-0">
+                <TabsContent value="historial" id="panel-historial" role="tabpanel" className="m-0">
                   <HistorialTab establecimientoId={establecimiento.id} />
                 </TabsContent>
               </Tabs>
@@ -197,7 +204,13 @@ export function EstablishmentEditor({
       </div>
 
       {/* Delete Confirmation Dialog */}
-      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+      <AlertDialog
+        open={showDeleteDialog}
+        onOpenChange={(open) => {
+          setShowDeleteDialog(open)
+          if (!open) setDeleteConfirmText("")
+        }}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle className="text-red-600">¿Eliminar Establecimiento?</AlertDialogTitle>
@@ -211,12 +224,24 @@ export function EstablishmentEditor({
               </p>
             </AlertDialogDescription>
           </AlertDialogHeader>
+          <div className="space-y-1.5">
+            <Label htmlFor="delete-confirm" className="text-sm">
+              Para confirmar, escribí el nombre exacto del establecimiento:
+            </Label>
+            <Input
+              id="delete-confirm"
+              value={deleteConfirmText}
+              onChange={(e) => setDeleteConfirmText(e.target.value)}
+              placeholder={establecimiento.nombre}
+              autoComplete="off"
+            />
+          </div>
           <AlertDialogFooter>
             <AlertDialogCancel disabled={isDeleting}>Cancelar</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
-              disabled={isDeleting}
-              className="bg-red-600 hover:bg-red-700 text-white"
+              disabled={isDeleting || deleteConfirmText !== establecimiento.nombre}
+              className="bg-red-600 hover:bg-red-700 text-white disabled:opacity-40"
             >
               {isDeleting ? "Eliminando..." : "Sí, Eliminar Permanentemente"}
             </AlertDialogAction>
