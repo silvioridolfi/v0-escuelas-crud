@@ -179,6 +179,7 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
     setSearchTerm("")
     setResults([])
     setHasSearched(false)
+    setActiveQuickFilter(null)
     if (debounceTimeout) {
       clearTimeout(debounceTimeout)
     }
@@ -343,14 +344,15 @@ const metricCards = (
                 <p className="text-sm text-white/90">Región 1</p>
               </div>
             </div>
-            <div className="flex flex-col gap-2 sm:ml-auto sm:flex-row sm:items-center">
+            <div className="flex items-center justify-end gap-3">
               <ThemeToggle />
               <Button
                 onClick={() => router.push("/establecimientos/nuevo")}
-                className="w-full bg-[#e81f76] hover:bg-[#c71963] text-white shadow-lg sm:w-auto"
+                className="bg-[#e81f76] hover:bg-[#c71963] text-white shadow-lg"
               >
-                <Plus className="mr-2 h-4 w-4" />
-                Nuevo Establecimiento
+                <Plus className="h-4 w-4 sm:mr-2" />
+                <span className="hidden sm:inline">Nuevo Establecimiento</span>
+                <span className="sm:hidden">Nuevo</span>
               </Button>
             </div>
           </div>
@@ -421,7 +423,7 @@ const metricCards = (
                   >
                     {isSearching ? "Buscando..." : "Buscar"}
                   </Button>
-                  {searchTerm && (
+                  {(searchTerm || activeQuickFilter) && (
                     <Button
                       onClick={handleClearSearch}
                       variant="outline"

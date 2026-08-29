@@ -135,15 +135,16 @@ export function EstablishmentEditor({
                 </h1>
               </div>
             </div>
-            <div className="flex flex-col gap-2 sm:ml-auto sm:flex-row sm:items-center">
+            <div className="flex items-center justify-end gap-3 sm:ml-auto">
               <ThemeToggle />
               <Button
                 onClick={() => setShowDeleteDialog(true)}
                 variant="destructive"
-                className="w-full bg-red-600 text-white hover:bg-red-700 shadow-md sm:w-auto"
+                className="bg-red-600 text-white hover:bg-red-700 shadow-md"
               >
-                <Trash2 className="mr-2 h-4 w-4" />
-                Eliminar Establecimiento
+                <Trash2 className="h-4 w-4 sm:mr-2" />
+                <span className="hidden sm:inline">Eliminar Establecimiento</span>
+                <span className="sm:hidden">Eliminar</span>
               </Button>
             </div>
           </div>
