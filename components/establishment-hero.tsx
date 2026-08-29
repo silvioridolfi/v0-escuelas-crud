@@ -40,7 +40,7 @@ export function EstablishmentHero({
             isClosedOrContext ? "bg-red-50 dark:bg-red-500/15 text-red-700 dark:text-red-400" : "bg-emerald-50 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-400"
           }`}
         >
-          <span className={`h-1.5 w-1.5 rounded-full ${isClosedOrContext ? "bg-red-50 dark:bg-red-500/150" : "bg-emerald-50 dark:bg-emerald-500/150"}`} />
+          <span className={`h-1.5 w-1.5 rounded-full ${isClosedOrContext ? "bg-red-500" : "bg-emerald-500"}`} />
           {isClosedOrContext ? establecimiento.tipo_establecimiento?.toUpperCase() : "ACTIVA"}
         </span>
       </div>

@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Wifi, Link2, AlertTriangle, ChevronRight } from "lucide-react"
+import { Wifi, Network, AlertTriangle, ChevronRight } from "lucide-react"
 import { PlanRow } from "@/components/tabs/hero-widgets"
 import { EditSectionToggle } from "@/components/tabs/edit-section-toggle"
 import { ConnectivityTab } from "@/components/tabs/connectivity-tab"
@@ -70,9 +70,9 @@ export function ConnectivitySection({
         <div className="grid gap-5 sm:grid-cols-2">
           {hasPlanes ? (
             <div className="space-y-1">
-              <PlanRow icon={Link2} label="Plan de enlace" value={establecimiento.plan_enlace} color="#7c3aed" />
+              <PlanRow icon={Wifi} label="Plan de enlace" value={establecimiento.plan_enlace} color="#7c3aed" />
               <PlanRow
-                icon={Wifi}
+                icon={Network}
                 label="Piso tecnológico"
                 value={establecimiento.plan_piso_tecnologico}
                 color="#00AEC3"

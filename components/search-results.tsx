@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Server, GraduationCap, Users, Calendar, Layers } from "lucide-react"
+import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Network, GraduationCap, Users, Calendar, Layers } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { getFedBadgeColor, formatFedDisplay, formatTurno, parsePlanTokens, getPlanTokenBadgeColor } from "@/lib/badge-colors"
 import { splitEstablishmentName } from "@/lib/school-name"
@@ -216,7 +216,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                           className={`${getPlanTokenBadgeColor(token)} border text-xs`}
                           title="Piso tecnológico"
                         >
-                          <Server className="h-3 w-3 mr-1" />
+                          <Network className="h-3 w-3 mr-1" />
                           {token}
                         </Badge>
                       ))}
@@ -226,9 +226,9 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
               </CardHeader>
 
               {result.sharedWith && result.sharedWith.length > 0 && (
-                <div className="mx-4 mb-1 rounded-md border border-amber-400/40 bg-amber-50 dark:border-amber-500/30 dark:bg-amber-50 dark:bg-amber-500/150/10 px-2.5 py-2">
-                  <div className="mb-1.5 flex items-start gap-1.5 text-amber-800">
-                    <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-600" />
+                <div className="mx-4 mb-1 rounded-md border border-amber-400/40 bg-amber-50 dark:border-amber-500/30 dark:bg-amber-500/10 px-2.5 py-2">
+                  <div className="mb-1.5 flex items-start gap-1.5 text-amber-800 dark:text-amber-300">
+                    <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
                     <span className="text-[11px] font-medium leading-tight">
                       Comparte predio con{" "}
                       {result.sharedWith.length === 1 ? "otro establecimiento" : "otros establecimientos"}:
@@ -270,12 +270,12 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
 
                   {!isOrganismo && !isGovernmentBuilding && (
                     <div className="grid grid-cols-2 gap-2 border-t border-slate-100 dark:border-white/10 pt-2.5">
-                      <StatTileCompact icon={Users} label="Nivel" value={result.nivel} iconColor="text-teal-600" iconBg="bg-teal-50 dark:bg-teal-500/15" />
+                      <StatTileCompact icon={Users} label="Nivel" value={result.nivel} iconColor="text-teal-600 dark:text-teal-400" iconBg="bg-teal-50 dark:bg-teal-500/15" />
                       <StatTileCompact
                         icon={GraduationCap}
                         label="Modalidad"
                         value={result.modalidad}
-                        iconColor="text-indigo-600"
+                        iconColor="text-indigo-600 dark:text-indigo-400"
                         iconBg="bg-indigo-50 dark:bg-indigo-500/15"
                       />
                       <StatTileCompact
@@ -285,7 +285,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                         iconColor="text-[#e81f76]"
                         iconBg="bg-[#e81f76]/10"
                       />
-                      <StatTileCompact icon={Layers} label="Secciones" value={result.secciones} iconColor="text-violet-600" iconBg="bg-violet-50" />
+                      <StatTileCompact icon={Layers} label="Secciones" value={result.secciones} iconColor="text-violet-600 dark:text-violet-400" iconBg="bg-violet-50 dark:bg-violet-500/15" />
                       <StatTileCompact
                         icon={Calendar}
                         label="Turno"
