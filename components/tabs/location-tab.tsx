@@ -8,7 +8,7 @@ import type { Establecimiento as EstablecimientoFull } from "@/lib/establecimien
 const LocationMap = dynamic(() => import("@/components/tabs/location-map").then((mod) => mod.LocationMap), {
   ssr: false,
   loading: () => (
-    <div className="flex h-full items-center justify-center bg-slate-100 text-sm text-muted-foreground">
+    <div className="flex h-full items-center justify-center bg-slate-100 dark:bg-white/10 text-sm text-muted-foreground">
       Cargando mapa…
     </div>
   ),
@@ -50,7 +50,7 @@ export function LocationTab({ establecimiento }: { establecimiento: Establecimie
           />
         </div>
       ) : (
-        <div className="flex h-64 flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-slate-300 bg-slate-50 text-center">
+        <div className="flex h-64 flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-slate-300 bg-slate-50 dark:bg-white/5 text-center">
           <AlertTriangle className="h-8 w-8 text-amber-500" />
           <p className="text-sm font-medium text-foreground">Sin coordenadas registradas</p>
           <p className="text-xs text-muted-foreground">
@@ -59,7 +59,7 @@ export function LocationTab({ establecimiento }: { establecimiento: Establecimie
         </div>
       )}
 
-      <div className="flex items-start gap-2 rounded-lg bg-slate-50 p-4">
+      <div className="flex items-start gap-2 rounded-lg bg-slate-50 dark:bg-white/5 p-4">
         <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
         <p className="text-sm text-muted-foreground">
           {establecimiento.direccion ? `${establecimiento.direccion}, ` : ""}

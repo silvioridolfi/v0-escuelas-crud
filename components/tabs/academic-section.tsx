@@ -26,23 +26,36 @@ export function AcademicSection({ establecimiento }: { establecimiento: Establec
         <AcademicTab establecimiento={establecimiento} isEditing={isEditing} onSaved={() => setIsEditing(false)} />
       ) : (
         <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-5">
-          <StatTile icon={Users} label="Nivel" value={establecimiento.nivel} iconColor="text-teal-600" iconBg="bg-teal-50" />
+          <StatTile icon={Users} label="Nivel" value={establecimiento.nivel} iconColor="text-teal-600 dark:text-teal-400" iconBg="bg-teal-500/10 border border-teal-500/20" />
           <StatTile
             icon={GraduationCap}
             label="Modalidad"
             value={establecimiento.modalidad}
-            iconColor="text-indigo-600"
-            iconBg="bg-indigo-50"
+            iconColor="text-indigo-600 dark:text-indigo-400"
+            iconBg="bg-indigo-500/10 border border-indigo-500/20"
           />
-          <StatTile icon={Calendar} label="Turno" value={formatTurno(establecimiento.turnos)} iconColor="text-[#417099]" iconBg="bg-[#417099]/10" />
+          <StatTile
+            icon={Calendar}
+            label="Turno"
+            value={formatTurno(establecimiento.turnos)}
+            iconColor="text-[#417099]"
+            iconBg="bg-[#417099]/10 border border-[#417099]/25"
+          />
           <StatTile
             icon={Users}
             label="Matrícula"
             value={establecimiento.matricula ? `${establecimiento.matricula.toLocaleString("es-AR")} estudiantes` : null}
             iconColor="text-[#e81f76]"
-            iconBg="bg-[#e81f76]/10"
+            iconBg="bg-[#e81f76]/10 border border-[#e81f76]/25"
           />
-          <StatTile icon={Layers} label="Secciones" value={establecimiento.secciones} iconColor="text-violet-600" iconBg="bg-violet-50" />
+          <StatTile
+            icon={Layers}
+            label="Secciones"
+            value={establecimiento.secciones}
+            iconColor="text-violet-600 dark:text-violet-400"
+            iconBg="bg-violet-500/10 border border-violet-500/20"
+            className="col-span-2 sm:col-span-1"
+          />
         </div>
       )}
     </div>

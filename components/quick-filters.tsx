@@ -16,10 +16,10 @@ const ICONS: Record<QuickFilterKey, React.ComponentType<{ className?: string }>>
 }
 
 const COLORS: Record<QuickFilterKey, string> = {
-  cerradas: "text-red-700 bg-red-50 border-red-200 hover:bg-red-100",
-  contexto: "text-red-700 bg-red-50 border-red-200 hover:bg-red-100",
-  sin_fed: "text-amber-700 bg-amber-50 border-amber-200 hover:bg-amber-100",
-  sin_contacto: "text-orange-700 bg-orange-50 border-orange-200 hover:bg-orange-100",
+  cerradas: "text-red-700 dark:text-red-400 bg-red-500/10 border-red-500/20 hover:bg-red-500/20",
+  contexto: "text-red-700 dark:text-red-400 bg-red-500/10 border-red-500/20 hover:bg-red-500/20",
+  sin_fed: "text-amber-700 dark:text-amber-400 bg-amber-500/10 border-amber-500/20 hover:bg-amber-500/20",
+  sin_contacto: "text-orange-700 dark:text-orange-400 bg-orange-500/10 border-orange-500/20 hover:bg-orange-500/20",
   nuevos: "text-[#00AEC3] bg-[#00AEC3]/10 border-[#00AEC3]/30 hover:bg-[#00AEC3]/20",
 }
 
@@ -70,7 +70,7 @@ export function QuickFilters({
             {isActive ? <X className="h-3 w-3" /> : <Icon className="h-3.5 w-3.5" />}
             {label}
             {count !== undefined && (
-              <span className="ml-0.5 rounded-full bg-white/60 px-1.5 text-[10px] font-semibold">
+              <span className="ml-0.5 rounded-full bg-white/60 dark:bg-white/10 px-1.5 text-[10px] font-semibold">
                 {loadingFilter === key ? "…" : count}
               </span>
             )}

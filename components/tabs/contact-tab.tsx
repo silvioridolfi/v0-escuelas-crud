@@ -20,9 +20,28 @@ type Contacto = {
   cargo: string | null
   telefono: string | null
   correo: string | null
+  correo_laboral: string | null
   distrito: string | null
   fed_a_cargo: string | null
   es_principal?: boolean
+}
+
+const emptyForm = {
+  nombre: "",
+  apellido: "",
+  cargo: "",
+  telefono: "",
+  correo: "",
+  correo_laboral: "",
+}
+
+// La base rechaza directamente cualquier valor que no termine en @abc.gob.ar
+// (o esté vacío) con un check constraint -- esto solo valida en el
+// cliente para dar el error antes de mandar el guardado.
+function correoLaboralEsValido(valor: string) {
+  const limpio = valor.trim()
+  if (!limpio) return true
+  return /@abc\.gob\.ar$/i.test(limpio)
 }
 
 export function ContactTab({
@@ -40,13 +59,7 @@ export function ContactTab({
   const [isEditMode, setIsEditMode] = useState(false)
   const [isCreating, setIsCreating] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
-  const [formData, setFormData] = useState({
-    nombre: "",
-    apellido: "",
-    cargo: "",
-    telefono: "",
-    correo: "",
-  })
+  const [formData, setFormData] = useState(emptyForm)
   const [isSaving, setIsSaving] = useState(false)
   const [message, setMessage] = useState("")
 
@@ -58,6 +71,7 @@ export function ContactTab({
       cargo: contacto.cargo || "",
       telefono: contacto.telefono || "",
       correo: contacto.correo || "",
+      correo_laboral: contacto.correo_laboral || "",
     })
     setIsCreating(false)
   }
@@ -65,17 +79,16 @@ export function ContactTab({
   const handleCancelEdit = () => {
     setEditingId(null)
     setIsCreating(false)
-    setFormData({
-      nombre: "",
-      apellido: "",
-      cargo: "",
-      telefono: "",
-      correo: "",
-    })
+    setFormData(emptyForm)
     setMessage("")
   }
 
   const handleSave = async () => {
+    if (!correoLaboralEsValido(formData.correo_laboral)) {
+      setMessage("Error: el correo laboral tiene que terminar en @abc.gob.ar")
+      return
+    }
+
     setIsSaving(true)
     setMessage("")
     try {
@@ -141,13 +154,7 @@ export function ContactTab({
   const startCreating = () => {
     setIsCreating(true)
     setEditingId(null)
-    setFormData({
-      nombre: "",
-      apellido: "",
-      cargo: "",
-      telefono: "",
-      correo: "",
-    })
+    setFormData(emptyForm)
   }
 
   return (
@@ -242,7 +249,12 @@ export function ContactTab({
                   )}
                   {contacto.correo && (
                     <p>
-                      <span className="font-medium">Email:</span> {contacto.correo}
+                      <span className="font-medium">Email institucional:</span> {contacto.correo}
+                    </p>
+                  )}
+                  {contacto.correo_laboral && (
+                    <p>
+                      <span className="font-medium text-[#00AEC3]">Correo laboral:</span> {contacto.correo_laboral}
                     </p>
                   )}
                 </CardContent>
@@ -315,13 +327,7 @@ function ContactForm({
   message,
   isEditing,
 }: {
-  formData: {
-    nombre: string
-    apellido: string
-    cargo: string
-    telefono: string
-    correo: string
-  }
+  formData: typeof emptyForm
   setFormData: React.Dispatch<React.SetStateAction<typeof formData>>
   isSaving: boolean
   onSave: () => void
@@ -329,6 +335,8 @@ function ContactForm({
   message: string
   isEditing: boolean
 }) {
+  const correoLaboralInvalido = formData.correo_laboral.trim() !== "" && !correoLaboralEsValido(formData.correo_laboral)
+
   return (
     <div className="space-y-4">
       <div className="grid gap-4 md:grid-cols-2">
@@ -369,13 +377,28 @@ function ContactForm({
         </div>
 
         <div className="space-y-2 md:col-span-2">
-          <Label htmlFor="correo">Correo Electrónico</Label>
+          <Label htmlFor="correo">Email institucional (de la escuela)</Label>
           <Input
             id="correo"
             type="email"
             value={formData.correo}
             onChange={(e) => setFormData({ ...formData, correo: e.target.value })}
           />
+        </div>
+
+        <div className="space-y-2 md:col-span-2">
+          <Label htmlFor="correo_laboral">Correo laboral (personal del directivo)</Label>
+          <Input
+            id="correo_laboral"
+            type="email"
+            placeholder="nombre.apellido@abc.gob.ar"
+            value={formData.correo_laboral}
+            onChange={(e) => setFormData({ ...formData, correo_laboral: e.target.value })}
+            className={correoLaboralInvalido ? "border-red-400 focus-visible:ring-red-400" : ""}
+          />
+          <p className={`text-xs ${correoLaboralInvalido ? "text-red-600" : "text-muted-foreground"}`}>
+            Tiene que terminar en @abc.gob.ar (o dejarlo vacío)
+          </p>
         </div>
       </div>
 
@@ -384,7 +407,11 @@ function ContactForm({
       )}
 
       <div className="flex gap-2">
-        <Button onClick={onSave} disabled={isSaving} className="bg-[#00AEC3] hover:bg-[#0098ad]">
+        <Button
+          onClick={onSave}
+          disabled={isSaving || correoLaboralInvalido}
+          className="bg-[#00AEC3] hover:bg-[#0098ad]"
+        >
           {isSaving ? "Guardando..." : isEditing ? "Guardar Cambios" : "Crear Contacto"}
         </Button>
         <Button onClick={onCancel} variant="outline" disabled={isSaving}>

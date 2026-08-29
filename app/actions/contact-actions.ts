@@ -11,6 +11,7 @@ export async function createContact(
     cargo: string
     telefono: string
     correo: string
+    correo_laboral?: string
   },
 ) {
   const supabase = createAdminClient()
@@ -30,6 +31,7 @@ export async function createContact(
     cargo: data.cargo || null,
     telefono: data.telefono || null,
     correo: data.correo || null,
+    correo_laboral: data.correo_laboral || null,
     distrito: null,
     fed_a_cargo: null,
     es_principal: (count || 0) === 0,
@@ -51,6 +53,7 @@ export async function updateContact(
     cargo: string
     telefono: string
     correo: string
+    correo_laboral?: string
   },
 ) {
   const supabase = createAdminClient()
@@ -63,6 +66,7 @@ export async function updateContact(
       cargo: data.cargo || null,
       telefono: data.telefono || null,
       correo: data.correo || null,
+      correo_laboral: data.correo_laboral || null,
     })
     .eq("id", id)
 

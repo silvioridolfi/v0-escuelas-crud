@@ -49,6 +49,7 @@ export type SearchResult = {
     cargo: string
     telefono: string
     correo: string
+    correo_laboral: string
   }>
   // Type discriminator
   entity_type: "establecimiento" | "organismo"
@@ -82,7 +83,7 @@ export async function attachSharedPredioInfo(
     cues.length > 0
       ? supabase
           .from("contactos")
-          .select("cue, nombre, apellido, cargo, telefono, correo, es_principal")
+          .select("cue, nombre, apellido, cargo, telefono, correo, correo_laboral, es_principal")
           .in("cue", cues)
           .order("es_principal", { ascending: false })
           .order("apellido", { ascending: true })
@@ -112,6 +113,7 @@ export async function attachSharedPredioInfo(
       cargo: contact.cargo || "",
       telefono: contact.telefono || "",
       correo: contact.correo || "",
+      correo_laboral: contact.correo_laboral || "",
     })
     contactsByCue.set(contact.cue, existing)
   }
