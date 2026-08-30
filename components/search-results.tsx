@@ -89,7 +89,9 @@ function StatTileCompact({
       </div>
       <div className="min-w-0">
         <p className="text-[9px] uppercase tracking-wide text-slate-400 dark:text-gray-400">{label}</p>
-        <p className="break-words text-sm font-semibold leading-tight text-slate-800 dark:text-white">{value || "—"}</p>
+        <p className="break-words text-sm font-semibold leading-tight text-slate-800 dark:text-white">
+          {value === null || value === undefined || value === "" ? "—" : value}
+        </p>
       </div>
     </div>
   )
@@ -352,7 +354,11 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                       <StatTileCompact
                         icon={User}
                         label="Matrícula"
-                        value={result.matricula ? result.matricula.toLocaleString("es-AR") : null}
+                        value={
+                          result.matricula !== null && result.matricula !== undefined
+                            ? result.matricula.toLocaleString("es-AR")
+                            : null
+                        }
                         iconColor="text-[#e81f76]"
                         iconBg="bg-[#e81f76]/10 border border-[#e81f76]/25"
                       />

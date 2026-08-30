@@ -146,6 +146,17 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
 
     console.log("[v0] Search type detected:", searchType)
 
+    // Se define ACÁ, antes de cualquier rama, para que todas usen exactamente
+    // los mismos campos -- antes la rama "nivel_numero" (búsquedas del tipo
+    // "primaria 23") tenía su propio select desactualizado, sin secciones ni
+    // turnos, porque esta constante se definía más abajo en el archivo y esa
+    // rama nunca llegaba a usarla.
+    const establishmentFields = `
+      id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, secciones, turnos, predio, 
+      direccion, fed_a_cargo, es_establecimiento_educativo, tipo_establecimiento, plan_enlace, plan_piso_tecnologico, lat, lon,
+      dependencia_completa
+    `
+
     if (searchType.type === "nivel_numero") {
       const { nivel, numero } = searchType
       const nivelesDB = mapNivelToDB(nivel)
@@ -165,9 +176,7 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
 
       const { data, error } = await supabase
         .from("establecimientos")
-        .select(
-          "id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, predio, direccion, fed_a_cargo, es_establecimiento_educativo, plan_enlace, plan_piso_tecnologico, lat, lon",
-        )
+        .select(establishmentFields)
         .or(nivelConditions)
         .order("nombre", { ascending: true })
         .limit(1000)
@@ -229,12 +238,6 @@ export async function searchEstablecimientos(searchTerm: string): Promise<Search
         })) || []
       )
     }
-
-    const establishmentFields = `
-      id, cue, nombre, alias, distrito, ciudad, nivel, modalidad, matricula, secciones, turnos, predio, 
-      direccion, fed_a_cargo, es_establecimiento_educativo, tipo_establecimiento, plan_enlace, plan_piso_tecnologico, lat, lon,
-      dependencia_completa
-    `
 
     if (searchType.type === "cue") {
       const { data, error } = await supabase

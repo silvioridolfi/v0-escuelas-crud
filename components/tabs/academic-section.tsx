@@ -44,7 +44,11 @@ export function AcademicSection({ establecimiento }: { establecimiento: Establec
           <StatTile
             icon={Users}
             label="Matrícula"
-            value={establecimiento.matricula ? `${establecimiento.matricula.toLocaleString("es-AR")} estudiantes` : null}
+            value={
+              establecimiento.matricula !== null && establecimiento.matricula !== undefined
+                ? `${establecimiento.matricula.toLocaleString("es-AR")} estudiantes`
+                : null
+            }
             iconColor="text-[#e81f76]"
             iconBg="bg-[#e81f76]/10 border border-[#e81f76]/25"
           />

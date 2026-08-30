@@ -27,7 +27,9 @@ export function StatTile({
         <Icon className={`h-4 w-4 ${iconColor}`} />
       </div>
       <p className="text-[10px] font-medium uppercase tracking-wide text-slate-400 dark:text-gray-400">{label}</p>
-      <p className="mt-0.5 text-sm font-semibold leading-snug text-slate-800 dark:text-white break-words">{value || "—"}</p>
+      <p className="mt-0.5 text-sm font-semibold leading-snug text-slate-800 dark:text-white break-words">
+        {value === null || value === undefined || value === "" ? "—" : value}
+      </p>
     </div>
   )
 }
