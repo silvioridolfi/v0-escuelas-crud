@@ -49,8 +49,6 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
   const router = useRouter()
   const searchInputRef = useRef<HTMLInputElement>(null)
 
-  const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(null)
-
   const [openDialog, setOpenDialog] = useState<MetricDialog>(null)
   const [organismos, setOrganismos] = useState<SearchResult[]>([])
   const [isLoadingOrganismos, setIsLoadingOrganismos] = useState(false)
@@ -175,16 +173,11 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
     const value = e.target.value
     setSearchTerm(value)
 
-    if (debounceTimeout) {
-      clearTimeout(debounceTimeout)
-    }
-
-    if (value.trim()) {
-      const timeout = setTimeout(() => {
-        handleSearch(value)
-      }, 1000)
-      setDebounceTimeout(timeout)
-    } else {
+    // No se busca automáticamente mientras se escribe -- solo con Enter o el
+    // botón "Buscar" (antes había un debounce de 1s que disparaba la
+    // búsqueda sola, y el reacomodo del layout al mostrar resultados daba
+    // sensación de pérdida de foco mientras el usuario todavía escribía).
+    if (!value.trim()) {
       setHasSearched(false)
       setResults([])
     }
@@ -192,9 +185,6 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      if (debounceTimeout) {
-        clearTimeout(debounceTimeout)
-      }
       handleSearch()
     }
   }
@@ -204,9 +194,6 @@ export function DashboardHome({ metrics }: { metrics: Metrics }) {
     setResults([])
     setHasSearched(false)
     setActiveQuickFilter(null)
-    if (debounceTimeout) {
-      clearTimeout(debounceTimeout)
-    }
     if (mounted) {
       sessionStorage.removeItem("searchTerm")
       sessionStorage.removeItem("searchResults")
