@@ -7,7 +7,7 @@ import { logFieldChanges } from "@/lib/historial"
 export async function updateObservations(id: string, observaciones: string) {
   const supabase = createAdminClient()
 
-  const { data: before } = await supabase.from("establecimientos").select("observaciones").eq("id", id).single()
+  const { data: before } = await supabase.from("establecimientos").select("observaciones").eq("id", id).maybeSingle()
 
   const after = { observaciones: observaciones || null }
 

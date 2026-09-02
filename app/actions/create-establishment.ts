@@ -15,7 +15,7 @@ export async function createEstablishment(data: {
 }) {
   const supabase = createAdminClient()
 
-  const { data: existing } = await supabase.from("establecimientos").select("id").eq("cue", data.cue).single()
+  const { data: existing } = await supabase.from("establecimientos").select("id").eq("cue", data.cue).maybeSingle()
 
   if (existing) {
     return { success: false, error: "Ya existe un establecimiento con ese CUE" }
@@ -50,10 +50,14 @@ export async function createEstablishment(data: {
       observaciones: null,
     })
     .select("id")
-    .single()
+    .maybeSingle()
 
   if (error) {
     return { success: false, error: error.message }
+  }
+
+  if (!inserted) {
+    return { success: false, error: "No se pudo confirmar la creación del establecimiento" }
   }
 
   return { success: true, id: inserted.id }

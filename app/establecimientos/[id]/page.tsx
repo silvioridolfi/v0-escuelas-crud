@@ -22,7 +22,7 @@ export default async function EstablishmentPage({ params }: { params: Promise<{ 
 
   const supabase = await createClient()
 
-  const { data: establecimiento, error } = await supabase.from("establecimientos").select("*").eq("id", id).single()
+  const { data: establecimiento, error } = await supabase.from("establecimientos").select("*").eq("id", id).maybeSingle()
 
   if (error || !establecimiento) {
     notFound()

@@ -78,7 +78,7 @@ export async function updateConnectivity(
     .from("establecimientos")
     .select("plan_enlace, subplan_enlace, fecha_inicio_conectividad, mb, listado_conexion_internet, pnce_estado, proveedor_internet_pnce, fecha_instalacion_pnce, pnce_fecha_mejora, pnce_tipo_mejora, pba_grupo_1_estado, pba_grupo_1_proveedor_internet, pba_grupo_1_fecha_instalacion, reclamos_grupo_1_ani, pba_2019_estado, pba_2019_proveedor_internet, pba_2019_fecha_instalacion, pba_grupo_2_a_estado, pba_grupo_2_a_proveedor_internet, pba_grupo_2_a_fecha_instalacion, pba_grupo_2_a_fecha_mejora, pba_grupo_2_a_tipo_mejora, estado_instalacion_pba, proveedor_asignado_pba, plan_piso_tecnologico, tipo_piso_instalado, fecha_terminado_piso_tecnologico_cue, proveedor_piso_tecnologico_cue, fecha_mejora, tipo_mejora")
     .eq("id", id)
-    .single()
+    .maybeSingle()
 
   const after = {
     plan_enlace: data.plan_enlace || null,

@@ -40,7 +40,7 @@ export async function updateGeneral(
     .from("establecimientos")
     .select("nombre, alias, distrito, ciudad, direccion, predio, lat, lon, fed_a_cargo, tipo_establecimiento, ambito")
     .eq("id", id)
-    .single()
+    .maybeSingle()
 
   const after = {
     nombre: data.nombre,

@@ -53,13 +53,20 @@ export async function createOrganismoDescentralizado(data: CreateOrganismoData) 
       email: data.email,
     })
     .select()
-    .single()
+    .maybeSingle()
 
   if (error) {
     console.error("Error creating organismo:", error)
     return {
       success: false,
       error: "Error al crear el organismo descentralizado",
+    }
+  }
+
+  if (!newOrganismo) {
+    return {
+      success: false,
+      error: "No se pudo confirmar la creación del organismo",
     }
   }
 

@@ -32,7 +32,7 @@ export async function updateAcademic(
     .from("establecimientos")
     .select("nivel, modalidad, matricula, varones, mujeres, secciones, turnos")
     .eq("id", id)
-    .single()
+    .maybeSingle()
 
   const after = {
     nivel: data.nivel,
