@@ -12,7 +12,7 @@ export default async function OrganismoPage({ params }: { params: Promise<{ id: 
     .from("organismos_descentralizados")
     .select("*")
     .eq("id", id)
-    .single()
+    .maybeSingle()
 
   if (error || !organismo) {
     notFound()
