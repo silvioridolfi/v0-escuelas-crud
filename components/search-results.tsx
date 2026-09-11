@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Network, GraduationCap, Users, Calendar, Layers, FileSpreadsheet } from "lucide-react"
+import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Network, GraduationCap, Users, Calendar, Layers, FileSpreadsheet, List, Map as MapIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { getFedBadgeColor, formatFedDisplay, formatTurno, parsePlanTokens, getPlanTokenBadgeColor } from "@/lib/badge-colors"
 import { splitEstablishmentName } from "@/lib/school-name"
@@ -67,6 +67,15 @@ const LocationMap = dynamic(() => import("@/components/tabs/location-map").then(
   ),
 })
 
+const ResultsMapView = dynamic(() => import("@/components/results-map-view").then((mod) => mod.ResultsMapView), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-[60vh] items-center justify-center rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/10 text-sm text-muted-foreground">
+      Cargando mapa…
+    </div>
+  ),
+})
+
 function StatTileCompact({
   icon: Icon,
   label,
@@ -101,6 +110,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
   const router = useRouter()
   const [mapResultId, setMapResultId] = useState<string | null>(null)
   const [visibleCount, setVisibleCount] = useState(30)
+  const [viewMode, setViewMode] = useState<"list" | "map">("list")
   const mapResult = results.find((r) => r.id === mapResultId) || null
   const hasMapCoordinates = (r: SearchResult | null) =>
     !!r && typeof r.lat === "number" && typeof r.lon === "number" && !Number.isNaN(r.lat) && !Number.isNaN(r.lon)
@@ -161,16 +171,49 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
               : `${results.length} resultado${results.length !== 1 ? "s" : ""} encontrado${results.length !== 1 ? "s" : ""}`}
           </p>
         </div>
-        <Button
-          onClick={() => exportResultsToExcel(results)}
-          variant="outline"
-          size="sm"
-          className="gap-1.5 border-slate-300 dark:border-white/20 text-slate-700 dark:text-gray-100 hover:border-pba-teal/50 hover:text-pba-teal"
-        >
-          <FileSpreadsheet className="h-4 w-4" />
-          Exportar a Excel
-        </Button>
+        <div className="flex items-center gap-2">
+          <div className="flex rounded-lg border border-slate-300 dark:border-white/20 p-0.5">
+            <button
+              type="button"
+              onClick={() => setViewMode("list")}
+              className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                viewMode === "list"
+                  ? "bg-pba-teal text-white"
+                  : "text-slate-500 dark:text-gray-300 hover:text-pba-teal"
+              }`}
+            >
+              <List className="h-3.5 w-3.5" />
+              Lista
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode("map")}
+              className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                viewMode === "map"
+                  ? "bg-pba-teal text-white"
+                  : "text-slate-500 dark:text-gray-300 hover:text-pba-teal"
+              }`}
+            >
+              <MapIcon className="h-3.5 w-3.5" />
+              Mapa
+            </button>
+          </div>
+          <Button
+            onClick={() => exportResultsToExcel(results)}
+            variant="outline"
+            size="sm"
+            className="gap-1.5 border-slate-300 dark:border-white/20 text-slate-700 dark:text-gray-100 hover:border-pba-teal/50 hover:text-pba-teal"
+          >
+            <FileSpreadsheet className="h-4 w-4" />
+            Exportar a Excel
+          </Button>
+        </div>
       </div>
+
+      {viewMode === "map" ? (
+        <ResultsMapView results={results} />
+      ) : (
+        <>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {results.slice(0, visibleCount).map((result, index) => {
           const isOrganismo = result.entity_type === "organismo"
@@ -491,6 +534,8 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
             Mostrar {Math.min(30, results.length - visibleCount)} más ({results.length - visibleCount} restantes)
           </Button>
         </div>
+      )}
+        </>
       )}
 
       <Dialog open={mapResultId !== null} onOpenChange={(open) => !open && setMapResultId(null)}>
