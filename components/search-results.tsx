@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Network, GraduationCap, Users, Calendar, Layers, FileSpreadsheet } from "lucide-react"
+import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Network, FileSpreadsheet, ChevronDown } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { getFedBadgeColor, formatFedDisplay, formatTurno, parsePlanTokens, getPlanTokenBadgeColor } from "@/lib/badge-colors"
 import { splitEstablishmentName } from "@/lib/school-name"
@@ -67,35 +67,339 @@ const LocationMap = dynamic(() => import("@/components/tabs/location-map").then(
   ),
 })
 
-function StatTileCompact({
-  icon: Icon,
-  label,
-  value,
-  iconColor,
-  iconBg,
-  className = "",
+function ResultCard({
+  result,
+  index,
+  router,
+  onShowMap,
+  hasMapCoordinates,
 }: {
-  icon: React.ComponentType<{ className?: string }>
-  label: string
-  value: string | number | null | undefined
-  iconColor: string
-  iconBg: string
-  className?: string
+  result: SearchResult
+  index: number
+  router: ReturnType<typeof useRouter>
+  onShowMap: (id: string) => void
+  hasMapCoordinates: (r: SearchResult | null) => boolean
 }) {
+  const [expanded, setExpanded] = useState(false)
+
+  const isOrganismo = result.entity_type === "organismo"
+  const isGovernmentBuilding = result.es_establecimiento_educativo === false
+  const isClosedOrContext =
+    result.tipo_establecimiento === "Escuela cerrada" || result.tipo_establecimiento === "Contexto de encierro"
+  const isRegional = result.subtipo_organizacion === "Jefatura Regional"
+  const isDistrital = result.subtipo_organizacion === "Jefatura Distrital"
+  const { primary: nombrePrimary, secondary: nombreSecondary } = splitEstablishmentName(result.nombre)
+  const primaryContact = result.contactos?.[0]
+
+  // Línea compacta de datos académicos -- reemplaza la grilla de 5 tiles
+  // que competía demasiado por atención (Fase 3 del rediseño: densidad de
+  // información). Mismos datos, mucho menos peso visual.
+  const nivelModalidadTurno = [result.nivel, result.modalidad, formatTurno(result.turnos)]
+    .filter(Boolean)
+    .join(" · ")
+  const tieneMatriculaOSecciones =
+    (result.matricula !== null && result.matricula !== undefined) || (result.secciones !== null && result.secciones !== undefined)
+
+  const planTokens = [
+    ...parsePlanTokens(result.plan_enlace).map((t) => ({ token: t, title: "Tipo de enlace", icon: Wifi, key: `enlace-${t}` })),
+    ...parsePlanTokens(result.plan_piso_tecnologico).map((t) => ({ token: t, title: "Piso tecnológico", icon: Network, key: `piso-${t}` })),
+  ]
+  const tieneContacto = isOrganismo
+    ? Boolean(result.contacto_nombre || result.contacto_apellido || result.telefono || result.email)
+    : Boolean(primaryContact && (primaryContact.nombre || primaryContact.telefono || primaryContact.correo || primaryContact.correo_laboral))
+  const tienePredioCompartido = Boolean(result.sharedWith && result.sharedWith.length > 0)
+  const tieneMasDetalles = planTokens.length > 0 || tieneContacto || tienePredioCompartido
+
   return (
-    <div className={`flex items-center gap-2 rounded-lg border border-slate-100 dark:border-white/10 bg-slate-50/60 dark:border-white/10 dark:bg-white/5 p-2 ${className}`}>
-      <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md ${iconBg}`}>
-        <Icon className={`h-3.5 w-3.5 ${iconColor}`} />
-      </div>
-      <div className="min-w-0">
-        <p className="text-2xs uppercase tracking-wide text-slate-400 dark:text-gray-400">{label}</p>
-        <p className="break-words text-sm font-semibold leading-tight text-slate-800 dark:text-white">
-          {value === null || value === undefined || value === "" ? "—" : value}
-        </p>
-      </div>
-    </div>
+    <Card
+      style={{ animationDelay: `${Math.min(index, 8) * 40}ms`, animationFillMode: "backwards" }}
+      className="relative overflow-hidden border border-slate-200/60 bg-white shadow-sm dark:border-white/10 dark:bg-white/10 dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:border-pba-teal/30 flex flex-col h-full rounded-xl animate-in fade-in slide-in-from-bottom-1 duration-300"
+    >
+      <div
+        className={`absolute top-0 left-0 right-0 h-1 ${
+          isClosedOrContext ? "bg-red-500" : "bg-gradient-to-r from-pba-pink via-pba-teal to-pba-blue"
+        }`}
+      />
+
+      <CardHeader className="pb-3 pt-5 flex-shrink-0">
+        <div className="mb-2 flex items-start justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <div
+              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${
+                isOrganismo
+                  ? "bg-indigo-500/10 border-indigo-500/20"
+                  : isGovernmentBuilding
+                    ? "bg-amber-500/10 border-amber-500/20"
+                    : "bg-teal-500/10 border-teal-500/20"
+              }`}
+            >
+              {isOrganismo ? (
+                <Building className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+              ) : (
+                <Building2 className={`h-4 w-4 ${isGovernmentBuilding ? "text-amber-600 dark:text-amber-400" : "text-teal-600 dark:text-teal-400"}`} />
+              )}
+            </div>
+            <div className="min-w-0">
+              <p className="text-2xs font-medium uppercase tracking-wide text-slate-400 dark:text-gray-400">
+                {isOrganismo ? "Código" : isGovernmentBuilding ? "Nivel Central" : "CUE"}
+              </p>
+              <p className="truncate text-base font-bold text-slate-800 dark:text-white">
+                {isOrganismo ? result.codigo : result.cue}
+              </p>
+            </div>
+          </div>
+          <span
+            className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-2xs font-semibold uppercase tracking-wide ${
+              isClosedOrContext
+                ? "bg-red-500/10 border-red-500/20 text-red-700 dark:text-red-400"
+                : "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-400"
+            }`}
+          >
+            <span className={`h-1 w-1 rounded-full ${isClosedOrContext ? "bg-red-500" : "bg-emerald-500"}`} />
+            {isClosedOrContext ? "" : "ACTIVA"}
+            {isClosedOrContext && <AlertTriangle className="h-2.5 w-2.5" />}
+            {isClosedOrContext && result.tipo_establecimiento}
+          </span>
+        </div>
+
+        <CardTitle className="text-lg leading-tight text-balance text-slate-800 dark:text-white min-h-[3.5rem]">
+          <span className="block">{nombrePrimary}</span>
+          {nombreSecondary && (
+            <span className="mt-0.5 block text-base font-normal text-slate-600 dark:text-gray-200">{nombreSecondary}</span>
+          )}
+        </CardTitle>
+
+        {isOrganismo ? (
+          <div className="flex flex-wrap gap-2 mt-2">
+            <Badge variant="outline" className="border-slate-300 dark:border-white/20 text-slate-700 dark:text-gray-100 text-xs">
+              {result.tipo_organizacion}
+            </Badge>
+            {isRegional && (
+              <Badge className="bg-purple-600 text-white hover:bg-purple-600/90 text-xs">
+                <Building className="h-3 w-3 mr-1" />
+                Jefatura Regional
+              </Badge>
+            )}
+            {isDistrital && (
+              <Badge className="bg-indigo-600 text-white hover:bg-indigo-600/90 text-xs">
+                <Building className="h-3 w-3 mr-1" />
+                Jefatura Distrital
+              </Badge>
+            )}
+          </div>
+        ) : (
+          <>
+            {(nivelModalidadTurno || tieneMatriculaOSecciones) && (
+              <div className="mt-2 border-t border-slate-100 dark:border-white/10 pt-2 text-xs">
+                {nivelModalidadTurno && (
+                  <p className="text-slate-600 dark:text-gray-200 leading-snug">{nivelModalidadTurno}</p>
+                )}
+                {tieneMatriculaOSecciones && (
+                  <p className="mt-0.5 flex items-center gap-3">
+                    {result.matricula !== null && result.matricula !== undefined && (
+                      <span className="font-semibold text-pba-pink">
+                        {result.matricula.toLocaleString("es-AR")}
+                        <span className="ml-1 font-normal text-slate-400 dark:text-gray-400">alumnos</span>
+                      </span>
+                    )}
+                    {result.secciones !== null && result.secciones !== undefined && (
+                      <span className="font-semibold text-violet-600 dark:text-violet-400">
+                        {result.secciones}
+                        <span className="ml-1 font-normal text-slate-400 dark:text-gray-400">secciones</span>
+                      </span>
+                    )}
+                  </p>
+                )}
+              </div>
+            )}
+            <div className="flex flex-wrap gap-2 mt-2">
+              {!isGovernmentBuilding && result.predio && (
+                <Badge variant="outline" className="border-slate-300 dark:border-white/20 text-slate-600 dark:text-gray-200 font-mono text-xs">
+                  PREDIO {result.predio}
+                </Badge>
+              )}
+              {result.fed_a_cargo && (
+                <Badge className={`${getFedBadgeColor(result.fed_a_cargo)} border text-xs`}>
+                  {formatFedDisplay(result.fed_a_cargo)}
+                </Badge>
+              )}
+            </div>
+          </>
+        )}
+      </CardHeader>
+
+      <CardContent className="space-y-3 flex-1 flex flex-col justify-between">
+        <div className="space-y-2.5 text-sm">
+          <div className="flex items-start gap-2">
+            <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-pba-teal" />
+            <div className="text-slate-700 dark:text-gray-100 leading-snug">
+              <div className="font-medium">{result.distrito}</div>
+              <div className="text-xs text-slate-600 dark:text-gray-200">{result.ciudad}</div>
+              {result.direccion && <div className="text-xs text-slate-600 dark:text-gray-200 mt-0.5">{result.direccion}</div>}
+            </div>
+          </div>
+
+          {tieneMasDetalles && (
+            <div className="border-t border-slate-100 dark:border-white/10 pt-2">
+              <button
+                type="button"
+                onClick={() => setExpanded((v) => !v)}
+                className="flex w-full items-center justify-between text-2xs font-medium uppercase tracking-wide text-slate-400 dark:text-gray-400 hover:text-pba-teal"
+              >
+                {expanded ? "Ver menos" : "Ver más detalles"}
+                <ChevronDown className={`h-3.5 w-3.5 transition-transform ${expanded ? "rotate-180" : ""}`} />
+              </button>
+
+              {expanded && (
+                <div className="mt-2.5 space-y-2.5">
+                  {planTokens.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {planTokens.map(({ token, title, icon: Icon, key }) => (
+                        <Badge key={key} className={`${getPlanTokenBadgeColor(token)} border text-xs`} title={title}>
+                          <Icon className="h-3 w-3 mr-1" />
+                          {token}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+
+                  {tienePredioCompartido && (
+                    <div className="rounded-md border border-amber-400/40 bg-amber-50 dark:border-amber-500/30 dark:bg-amber-500/10 px-2.5 py-2">
+                      <div className="mb-1.5 flex items-start gap-1.5 text-amber-800 dark:text-amber-300">
+                        <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
+                        <span className="text-2xs font-medium leading-tight">
+                          Comparte predio con{" "}
+                          {result.sharedWith!.length === 1 ? "otro establecimiento" : "otros establecimientos"}:
+                        </span>
+                      </div>
+                      <div className="space-y-1 pl-5">
+                        {result.sharedWith!.map((sibling) => (
+                          <button
+                            key={sibling.id}
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              router.push(`/establecimientos/${sibling.id}`)
+                            }}
+                            className="block w-full rounded border border-amber-300/70 bg-white px-2 py-1 text-left transition-colors hover:border-amber-500 hover:bg-amber-100/60"
+                          >
+                            <span className="line-clamp-2 text-2xs font-semibold leading-snug text-amber-900 underline">
+                              {sibling.nombre}
+                            </span>
+                            <span className="mt-0.5 block text-2xs text-amber-700 dark:text-amber-400">CUE {sibling.cue}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {isOrganismo ? (
+                    tieneContacto && (
+                      <div className="space-y-1.5 pt-1 border-t border-slate-200 dark:border-white/20">
+                        <div className="text-xs font-medium text-slate-500 dark:text-gray-300 uppercase tracking-wide">Contacto</div>
+                        {(result.contacto_nombre || result.contacto_apellido) && (
+                          <div className="flex items-start gap-1.5">
+                            <User className="h-3.5 w-3.5 text-pba-blue mt-0.5 shrink-0" />
+                            <div className="text-sm text-slate-700 dark:text-gray-100 font-medium">
+                              {result.contacto_nombre} {result.contacto_apellido}
+                              {result.contacto_cargo && (
+                                <span className="text-xs text-slate-500 dark:text-gray-300 font-normal ml-1">
+                                  ({result.contacto_cargo})
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                        {result.telefono && (
+                          <div className="flex items-center gap-1.5 text-xs text-slate-600 dark:text-gray-200">
+                            <Phone className="h-3 w-3" />
+                            {result.telefono}
+                          </div>
+                        )}
+                        {result.email && (
+                          <div className="flex items-center gap-1.5 text-xs text-slate-600 dark:text-gray-200">
+                            <Mail className="h-3 w-3" />
+                            {result.email}
+                          </div>
+                        )}
+                      </div>
+                    )
+                  ) : (
+                    tieneContacto && (
+                      <div className="border-t border-slate-100 dark:border-white/10 pt-2.5">
+                        <p className="mb-1.5 text-2xs font-medium uppercase tracking-wide text-slate-400 dark:text-gray-400">
+                          Contacto
+                        </p>
+                        <div className="flex items-start gap-2 rounded-lg border border-slate-100 dark:border-white/10 bg-slate-50/60 dark:bg-white/5 p-2">
+                          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-pba-blue/10">
+                            <User className="h-3.5 w-3.5 text-pba-blue" />
+                          </div>
+                          <div className="min-w-0 space-y-0.5">
+                            {(primaryContact?.nombre || primaryContact?.apellido) && (
+                              <p className="truncate text-sm font-semibold leading-tight text-slate-800 dark:text-white">
+                                {[primaryContact?.nombre, primaryContact?.apellido].filter(Boolean).join(" ")}
+                              </p>
+                            )}
+                            {primaryContact?.cargo && (
+                              <p className="truncate text-xs text-slate-500 dark:text-gray-300">{primaryContact.cargo}</p>
+                            )}
+                            {primaryContact?.telefono && (
+                              <p className="flex items-center gap-1 text-xs text-slate-600 dark:text-gray-200">
+                                <Phone className="h-3 w-3 shrink-0" />
+                                <span className="truncate">{primaryContact.telefono}</span>
+                              </p>
+                            )}
+                            {primaryContact?.correo && (
+                              <p className="flex items-center gap-1 text-xs text-slate-600 dark:text-gray-200">
+                                <Mail className="h-3 w-3 shrink-0" />
+                                <span className="truncate">{primaryContact.correo}</span>
+                              </p>
+                            )}
+                            {primaryContact?.correo_laboral && (
+                              <p className="flex items-center gap-1 text-xs text-slate-600 dark:text-gray-200" title="Correo laboral personal">
+                                <Mail className="h-3 w-3 shrink-0 text-pba-teal" />
+                                <span className="truncate">{primaryContact.correo_laboral}</span>
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div className="pt-3 space-y-2">
+          <Button
+            onClick={() => {
+              const route = isOrganismo ? `/organismos/${result.id}` : `/establecimientos/${result.id}`
+              router.push(route)
+            }}
+            className="w-full bg-gradient-to-r from-pba-teal to-pba-blue hover:from-pba-teal/90 hover:to-pba-blue/90 text-white shadow-sm"
+            size="sm"
+          >
+            Ver detalles
+          </Button>
+          {hasMapCoordinates(result) && (
+            <Button
+              onClick={() => onShowMap(result.id)}
+              variant="outline"
+              className="w-full border-pba-blue/30 text-pba-blue hover:bg-pba-blue/10 hover:text-pba-blue"
+              size="sm"
+            >
+              <MapPin className="h-4 w-4 mr-1.5" />
+              Ver ubicación
+            </Button>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   )
 }
+
 
 export function SearchResults({ results, isSearching }: { results: SearchResult[]; isSearching: boolean }) {
   const router = useRouter()
@@ -172,313 +476,16 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
         </Button>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {results.slice(0, visibleCount).map((result, index) => {
-          const isOrganismo = result.entity_type === "organismo"
-          const primaryContact = result.contactos?.[0]
-          const isGovernmentBuilding = result.es_establecimiento_educativo === false
-          const isClosedOrContext =
-            result.tipo_establecimiento === "Escuela cerrada" || result.tipo_establecimiento === "Contexto de encierro"
-          const isRegional = result.subtipo_organizacion === "Jefatura Regional"
-          const isDistrital = result.subtipo_organizacion === "Jefatura Distrital"
-          const { primary: nombrePrimary, secondary: nombreSecondary } = splitEstablishmentName(result.nombre)
-
-          return (
-            <Card
-              key={result.id}
-              style={{ animationDelay: `${Math.min(index, 8) * 40}ms`, animationFillMode: "backwards" }}
-              className="relative overflow-hidden border border-slate-200/60 bg-white shadow-sm dark:border-white/10 dark:bg-white/10 dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:border-pba-teal/30 flex flex-col h-full rounded-xl animate-in fade-in slide-in-from-bottom-1 duration-300"
-            >
-              <div
-                className={`absolute top-0 left-0 right-0 h-1 ${
-                  isClosedOrContext ? "bg-red-500" : "bg-gradient-to-r from-pba-pink via-pba-teal to-pba-blue"
-                }`}
-              />
-
-              <CardHeader className="pb-3 pt-5 flex-shrink-0">
-                <div className="mb-2 flex items-start justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <div
-                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border ${
-                        isOrganismo
-                          ? "bg-indigo-500/10 border-indigo-500/20"
-                          : isGovernmentBuilding
-                            ? "bg-amber-500/10 border-amber-500/20"
-                            : "bg-teal-500/10 border-teal-500/20"
-                      }`}
-                    >
-                      {isOrganismo ? (
-                        <Building className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
-                      ) : (
-                        <Building2 className={`h-4 w-4 ${isGovernmentBuilding ? "text-amber-600 dark:text-amber-400" : "text-teal-600 dark:text-teal-400"}`} />
-                      )}
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-2xs font-medium uppercase tracking-wide text-slate-400 dark:text-gray-400">
-                        {isOrganismo ? "Código" : isGovernmentBuilding ? "Nivel Central" : "CUE"}
-                      </p>
-                      <p className="truncate text-base font-bold text-slate-800 dark:text-white">
-                        {isOrganismo ? result.codigo : result.cue}
-                      </p>
-                    </div>
-                  </div>
-                  <span
-                    className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-2xs font-semibold uppercase tracking-wide ${
-                      isClosedOrContext
-                        ? "bg-red-500/10 border-red-500/20 text-red-700 dark:text-red-400"
-                        : "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-400"
-                    }`}
-                  >
-                    <span className={`h-1 w-1 rounded-full ${isClosedOrContext ? "bg-red-500" : "bg-emerald-500"}`} />
-                    {isClosedOrContext ? "" : "ACTIVA"}
-                    {isClosedOrContext && <AlertTriangle className="h-2.5 w-2.5" />}
-                    {isClosedOrContext && result.tipo_establecimiento}
-                  </span>
-                </div>
-
-                <CardTitle className="text-lg leading-tight text-balance text-slate-800 dark:text-white min-h-[3.5rem]">
-                  <span className="block">{nombrePrimary}</span>
-                  {nombreSecondary && (
-                    <span className="mt-0.5 block text-base font-normal text-slate-600 dark:text-gray-200">{nombreSecondary}</span>
-                  )}
-                </CardTitle>
-
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {isOrganismo ? (
-                    <>
-                      <Badge variant="outline" className="border-slate-300 dark:border-white/20 text-slate-700 dark:text-gray-100 text-xs">
-                        {result.tipo_organizacion}
-                      </Badge>
-                      {isRegional && (
-                        <Badge className="bg-purple-600 text-white hover:bg-purple-600/90 text-xs">
-                          <Building className="h-3 w-3 mr-1" />
-                          Jefatura Regional
-                        </Badge>
-                      )}
-                      {isDistrital && (
-                        <Badge className="bg-indigo-600 text-white hover:bg-indigo-600/90 text-xs">
-                          <Building className="h-3 w-3 mr-1" />
-                          Jefatura Distrital
-                        </Badge>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      {!isGovernmentBuilding && result.predio && (
-                        <Badge variant="outline" className="border-slate-300 dark:border-white/20 text-slate-600 dark:text-gray-200 font-mono text-xs">
-                          PREDIO {result.predio}
-                        </Badge>
-                      )}
-                      {result.fed_a_cargo && (
-                        <Badge className={`${getFedBadgeColor(result.fed_a_cargo)} border text-xs`}>
-                          {formatFedDisplay(result.fed_a_cargo)}
-                        </Badge>
-                      )}
-                      {parsePlanTokens(result.plan_enlace).map((token, i) => (
-                        <Badge
-                          key={`enlace-${i}`}
-                          className={`${getPlanTokenBadgeColor(token)} border text-xs`}
-                          title="Tipo de enlace"
-                        >
-                          <Wifi className="h-3 w-3 mr-1" />
-                          {token}
-                        </Badge>
-                      ))}
-                      {parsePlanTokens(result.plan_piso_tecnologico).map((token, i) => (
-                        <Badge
-                          key={`piso-${i}`}
-                          className={`${getPlanTokenBadgeColor(token)} border text-xs`}
-                          title="Piso tecnológico"
-                        >
-                          <Network className="h-3 w-3 mr-1" />
-                          {token}
-                        </Badge>
-                      ))}
-                    </>
-                  )}
-                </div>
-              </CardHeader>
-
-              {result.sharedWith && result.sharedWith.length > 0 && (
-                <div className="mx-4 mb-1 rounded-md border border-amber-400/40 bg-amber-50 dark:border-amber-500/30 dark:bg-amber-500/10 px-2.5 py-2">
-                  <div className="mb-1.5 flex items-start gap-1.5 text-amber-800 dark:text-amber-300">
-                    <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
-                    <span className="text-2xs font-medium leading-tight">
-                      Comparte predio con{" "}
-                      {result.sharedWith.length === 1 ? "otro establecimiento" : "otros establecimientos"}:
-                    </span>
-                  </div>
-                  <div className="space-y-1 pl-5">
-                    {result.sharedWith.map((sibling) => (
-                      <button
-                        key={sibling.id}
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          router.push(`/establecimientos/${sibling.id}`)
-                        }}
-                        className="block w-full rounded border border-amber-300/70 bg-white px-2 py-1 text-left transition-colors hover:border-amber-500 hover:bg-amber-100/60"
-                      >
-                        <span className="line-clamp-2 text-2xs font-semibold leading-snug text-amber-900 underline">
-                          {sibling.nombre}
-                        </span>
-                        <span className="mt-0.5 block text-2xs text-amber-700 dark:text-amber-400">CUE {sibling.cue}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <CardContent className="space-y-3 flex-1 flex flex-col justify-between">
-                <div className="space-y-2.5 text-sm">
-                  <div className="space-y-1">
-                    <div className="flex items-start gap-2">
-                      <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-pba-teal" />
-                      <div className="text-slate-700 dark:text-gray-100 leading-snug">
-                        <div className="font-medium">{result.distrito}</div>
-                        <div className="text-xs text-slate-600 dark:text-gray-200">{result.ciudad}</div>
-                        {result.direccion && <div className="text-xs text-slate-600 dark:text-gray-200 mt-0.5">{result.direccion}</div>}
-                      </div>
-                    </div>
-                  </div>
-
-                  {!isOrganismo && !isGovernmentBuilding && (
-                    <div className="grid grid-cols-2 gap-2 border-t border-slate-100 dark:border-white/10 pt-2.5">
-                      <StatTileCompact icon={Users} label="Nivel" value={result.nivel} iconColor="text-teal-600 dark:text-teal-400" iconBg="bg-teal-500/10 border border-teal-500/20" />
-                      <StatTileCompact
-                        icon={GraduationCap}
-                        label="Modalidad"
-                        value={result.modalidad}
-                        iconColor="text-indigo-600 dark:text-indigo-400"
-                        iconBg="bg-indigo-500/10 border border-indigo-500/20"
-                      />
-                      <StatTileCompact
-                        icon={User}
-                        label="Matrícula"
-                        value={
-                          result.matricula !== null && result.matricula !== undefined
-                            ? result.matricula.toLocaleString("es-AR")
-                            : null
-                        }
-                        iconColor="text-pba-pink"
-                        iconBg="bg-pba-pink/10 border border-pba-pink/25"
-                      />
-                      <StatTileCompact icon={Layers} label="Secciones" value={result.secciones} iconColor="text-violet-600 dark:text-violet-400" iconBg="bg-violet-500/10 border border-violet-500/20" />
-                      <StatTileCompact
-                        icon={Calendar}
-                        label="Turno"
-                        value={formatTurno(result.turnos)}
-                        iconColor="text-pba-blue"
-                        iconBg="bg-pba-blue/10 border border-pba-blue/25"
-                        className="col-span-2"
-                      />
-                    </div>
-                  )}
-
-                  {isOrganismo ? (
-                    <div className="space-y-1.5 pt-1 border-t border-slate-200 dark:border-white/20">
-                      <div className="text-xs font-medium text-slate-500 dark:text-gray-300 uppercase tracking-wide">Contacto</div>
-                      {(result.contacto_nombre || result.contacto_apellido) && (
-                        <div className="flex items-start gap-1.5">
-                          <User className="h-3.5 w-3.5 text-pba-blue mt-0.5 shrink-0" />
-                          <div>
-                            <div className="text-sm text-slate-700 dark:text-gray-100 font-medium">
-                              {result.contacto_nombre} {result.contacto_apellido}
-                              {result.contacto_cargo && (
-                                <span className="text-xs text-slate-500 dark:text-gray-300 font-normal ml-1">
-                                  ({result.contacto_cargo})
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                      {result.telefono && (
-                        <div className="flex items-center gap-1.5 text-xs text-slate-600 dark:text-gray-200">
-                          <Phone className="h-3 w-3" />
-                          {result.telefono}
-                        </div>
-                      )}
-                      {result.email && (
-                        <div className="flex items-center gap-1.5 text-xs text-slate-600 dark:text-gray-200">
-                          <Mail className="h-3 w-3" />
-                          {result.email}
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <>
-                      {primaryContact &&
-                        (primaryContact.nombre || primaryContact.telefono || primaryContact.correo || primaryContact.correo_laboral) && (
-                        <div className="border-t border-slate-100 dark:border-white/10 pt-2.5">
-                          <p className="mb-1.5 text-2xs font-medium uppercase tracking-wide text-slate-400 dark:text-gray-400">
-                            Contacto
-                          </p>
-                          <div className="flex items-start gap-2 rounded-lg border border-slate-100 dark:border-white/10 bg-slate-50/60 dark:border-white/10 dark:bg-white/5 p-2">
-                            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-pba-blue/10">
-                              <User className="h-3.5 w-3.5 text-pba-blue" />
-                            </div>
-                            <div className="min-w-0 space-y-0.5">
-                              {(primaryContact.nombre || primaryContact.apellido) && (
-                                <p className="truncate text-sm font-semibold leading-tight text-slate-800 dark:text-white">
-                                  {[primaryContact.nombre, primaryContact.apellido].filter(Boolean).join(" ")}
-                                </p>
-                              )}
-                              {primaryContact.cargo && (
-                                <p className="truncate text-xs text-slate-500 dark:text-gray-300">{primaryContact.cargo}</p>
-                              )}
-                              {primaryContact.telefono && (
-                                <p className="flex items-center gap-1 text-xs text-slate-600 dark:text-gray-200">
-                                  <Phone className="h-3 w-3 shrink-0" />
-                                  <span className="truncate">{primaryContact.telefono}</span>
-                                </p>
-                              )}
-                              {primaryContact.correo && (
-                                <p className="flex items-center gap-1 text-xs text-slate-600 dark:text-gray-200">
-                                  <Mail className="h-3 w-3 shrink-0" />
-                                  <span className="truncate">{primaryContact.correo}</span>
-                                </p>
-                              )}
-                              {primaryContact.correo_laboral && (
-                                <p className="flex items-center gap-1 text-xs text-slate-600 dark:text-gray-200" title="Correo laboral personal">
-                                  <Mail className="h-3 w-3 shrink-0 text-pba-teal" />
-                                  <span className="truncate">{primaryContact.correo_laboral}</span>
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </>
-                  )}
-                </div>
-
-                <div className="pt-3 space-y-2">
-                  <Button
-                    onClick={() => {
-                      const route = isOrganismo ? `/organismos/${result.id}` : `/establecimientos/${result.id}`
-                      router.push(route)
-                    }}
-                    className="w-full bg-gradient-to-r from-pba-teal to-pba-blue hover:from-pba-teal/90 hover:to-pba-blue/90 text-white shadow-sm"
-                    size="sm"
-                  >
-                    Ver detalles
-                  </Button>
-                  {hasMapCoordinates(result) && (
-                    <Button
-                      onClick={() => setMapResultId(result.id)}
-                      variant="outline"
-                      className="w-full border-pba-blue/30 text-pba-blue hover:bg-pba-blue/10 hover:text-pba-blue"
-                      size="sm"
-                    >
-                      <MapPin className="h-4 w-4 mr-1.5" />
-                      Ver ubicación
-                    </Button>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          )
-        })}
+        {results.slice(0, visibleCount).map((result, index) => (
+          <ResultCard
+            key={result.id}
+            result={result}
+            index={index}
+            router={router}
+            onShowMap={setMapResultId}
+            hasMapCoordinates={hasMapCoordinates}
+          />
+        ))}
       </div>
 
       {visibleCount < results.length && (
