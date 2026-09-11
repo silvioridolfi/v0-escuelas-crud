@@ -169,7 +169,7 @@ export function ContactTab({
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold">Contactos Registrados</h3>
             {isEditMode && !isCreating && !editingId && (
-              <Button onClick={startCreating} size="sm" className="bg-[#e81f76] hover:bg-[#c71963]">
+              <Button onClick={startCreating} size="sm" className="bg-pba-pink hover:bg-[#c71963]">
                 <Plus className="mr-2 h-4 w-4" />
                 Agregar Contacto
               </Button>
@@ -177,14 +177,14 @@ export function ContactTab({
           </div>
 
           {contactos.map((contacto) => (
-            <Card key={contacto.id} className={editingId === contacto.id ? "border-[#00AEC3]" : ""}>
+            <Card key={contacto.id} className={editingId === contacto.id ? "border-pba-teal" : ""}>
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div>
                     <CardTitle className="flex items-center gap-2 text-base">
                       {contacto.nombre} {contacto.apellido}
                       {contacto.es_principal && (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-2xs font-semibold text-amber-800">
                           <Star className="h-2.5 w-2.5 fill-amber-500 text-amber-500" />
                           Principal
                         </span>
@@ -211,7 +211,7 @@ export function ContactTab({
                         onClick={() => handleEdit(contacto)}
                         size="icon"
                         variant="ghost"
-                        className="h-8 w-8 text-[#417099]"
+                        className="h-8 w-8 text-pba-blue"
                         aria-label={`Editar contacto ${contacto.nombre || ""}`}
                       >
                         <Pencil className="h-4 w-4" />
@@ -257,7 +257,7 @@ export function ContactTab({
                   )}
                   {contacto.correo_laboral && (
                     <p>
-                      <span className="font-medium text-[#00AEC3]">Correo laboral:</span> {contacto.correo_laboral}
+                      <span className="font-medium text-pba-teal">Correo laboral:</span> {contacto.correo_laboral}
                     </p>
                   )}
                 </CardContent>
@@ -269,7 +269,7 @@ export function ContactTab({
 
       {/* Create new contact form */}
       {isCreating && (
-        <Card className="border-[#e81f76]">
+        <Card className="border-pba-pink">
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle>Nuevo Contacto</CardTitle>
@@ -304,7 +304,7 @@ export function ContactTab({
                   : "Activá el modo de edición para agregar un contacto"}
               </CardDescription>
               {isEditMode && (
-                <Button onClick={startCreating} className="bg-[#e81f76] hover:bg-[#c71963]">
+                <Button onClick={startCreating} className="bg-pba-pink hover:bg-[#c71963]">
                   <Plus className="mr-2 h-4 w-4" />
                   Crear Contacto
                 </Button>
@@ -413,7 +413,7 @@ function ContactForm({
         <Button
           onClick={onSave}
           disabled={isSaving || correoLaboralInvalido}
-          className="bg-[#00AEC3] hover:bg-[#0098ad]"
+          className="bg-pba-teal hover:bg-[#0098ad]"
         >
           {isSaving ? "Guardando..." : isEditing ? "Guardar Cambios" : "Crear Contacto"}
         </Button>

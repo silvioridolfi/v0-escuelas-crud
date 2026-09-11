@@ -20,7 +20,7 @@ const COLORS: Record<QuickFilterKey, string> = {
   contexto: "text-red-700 dark:text-red-400 bg-red-500/10 border-red-500/20 hover:bg-red-500/20",
   sin_fed: "text-amber-700 dark:text-amber-400 bg-amber-500/10 border-amber-500/20 hover:bg-amber-500/20",
   sin_contacto: "text-orange-700 dark:text-orange-400 bg-orange-500/10 border-orange-500/20 hover:bg-orange-500/20",
-  nuevos: "text-[#00AEC3] bg-[#00AEC3]/10 border-[#00AEC3]/30 hover:bg-[#00AEC3]/20",
+  nuevos: "text-pba-teal bg-pba-teal/10 border-pba-teal/30 hover:bg-pba-teal/20",
 }
 
 export function QuickFilters({
@@ -60,14 +60,14 @@ export function QuickFilters({
             type="button"
             onClick={() => handleClick(key)}
             disabled={loadingFilter === key}
-            className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEC3] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 ${
+            className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pba-teal focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 ${
               isActive ? `${COLORS[key]} ring-2 ring-offset-1` : `${COLORS[key]} opacity-80 hover:opacity-100`
             }`}
           >
             {isActive ? <X className="h-3 w-3" /> : <Icon className="h-3.5 w-3.5" />}
             {label}
             {count !== undefined && (
-              <span className="ml-0.5 rounded-full bg-white/60 dark:bg-white/10 px-1.5 text-[10px] font-semibold">
+              <span className="ml-0.5 rounded-full bg-white/60 dark:bg-white/10 px-1.5 text-2xs font-semibold">
                 {loadingFilter === key ? "…" : count}
               </span>
             )}

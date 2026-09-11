@@ -80,10 +80,10 @@ export function EstablishmentEditor({
   }
 
   const allTabsConfig = [
-    { value: "general", label: "General", icon: FileText, color: "text-[#417099]", bgColor: "bg-[#417099]/10", showForGovBuilding: true },
-    { value: "connectivity", label: "Conectividad", icon: Wifi, color: "text-[#00AEC3]", bgColor: "bg-[#00AEC3]/10", showForGovBuilding: false },
-    { value: "academic", label: "Académico", icon: GraduationCap, color: "text-[#e81f76]", bgColor: "bg-[#e81f76]/10", showForGovBuilding: false },
-    { value: "contact", label: "Contacto", icon: Users, color: "text-[#417099]", bgColor: "bg-[#417099]/10", showForGovBuilding: true },
+    { value: "general", label: "General", icon: FileText, color: "text-pba-blue", bgColor: "bg-pba-blue/10", showForGovBuilding: true },
+    { value: "connectivity", label: "Conectividad", icon: Wifi, color: "text-pba-teal", bgColor: "bg-pba-teal/10", showForGovBuilding: false },
+    { value: "academic", label: "Académico", icon: GraduationCap, color: "text-pba-pink", bgColor: "bg-pba-pink/10", showForGovBuilding: false },
+    { value: "contact", label: "Contacto", icon: Users, color: "text-pba-blue", bgColor: "bg-pba-blue/10", showForGovBuilding: true },
     { value: "location", label: "Ubicación", icon: MapPin, color: "text-emerald-600", bgColor: "bg-emerald-50", showForGovBuilding: true },
     { value: "observations", label: "Observaciones", icon: FileWarning, color: "text-amber-600", bgColor: "bg-amber-50", showForGovBuilding: true },
     { value: "historial", label: "Historial", icon: History, color: "text-violet-600", bgColor: "bg-violet-50", showForGovBuilding: true },
@@ -103,7 +103,7 @@ export function EstablishmentEditor({
             aria-selected={isActive}
             aria-controls={`panel-${tab.value}`}
             onClick={() => setActiveTab(tab.value)}
-            className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2.5 text-xs font-medium transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEC3] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 ${
+            className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2.5 text-xs font-medium transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pba-teal focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 ${
               isActive ? `${tab.color} ${tab.bgColor}` : "text-slate-400 hover:bg-slate-50 hover:text-slate-600"
             }`}
           >
@@ -118,7 +118,7 @@ export function EstablishmentEditor({
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       {/* Header */}
-      <header className="border-b border-blue-200 bg-gradient-to-r from-[#417099] to-[#00AEC3] shadow-lg">
+      <header className="border-b border-blue-200 bg-gradient-to-r from-pba-blue to-pba-teal shadow-lg">
         <div className="container mx-auto px-4 py-4 sm:py-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
             <div className="flex items-start gap-3 sm:items-center sm:gap-4">
@@ -160,7 +160,7 @@ export function EstablishmentEditor({
 
       <div id="main-content" className="container mx-auto px-4 py-6 sm:py-8">
         <Card className={`overflow-hidden rounded-xl border bg-white dark:bg-white/10 dark:backdrop-blur-sm shadow-sm dark:shadow-lg ${isClosedOrContext ? "border-red-200 dark:border-red-500/30" : "border-slate-200 dark:border-white/10"}`}>
-          <div className={`h-1 ${isClosedOrContext ? "bg-red-500" : "bg-gradient-to-r from-[#e81f76] via-[#00AEC3] to-[#417099]"}`} />
+          <div className={`h-1 ${isClosedOrContext ? "bg-red-500" : "bg-gradient-to-r from-pba-pink via-pba-teal to-pba-blue"}`} />
 
           <CardContent className="p-5 sm:p-6">
             <EstablishmentHero establecimiento={establecimiento} centerSlot={tabNav} />

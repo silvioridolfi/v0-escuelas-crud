@@ -19,7 +19,7 @@ const GeneralMap = dynamic(() => import("@/components/general-map").then((mod) =
 export function MapaPageClient({ points }: { points: MapPoint[] }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
-      <header className="border-b border-blue-200 bg-gradient-to-r from-[#417099] to-[#00AEC3] shadow-lg">
+      <header className="border-b border-blue-200 bg-gradient-to-r from-pba-blue to-pba-teal shadow-lg">
         <div className="container mx-auto flex items-center justify-between gap-4 px-4 py-4 sm:py-6">
           <div className="flex items-center gap-4">
             <Link href="/">

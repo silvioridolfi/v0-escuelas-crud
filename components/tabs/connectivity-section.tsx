@@ -75,7 +75,7 @@ export function ConnectivitySection({
                 icon={Network}
                 label="Piso tecnológico"
                 value={establecimiento.plan_piso_tecnologico}
-                color="#00AEC3"
+                color="var(--color-pba-teal)"
               />
             </div>
           ) : (
@@ -86,7 +86,7 @@ export function ConnectivitySection({
             <div className={!hasPlanes ? "sm:col-span-2" : ""}>
               <div className="mb-1.5 flex items-center gap-1.5">
                 <AlertTriangle className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
-                <p className="text-[10px] font-medium uppercase tracking-wide text-amber-700 dark:text-amber-400">
+                <p className="text-2xs font-medium uppercase tracking-wide text-amber-700 dark:text-amber-400">
                   Comparte predio ({establecimiento.predio})
                 </p>
               </div>

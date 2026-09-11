@@ -38,8 +38,8 @@ export function AcademicSection({ establecimiento }: { establecimiento: Establec
             icon={Calendar}
             label="Turno"
             value={formatTurno(establecimiento.turnos)}
-            iconColor="text-[#417099]"
-            iconBg="bg-[#417099]/10 border border-[#417099]/25"
+            iconColor="text-pba-blue"
+            iconBg="bg-pba-blue/10 border border-pba-blue/25"
           />
           <StatTile
             icon={Users}
@@ -49,8 +49,8 @@ export function AcademicSection({ establecimiento }: { establecimiento: Establec
                 ? `${establecimiento.matricula.toLocaleString("es-AR")} estudiantes`
                 : null
             }
-            iconColor="text-[#e81f76]"
-            iconBg="bg-[#e81f76]/10 border border-[#e81f76]/25"
+            iconColor="text-pba-pink"
+            iconBg="bg-pba-pink/10 border border-pba-pink/25"
           />
           <StatTile
             icon={Layers}

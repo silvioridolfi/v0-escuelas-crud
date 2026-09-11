@@ -118,7 +118,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
   return (
     <>
       {/* Header */}
-      <header className="border-b border-blue-200 bg-gradient-to-r from-[#417099] to-[#00AEC3] shadow-lg">
+      <header className="border-b border-blue-200 bg-gradient-to-r from-pba-blue to-pba-teal shadow-lg">
         <div className="container mx-auto px-4 py-4 sm:py-6">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-start gap-3 sm:items-center sm:gap-4">
@@ -133,7 +133,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
               </Button>
               <div className="flex items-start gap-3 sm:items-center">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/90 shadow-md">
-                  <Building className="h-6 w-6 text-[#417099]" />
+                  <Building className="h-6 w-6 text-pba-blue" />
                 </div>
                 <div>
                   <h1 className="text-lg font-bold leading-tight text-white text-balance sm:text-2xl">
@@ -160,7 +160,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                 variant={isEditing ? "secondary" : "outline"}
                 className={
                   isEditing
-                    ? "w-full bg-white dark:bg-white/10 text-[#417099] hover:bg-white/90 shadow-md sm:w-auto"
+                    ? "w-full bg-white dark:bg-white/10 text-pba-blue hover:bg-white/90 shadow-md sm:w-auto"
                     : "w-full border-white/60 bg-white/10 text-white hover:bg-white/20 shadow-md sm:w-auto"
                 }
               >
@@ -188,7 +188,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                 <Button
                   onClick={handleSave}
                   disabled={isSaving}
-                  className="w-full bg-white/90 text-[#417099] hover:bg-white shadow-md sm:w-auto"
+                  className="w-full bg-white/90 text-pba-blue hover:bg-white shadow-md sm:w-auto"
                 >
                   <Save className="mr-2 h-4 w-4" />
                   {isSaving ? "Guardando..." : "Guardar Cambios"}
