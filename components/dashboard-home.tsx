@@ -17,6 +17,7 @@ import { SearchResults } from "@/components/search-results"
 import { SavedSearches } from "@/components/saved-searches"
 import { QuickFilters } from "@/components/quick-filters"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { NodeNetworkAccent } from "@/components/node-network-accent"
 import type { QuickFilterKey } from "@/lib/quick-filters-config"
 import { useRouter } from "next/navigation"
 import { getFedBadgeColor, formatFedDisplay } from "@/lib/badge-colors"
@@ -332,12 +333,13 @@ const metricCards = (
   return (
     <div className="flex min-h-screen flex-col bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       <header
-        className="border-b border-blue-200 shadow-lg"
+        className="relative overflow-hidden border-b border-blue-200 shadow-lg"
         style={{
           background: "linear-gradient(90deg, var(--color-pba-pink) 0%, var(--color-pba-blue) 50%, var(--color-pba-teal) 100%)",
         }}
       >
-        <div className="container mx-auto px-4 py-4 sm:py-6">
+        <NodeNetworkAccent variant="onColor" className="pointer-events-none absolute inset-0 h-full w-full" />
+        <div className="container relative mx-auto px-4 py-4 sm:py-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3 sm:gap-4">
               <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-xl shadow-md sm:h-12 sm:w-12">
@@ -530,7 +532,11 @@ const metricCards = (
         {!hasSearched && (
           <section>
             <Card className="relative overflow-hidden border-2 border-dashed border-slate-300/60 shadow-sm bg-slate-50/30 dark:border-white/20 dark:shadow-lg dark:bg-white/5 dark:backdrop-blur-sm">
-              <CardContent className="flex min-h-[300px] items-center justify-center">
+              <NodeNetworkAccent
+                variant="light"
+                className="pointer-events-none absolute inset-0 h-full w-full opacity-40 dark:opacity-20"
+              />
+              <CardContent className="relative flex min-h-[300px] items-center justify-center">
                 <div className="text-center">
                   <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-slate-100/50 border border-slate-200 dark:bg-white/10 dark:border-white/10">
                     <Search className="h-10 w-10 text-slate-400 dark:text-gray-300" />
