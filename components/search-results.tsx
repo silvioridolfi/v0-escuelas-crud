@@ -216,7 +216,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                       <p className="text-[9px] font-medium uppercase tracking-wide text-slate-400 dark:text-gray-400">
                         {isOrganismo ? "Código" : isGovernmentBuilding ? "Nivel Central" : "CUE"}
                       </p>
-                      <p className="truncate text-sm font-bold text-slate-800 dark:text-white">
+                      <p className="truncate text-base font-bold text-slate-800 dark:text-white">
                         {isOrganismo ? result.codigo : result.cue}
                       </p>
                     </div>
@@ -235,10 +235,10 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                   </span>
                 </div>
 
-                <CardTitle className="text-base leading-tight text-balance text-slate-800 dark:text-white min-h-[3rem]">
+                <CardTitle className="text-lg leading-tight text-balance text-slate-800 dark:text-white min-h-[3.5rem]">
                   <span className="block">{nombrePrimary}</span>
                   {nombreSecondary && (
-                    <span className="mt-0.5 block text-sm font-normal text-slate-600 dark:text-gray-200">{nombreSecondary}</span>
+                    <span className="mt-0.5 block text-base font-normal text-slate-600 dark:text-gray-200">{nombreSecondary}</span>
                   )}
                 </CardTitle>
 
