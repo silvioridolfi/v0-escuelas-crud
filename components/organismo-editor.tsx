@@ -160,7 +160,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                 variant={isEditing ? "secondary" : "outline"}
                 className={
                   isEditing
-                    ? "w-full bg-white dark:bg-white/10 text-pba-blue hover:bg-white/90 shadow-md sm:w-auto"
+                    ? "w-full bg-white dark:bg-card text-pba-blue hover:bg-white/90 shadow-md sm:w-auto"
                     : "w-full border-white/60 bg-white/10 text-white hover:bg-white/20 shadow-md sm:w-auto"
                 }
               >
@@ -220,7 +220,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                       onChange={(e) => setFormData({ ...formData, codigo: e.target.value })}
                       placeholder="Ej: jr01, jd001, jd113"
                       disabled
-                      className="bg-slate-50 dark:bg-white/5"
+                      className="bg-slate-50 dark:bg-surface-subtle"
                     />
                     <p className="text-xs text-muted-foreground">
                       Código único de identificación provincial (no editable)
@@ -229,7 +229,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
 
                   <div className="space-y-2">
                     <Label htmlFor="tipo">Tipo de Organismo</Label>
-                    <Input id="tipo" value="Organismo Descentralizado" disabled className="bg-slate-50 dark:bg-white/5" />
+                    <Input id="tipo" value="Organismo Descentralizado" disabled className="bg-slate-50 dark:bg-surface-subtle" />
                     <p className="text-xs text-muted-foreground">Campo fijo para este tipo de entidad</p>
                   </div>
 

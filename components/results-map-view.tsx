@@ -47,14 +47,23 @@ export function ResultsMapView({ results }: { results: SearchResult[] }) {
 
   if (points.length === 0) {
     return (
-      <div className="flex h-[400px] items-center justify-center rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-sm text-slate-500 dark:text-gray-300">
+      <div className="flex h-[400px] items-center justify-center rounded-lg border border-slate-200 dark:border-border bg-slate-50 dark:bg-surface-subtle text-sm text-slate-500 dark:text-gray-300">
         Ninguno de estos resultados tiene ubicación cargada todavía.
       </div>
     )
   }
 
+  const sinUbicacion = results.length - points.length
+
   return (
-    <div className="h-[60vh] w-full overflow-hidden rounded-lg border border-slate-200 dark:border-white/10 shadow-sm">
+    <div className="space-y-2">
+      {sinUbicacion > 0 && (
+        <p className="rounded-md border border-amber-400/40 bg-amber-500/10 px-3 py-2 text-xs text-amber-800 dark:text-amber-300">
+          Mostrando {points.length} de {results.length} resultados en el mapa — {sinUbicacion}{" "}
+          {sinUbicacion === 1 ? "no tiene" : "no tienen"} ubicación cargada todavía.
+        </p>
+      )}
+      <div className="h-[60vh] w-full overflow-hidden rounded-lg border border-slate-200 dark:border-border shadow-sm">
       <MapContainer center={DEFAULT_CENTER} zoom={11} scrollWheelZoom style={{ height: "100%", width: "100%" }} className="z-0">
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -85,6 +94,7 @@ export function ResultsMapView({ results }: { results: SearchResult[] }) {
           )
         })}
       </MapContainer>
+      </div>
     </div>
   )
 }

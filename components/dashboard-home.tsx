@@ -214,7 +214,7 @@ const metricCards = (
       setOpenDialog("fed")
     }
   }}
-  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm dark:border-white/10 dark:bg-white/10 dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pba-teal lg:min-w-0 lg:shrink"
+  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm dark:border-border dark:bg-card dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pba-teal lg:min-w-0 lg:shrink"
 >
   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pba-teal to-pba-blue" />
   <CardHeader className="pb-3">
@@ -246,7 +246,7 @@ const metricCards = (
       handleOpenOrganismos()
     }
   }}
-  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm dark:border-white/10 dark:bg-white/10 dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6366f1] lg:min-w-0 lg:shrink"
+  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm dark:border-border dark:bg-card dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6366f1] lg:min-w-0 lg:shrink"
 >
   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#6366f1] to-[#8b5cf6]" />
   <CardHeader className="pb-3">
@@ -276,7 +276,7 @@ const metricCards = (
       setOpenDialog("distritos")
     }
   }}
-  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm dark:border-white/10 dark:bg-white/10 dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pba-blue lg:min-w-0 lg:shrink"
+  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm dark:border-border dark:bg-card dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pba-blue lg:min-w-0 lg:shrink"
 >
   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pba-blue to-pba-teal" />
   <CardHeader className="pb-3">
@@ -306,7 +306,7 @@ const metricCards = (
       setOpenDialog("matricula")
     }
   }}
-  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm dark:border-white/10 dark:bg-white/10 dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pba-pink lg:min-w-0 lg:shrink"
+  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm dark:border-border dark:bg-card dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pba-pink lg:min-w-0 lg:shrink"
 >
   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pba-pink to-pba-blue" />
   <CardHeader className="pb-3">
@@ -373,7 +373,7 @@ const metricCards = (
       </header>
 
       {/* HERO: buscador a todo el ancho, debajo del header */}
-      <div className="border-b border-slate-200 dark:border-white/10 bg-slate-50/50 dark:bg-white/5 backdrop-blur-sm">
+      <div className="border-b border-slate-200 dark:border-border bg-slate-50/50 dark:bg-surface-subtle backdrop-blur-sm">
         <div className={`container mx-auto px-4 transition-all duration-500 ease-in-out ${hasSearched ? "py-3 sm:py-4" : "py-6 sm:py-8"}`}>
           <div
             className={`flex flex-wrap items-end justify-between gap-3 transition-all duration-500 ease-in-out overflow-hidden ${
@@ -386,7 +386,7 @@ const metricCards = (
               <p className="mt-1 text-xs text-slate-400 dark:text-gray-300">Datos actualizados según Mapa Escolar</p>
             </div>
             <Link href="/mapa">
-              <Button variant="outline" size="sm" className="gap-1.5 border-slate-300 dark:border-white/20 text-slate-600 dark:text-gray-100 hover:border-pba-teal/50 hover:text-pba-teal">
+              <Button variant="outline" size="sm" className="gap-1.5 border-slate-300 dark:border-border-strong text-slate-600 dark:text-gray-100 hover:border-pba-teal/50 hover:text-pba-teal">
                 <Map className="h-4 w-4" />
                 Ver mapa general
               </Button>
@@ -400,7 +400,7 @@ const metricCards = (
               onClick={() => setQuickFiltersOpen((v) => !v)}
               aria-expanded={quickFiltersOpen}
               aria-controls="quick-filters-panel"
-              className="mb-2 flex w-full items-center justify-between rounded-lg border border-slate-300 dark:border-white/20 bg-white dark:bg-white/10 px-3 py-2 text-sm font-medium text-slate-700 dark:text-gray-100 sm:hidden"
+              className="mb-2 flex w-full items-center justify-between rounded-lg border border-slate-300 dark:border-border-strong bg-white dark:bg-card px-3 py-2 text-sm font-medium text-slate-700 dark:text-gray-100 sm:hidden"
             >
               <span className="flex items-center gap-2">
                 <SlidersHorizontal className="h-4 w-4 text-pba-teal" />
@@ -428,9 +428,9 @@ const metricCards = (
             </div>
           </div>
 
-          <Card className="relative overflow-hidden rounded-xl border border-slate-200/60 shadow-sm bg-white dark:border-white/10 dark:shadow-lg dark:bg-white/10 dark:backdrop-blur-sm">
+          <Card className="relative overflow-hidden rounded-xl border border-slate-200/60 shadow-sm bg-white dark:border-border dark:shadow-lg dark:bg-card dark:backdrop-blur-sm">
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pba-teal to-pba-pink" />
-            <CardContent className="pt-6 pb-6 bg-slate-50/50 dark:bg-white/5">
+            <CardContent className="pt-6 pb-6 bg-slate-50/50 dark:bg-surface-subtle">
               <div className="flex flex-col gap-2 sm:flex-row">
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400 dark:text-gray-300" />
@@ -442,11 +442,11 @@ const metricCards = (
                     value={searchTerm}
                     onChange={handleInputChange}
                     onKeyPress={handleKeyPress}
-                    className="pl-10 pr-14 text-base border-slate-300 bg-white shadow-sm dark:border-white/20 dark:bg-white/10"
+                    className="pl-10 pr-14 text-base border-slate-300 bg-white shadow-sm dark:border-border-strong dark:bg-card"
                     disabled={isSearching}
                   />
                   {mounted && !searchTerm && (
-                    <kbd className="pointer-events-none absolute right-3 top-1/2 hidden -translate-y-1/2 rounded border border-slate-300 dark:border-white/20 bg-slate-50 dark:bg-white/10 px-1.5 py-0.5 text-2xs font-medium text-slate-400 dark:text-gray-400 sm:inline-block">
+                    <kbd className="pointer-events-none absolute right-3 top-1/2 hidden -translate-y-1/2 rounded border border-slate-300 dark:border-border-strong bg-slate-50 dark:bg-card px-1.5 py-0.5 text-2xs font-medium text-slate-400 dark:text-gray-400 sm:inline-block">
                       {isMac ? "⌘K" : "Ctrl+K"}
                     </kbd>
                   )}
@@ -463,7 +463,7 @@ const metricCards = (
                     <Button
                       onClick={handleClearSearch}
                       variant="outline"
-                      className="flex-1 border-slate-300 dark:border-white/20 hover:bg-slate-100 shadow-sm bg-transparent sm:flex-none"
+                      className="flex-1 border-slate-300 dark:border-border-strong hover:bg-slate-100 shadow-sm bg-transparent sm:flex-none"
                     >
                       Limpiar
                     </Button>
@@ -492,7 +492,7 @@ const metricCards = (
         >
           {/* Mobile: fila horizontal scrolleable, colapsable */}
           <div className="lg:hidden">
-            <Accordion type="single" collapsible className="rounded-xl border border-slate-200/60 bg-white px-4 shadow-sm dark:border-white/10 dark:bg-white/10 dark:backdrop-blur-sm dark:shadow-lg">
+            <Accordion type="single" collapsible className="rounded-xl border border-slate-200/60 bg-white px-4 shadow-sm dark:border-border dark:bg-card dark:backdrop-blur-sm dark:shadow-lg">
               <AccordionItem value="metrics" className="border-b-0">
                 <AccordionTrigger className="hover:no-underline">
                   <div className="text-left">
@@ -508,7 +508,7 @@ const metricCards = (
           </div>
 
           {/* Desktop: siempre visibles, apiladas verticalmente */}
-          <div className="hidden rounded-xl border border-slate-200/60 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-white/10 dark:backdrop-blur-sm dark:shadow-lg lg:block">
+          <div className="hidden rounded-xl border border-slate-200/60 bg-white p-4 shadow-sm dark:border-border dark:bg-card dark:backdrop-blur-sm dark:shadow-lg lg:block">
             <div className="mb-4">
               <h2 className="text-lg font-semibold text-pba-blue">Métricas Generales</h2>
               <p className="text-sm text-slate-600 dark:text-gray-100">Resumen estadístico del sistema</p>
@@ -531,14 +531,14 @@ const metricCards = (
 
         {!hasSearched && (
           <section>
-            <Card className="relative overflow-hidden border-2 border-dashed border-slate-300/60 shadow-sm bg-slate-50/30 dark:border-white/20 dark:shadow-lg dark:bg-white/5 dark:backdrop-blur-sm">
+            <Card className="relative overflow-hidden border-2 border-dashed border-slate-300/60 shadow-sm bg-slate-50/30 dark:border-border-strong dark:shadow-lg dark:bg-surface-subtle dark:backdrop-blur-sm">
               <NodeNetworkAccent
                 variant="light"
                 className="pointer-events-none absolute inset-0 h-full w-full opacity-40 dark:opacity-20"
               />
               <CardContent className="relative flex min-h-[300px] items-center justify-center">
                 <div className="text-center">
-                  <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-slate-100/50 border border-slate-200 dark:bg-white/10 dark:border-white/10">
+                  <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-slate-100/50 border border-slate-200 dark:bg-card dark:border-border">
                     <Search className="h-10 w-10 text-slate-400 dark:text-gray-300" />
                   </div>
                   <p className="text-lg font-medium text-slate-700 dark:text-gray-100">Buscar establecimientos</p>
@@ -576,7 +576,7 @@ const metricCards = (
                 return (
                   <div
                     key={item.fed}
-                    className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-md border border-slate-200 dark:border-white/10 bg-slate-50/50 dark:bg-white/5 px-3 py-2.5"
+                    className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-md border border-slate-200 dark:border-border bg-slate-50/50 dark:bg-surface-subtle px-3 py-2.5"
                   >
                     {rowContent}
                   </div>
@@ -591,7 +591,7 @@ const metricCards = (
                     setSearchTerm(item.fed)
                     handleSearch(item.fed)
                   }}
-                  className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-md border border-slate-200 dark:border-white/10 bg-slate-50/50 dark:bg-white/5 px-3 py-2.5 text-left transition-colors hover:border-pba-blue/40 hover:bg-slate-100"
+                  className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-md border border-slate-200 dark:border-border bg-slate-50/50 dark:bg-surface-subtle px-3 py-2.5 text-left transition-colors hover:border-pba-blue/40 hover:bg-slate-100"
                 >
                   {rowContent}
                 </button>
@@ -635,7 +635,7 @@ const metricCards = (
                   setSearchTerm(item.distrito)
                   handleSearch(item.distrito)
                 }}
-                className="flex w-full items-center justify-between gap-3 rounded-md border border-slate-200 dark:border-white/10 bg-slate-50/50 dark:bg-white/5 px-3 py-2 text-left transition-colors hover:border-pba-teal/40 hover:bg-slate-100"
+                className="flex w-full items-center justify-between gap-3 rounded-md border border-slate-200 dark:border-border bg-slate-50/50 dark:bg-surface-subtle px-3 py-2 text-left transition-colors hover:border-pba-teal/40 hover:bg-slate-100"
               >
                 <span className="text-sm font-medium text-slate-700 dark:text-gray-100">{item.distrito}</span>
                 <span className="text-sm font-semibold text-pba-blue">
@@ -654,7 +654,7 @@ const metricCards = (
             <DialogDescription>Distribución de la matrícula total por género</DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
-            <div className="rounded-md border border-slate-200 dark:border-white/10 bg-slate-50/50 dark:bg-white/5 px-4 py-3">
+            <div className="rounded-md border border-slate-200 dark:border-border bg-slate-50/50 dark:bg-surface-subtle px-4 py-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-slate-700 dark:text-gray-100">Varones</span>
                 <span className="text-lg font-bold text-pba-blue">
@@ -666,7 +666,7 @@ const metricCards = (
               </div>
               <p className="mt-1 text-xs text-slate-400 dark:text-gray-300">{varonesPct.toFixed(1)}% del total</p>
             </div>
-            <div className="rounded-md border border-slate-200 dark:border-white/10 bg-slate-50/50 dark:bg-white/5 px-4 py-3">
+            <div className="rounded-md border border-slate-200 dark:border-border bg-slate-50/50 dark:bg-surface-subtle px-4 py-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-slate-700 dark:text-gray-100">Mujeres</span>
                 <span className="text-lg font-bold text-pba-pink">
@@ -678,7 +678,7 @@ const metricCards = (
               </div>
               <p className="mt-1 text-xs text-slate-400 dark:text-gray-300">{mujeresPct.toFixed(1)}% del total</p>
             </div>
-            <div className="flex items-center justify-between border-t border-slate-200 dark:border-white/10 pt-3">
+            <div className="flex items-center justify-between border-t border-slate-200 dark:border-border pt-3">
               <span className="text-sm font-semibold text-slate-600 dark:text-gray-100">Total</span>
               <span className="text-sm font-bold text-slate-800 dark:text-white">
                 {matriculaGenderTotal.toLocaleString("es-AR")}

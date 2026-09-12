@@ -62,7 +62,7 @@ export function GeneralMap({ points }: { points: MapPoint[] }) {
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center gap-3">
         <Select value={distritoFilter} onValueChange={setDistritoFilter}>
-          <SelectTrigger className="w-[220px] bg-white dark:bg-white/10">
+          <SelectTrigger className="w-[220px] bg-white dark:bg-card">
             <SelectValue placeholder="Distrito" />
           </SelectTrigger>
           <SelectContent>
@@ -76,7 +76,7 @@ export function GeneralMap({ points }: { points: MapPoint[] }) {
         </Select>
 
         <Select value={fedFilter} onValueChange={setFedFilter}>
-          <SelectTrigger className="w-[220px] bg-white dark:bg-white/10">
+          <SelectTrigger className="w-[220px] bg-white dark:bg-card">
             <SelectValue placeholder="FED a cargo" />
           </SelectTrigger>
           <SelectContent>

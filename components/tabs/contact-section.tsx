@@ -30,7 +30,7 @@ export function ContactSection({
   return (
     <div className="space-y-6">
       {fedACargo && (
-        <div className="rounded-lg border border-slate-100 bg-slate-50/60 dark:border-white/10 dark:bg-white/5 p-3">
+        <div className="rounded-lg border border-slate-100 bg-slate-50/60 dark:border-border dark:bg-surface-subtle p-3">
           <p className="mb-2 text-2xs font-medium uppercase tracking-wide text-slate-400 dark:text-gray-400">FED a cargo</p>
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-pba-blue/40 bg-pba-blue/10 text-xs font-semibold text-pba-blue">

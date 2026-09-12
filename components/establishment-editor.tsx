@@ -107,7 +107,7 @@ export function EstablishmentEditor({
             className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2.5 text-xs font-medium transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pba-teal focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 ${
               isActive
                 ? `${tab.color} ${tab.bgColor}`
-                : "text-slate-400 hover:bg-slate-50 hover:text-slate-600 dark:text-gray-400 dark:hover:bg-white/10 dark:hover:text-gray-100"
+                : "text-slate-400 hover:bg-slate-50 hover:text-slate-600 dark:text-gray-400 dark:hover:bg-accent dark:hover:text-gray-100"
             }`}
           >
             <Icon className="h-4 w-4 shrink-0" />
@@ -163,13 +163,13 @@ export function EstablishmentEditor({
       </header>
 
       <div id="main-content" className="container mx-auto px-4 py-6 sm:py-8">
-        <Card className={`overflow-hidden rounded-xl border bg-white dark:bg-white/10 dark:backdrop-blur-sm shadow-sm dark:shadow-lg ${isClosedOrContext ? "border-red-200 dark:border-red-500/30" : "border-slate-200 dark:border-white/10"}`}>
+        <Card className={`overflow-hidden rounded-xl border bg-white dark:bg-card dark:backdrop-blur-sm shadow-sm dark:shadow-lg ${isClosedOrContext ? "border-red-200 dark:border-red-500/30" : "border-slate-200 dark:border-border"}`}>
           <div className={`h-1 ${isClosedOrContext ? "bg-red-500" : "bg-gradient-to-r from-pba-pink via-pba-teal to-pba-blue"}`} />
 
           <CardContent className="p-5 sm:p-6">
             <EstablishmentHero establecimiento={establecimiento} centerSlot={tabNav} />
 
-            <div className="mt-6 border-t border-slate-200 dark:border-white/10 pt-6">
+            <div className="mt-6 border-t border-slate-200 dark:border-border pt-6">
               <Tabs value={activeTab} onValueChange={setActiveTab}>
                 <TabsContent value="general" id="panel-general" role="tabpanel" className="m-0">
                   <GeneralTab establecimiento={establecimiento} isGovernmentBuilding={isGovernmentBuilding} />

@@ -11,7 +11,7 @@ import type { MapPoint } from "@/app/actions/get-map-points"
 const GeneralMap = dynamic(() => import("@/components/general-map").then((mod) => mod.GeneralMap), {
   ssr: false,
   loading: () => (
-    <div className="flex h-[70vh] items-center justify-center rounded-lg border border-slate-200 bg-slate-100 dark:bg-white/10 text-sm text-muted-foreground">
+    <div className="flex h-[70vh] items-center justify-center rounded-lg border border-slate-200 bg-slate-100 dark:bg-card text-sm text-muted-foreground">
       Cargando mapa…
     </div>
   ),
