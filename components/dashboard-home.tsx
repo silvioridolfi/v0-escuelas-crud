@@ -341,7 +341,7 @@ const metricCards = (
         <NodeNetworkAccent variant="onColor" className="pointer-events-none absolute inset-0 h-full w-full" />
         <div className="container relative mx-auto px-4 py-4 sm:py-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-3 sm:gap-4">
+            <div className="flex min-w-0 items-center gap-3 sm:gap-4">
               <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-xl shadow-md sm:h-12 sm:w-12">
                 <Image
                   src="/images/dte-region1-icono.jpg"
@@ -350,14 +350,14 @@ const metricCards = (
                   className="object-cover"
                 />
               </div>
-              <div>
+              <div className="min-w-0">
                 <h1 className="text-lg font-bold leading-tight text-white text-balance sm:text-2xl">
                   Buscador de Establecimientos Educativos
                 </h1>
                 <p className="text-sm text-white/90">Región 1</p>
               </div>
             </div>
-            <div className="flex items-center justify-end gap-3">
+            <div className="flex shrink-0 items-center justify-end gap-3">
               <ThemeToggle />
               <Button
                 onClick={() => router.push("/establecimientos/nuevo")}

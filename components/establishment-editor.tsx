@@ -135,7 +135,7 @@ export function EstablishmentEditor({
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
-              <div className="flex-1">
+              <div className="min-w-0 flex-1">
                 <h1 className="text-lg font-bold leading-tight text-white text-balance sm:text-2xl">
                   <span className="block">{nombrePrimary}</span>
                   {nombreSecondary && (
@@ -146,7 +146,7 @@ export function EstablishmentEditor({
                 </h1>
               </div>
             </div>
-            <div className="flex items-center justify-end gap-3 sm:ml-auto">
+            <div className="flex shrink-0 items-center justify-end gap-3 sm:ml-auto">
               <ThemeToggle />
               <Button
                 onClick={() => setShowDeleteDialog(true)}
