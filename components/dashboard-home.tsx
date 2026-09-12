@@ -680,7 +680,7 @@ const metricCards = (
             </div>
             <div className="flex items-center justify-between border-t border-slate-200 dark:border-white/10 pt-3">
               <span className="text-sm font-semibold text-slate-600 dark:text-gray-100">Total</span>
-              <span className="text-sm font-bold text-slate-800">
+              <span className="text-sm font-bold text-slate-800 dark:text-white">
                 {matriculaGenderTotal.toLocaleString("es-AR")}
               </span>
             </div>

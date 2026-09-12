@@ -41,7 +41,7 @@ export function LocationTab({ establecimiento }: { establecimiento: Establecimie
       </div>
 
       {hasCoordinates ? (
-        <div className="overflow-hidden rounded-lg border border-slate-200 shadow-sm" style={{ height: "420px" }}>
+        <div className="overflow-hidden rounded-lg border border-slate-200 dark:border-white/10 shadow-sm" style={{ height: "420px" }}>
           <LocationMap
             lat={establecimiento.lat as number}
             lon={establecimiento.lon as number}

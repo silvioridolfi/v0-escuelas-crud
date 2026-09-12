@@ -128,7 +128,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
           <div
             key={i}
             style={{ animationDelay: `${i * 60}ms` }}
-            className="animate-pulse rounded-xl border border-slate-200/60 bg-white p-5 shadow-sm"
+            className="animate-pulse rounded-xl border border-slate-200/60 bg-white dark:border-white/10 dark:bg-white/10 p-5 shadow-sm"
           >
             <div className="mb-3 h-4 w-20 rounded-full bg-slate-100 dark:bg-white/10" />
             <div className="mb-2 h-5 w-3/4 rounded bg-slate-200 dark:bg-white/20" />
@@ -359,9 +359,9 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                           e.stopPropagation()
                           router.push(`/establecimientos/${sibling.id}`)
                         }}
-                        className="block w-full rounded border border-amber-300/70 bg-white px-2 py-1 text-left transition-colors hover:border-amber-500 hover:bg-amber-100/60"
+                        className="block w-full rounded border border-amber-300/70 dark:border-amber-500/30 bg-white dark:bg-amber-500/10 px-2 py-1 text-left transition-colors hover:border-amber-500 hover:bg-amber-100/60 dark:hover:bg-amber-500/20"
                       >
-                        <span className="line-clamp-2 text-2xs font-semibold leading-snug text-amber-900 underline">
+                        <span className="line-clamp-2 text-2xs font-semibold leading-snug text-amber-900 dark:text-amber-300 underline">
                           {sibling.nombre}
                         </span>
                         <span className="mt-0.5 block text-2xs text-amber-700 dark:text-amber-400">CUE {sibling.cue}</span>

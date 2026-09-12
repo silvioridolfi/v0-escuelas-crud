@@ -72,10 +72,10 @@ export function ResultsMapView({ results }: { results: SearchResult[] }) {
               <Popup>
                 <div className="space-y-1 text-sm">
                   <p className="font-semibold">{p.nombre}</p>
-                  {!isOrganismo && p.cue && <p className="text-xs text-slate-500">CUE: {p.cue}</p>}
-                  {isOrganismo && p.codigo && <p className="text-xs text-slate-500">Código: {p.codigo}</p>}
-                  {p.distrito && <p className="text-xs text-slate-500">{p.distrito}</p>}
-                  {p.fed_a_cargo && <p className="text-xs text-slate-500">FED: {p.fed_a_cargo}</p>}
+                  {!isOrganismo && p.cue && <p className="text-xs text-slate-500 dark:text-gray-300">CUE: {p.cue}</p>}
+                  {isOrganismo && p.codigo && <p className="text-xs text-slate-500 dark:text-gray-300">Código: {p.codigo}</p>}
+                  {p.distrito && <p className="text-xs text-slate-500 dark:text-gray-300">{p.distrito}</p>}
+                  {p.fed_a_cargo && <p className="text-xs text-slate-500 dark:text-gray-300">FED: {p.fed_a_cargo}</p>}
                   <Link href={href} className="text-xs font-medium text-pba-teal hover:underline">
                     Ver ficha →
                   </Link>

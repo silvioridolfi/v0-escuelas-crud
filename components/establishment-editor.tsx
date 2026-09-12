@@ -105,7 +105,9 @@ export function EstablishmentEditor({
             aria-controls={`panel-${tab.value}`}
             onClick={() => setActiveTab(tab.value)}
             className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2.5 text-xs font-medium transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pba-teal focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 ${
-              isActive ? `${tab.color} ${tab.bgColor}` : "text-slate-400 hover:bg-slate-50 hover:text-slate-600"
+              isActive
+                ? `${tab.color} ${tab.bgColor}`
+                : "text-slate-400 hover:bg-slate-50 hover:text-slate-600 dark:text-gray-400 dark:hover:bg-white/10 dark:hover:text-gray-100"
             }`}
           >
             <Icon className="h-4 w-4 shrink-0" />
