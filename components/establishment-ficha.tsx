@@ -25,7 +25,7 @@ function FichaRow({
     <div className="flex items-start gap-3 py-2">
       <Icon className="mt-0.5 h-3.5 w-3.5 shrink-0 text-slate-400" />
       <div className="min-w-0">
-        <p className="text-[11px] text-slate-400">{label}</p>
+        <p className="text-2xs text-slate-400">{label}</p>
         <p className="break-words text-sm text-slate-700">{value}</p>
       </div>
     </div>
@@ -44,8 +44,8 @@ function FichaSection({
   return (
     <div className="border-t border-slate-100 pt-3 mt-3 first:mt-0 first:border-t-0 first:pt-0">
       <div className="mb-1 flex items-center gap-1.5">
-        <Icon className="h-3.5 w-3.5 text-[#00AEC3]" />
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">{title}</p>
+        <Icon className="h-3.5 w-3.5 text-pba-teal" />
+        <p className="text-2xs font-semibold uppercase tracking-wide text-slate-500">{title}</p>
       </div>
       <div className="divide-y divide-slate-50">{children}</div>
     </div>
@@ -92,8 +92,8 @@ export function EstablishmentFicha({
         }`}
       >
         <div className="mb-4 flex items-center gap-3">
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#417099]/10">
-            <Building2 className="h-5 w-5 text-[#417099]" />
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-pba-blue/10">
+            <Building2 className="h-5 w-5 text-pba-blue" />
           </div>
           <div className="min-w-0">
             <p className="text-xs font-medium uppercase tracking-wide text-slate-400">CUE</p>

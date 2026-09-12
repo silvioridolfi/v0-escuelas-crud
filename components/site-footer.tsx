@@ -5,7 +5,7 @@ export function SiteFooter() {
     <footer
       className="w-full py-3"
       style={{
-        background: "linear-gradient(90deg, #e81f76 0%, #417099 50%, #00aec3 100%)",
+        background: "linear-gradient(90deg, var(--color-pba-pink) 0%, var(--color-pba-blue) 50%, var(--color-pba-teal) 100%)",
       }}
     >
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-1 px-4">
@@ -16,7 +16,7 @@ export function SiteFooter() {
           height={142}
           className="h-auto w-full max-w-[504px] object-contain sm:max-w-[672px]"
         />
-        <p className="text-center text-[11px] text-white/80">
+        <p className="text-center text-2xs text-white/80">
           © {new Date().getFullYear()} Dirección de Tecnología Educativa (DTE), Región 1 ·
           Desarrollado por Silvio Ridolfi, Facilitador de Educación Digital
         </p>

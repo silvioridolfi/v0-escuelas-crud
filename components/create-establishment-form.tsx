@@ -130,7 +130,7 @@ export function CreateEstablishmentForm() {
   return (
     <>
       {/* Header */}
-      <header className="border-b border-blue-200 bg-gradient-to-r from-[#417099] to-[#00AEC3] shadow-lg">
+      <header className="border-b border-blue-200 bg-gradient-to-r from-pba-blue to-pba-teal shadow-lg">
         <div className="container mx-auto px-4 py-4 sm:py-6">
           <div className="flex items-start gap-3 sm:items-center sm:gap-4">
             <Button
@@ -144,7 +144,7 @@ export function CreateEstablishmentForm() {
             </Button>
             <div className="flex items-start gap-3 sm:items-center">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/90 shadow-md">
-                <Building2 className="h-6 w-6 text-[#417099]" />
+                <Building2 className="h-6 w-6 text-pba-blue" />
               </div>
               <div>
                 <h1 className="text-lg font-bold leading-tight text-white sm:text-2xl">Nueva Entidad</h1>
@@ -314,7 +314,7 @@ export function CreateEstablishmentForm() {
                     <Button type="button" variant="outline" onClick={() => router.push("/")} disabled={isSaving}>
                       Cancelar
                     </Button>
-                    <Button type="submit" disabled={isSaving} className="bg-[#e81f76] hover:bg-[#c71963]">
+                    <Button type="submit" disabled={isSaving} className="bg-pba-pink hover:bg-[#c71963]">
                       {isSaving ? "Creando..." : "Crear Establecimiento"}
                     </Button>
                   </div>
@@ -472,7 +472,7 @@ export function CreateEstablishmentForm() {
                     <Button type="button" variant="outline" onClick={() => router.push("/")} disabled={isSaving}>
                       Cancelar
                     </Button>
-                    <Button type="submit" disabled={isSaving} className="bg-[#417099] hover:bg-[#2f5570]">
+                    <Button type="submit" disabled={isSaving} className="bg-pba-blue hover:bg-[#2f5570]">
                       {isSaving ? "Creando..." : "Crear Organismo"}
                     </Button>
                   </div>

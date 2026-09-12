@@ -65,7 +65,7 @@ export function SavedSearches({
           <button
             type="button"
             onClick={() => onSelect(s.term)}
-            className="inline-flex items-center gap-1 hover:text-[#00AEC3]"
+            className="inline-flex items-center gap-1 hover:text-pba-teal"
           >
             <Bookmark className="h-3 w-3" />
             {s.name}
@@ -91,7 +91,7 @@ export function SavedSearches({
             setNewName(currentTerm.trim())
             setIsNaming(true)
           }}
-          className="h-7 gap-1.5 border-dashed border-slate-300 px-2.5 text-xs text-slate-500 dark:text-gray-300 hover:border-[#00AEC3]/50 hover:text-[#00AEC3]"
+          className="h-7 gap-1.5 border-dashed border-slate-300 px-2.5 text-xs text-slate-500 dark:text-gray-300 hover:border-pba-teal/50 hover:text-pba-teal"
         >
           <Star className="h-3 w-3" />
           Guardar búsqueda
@@ -111,7 +111,7 @@ export function SavedSearches({
             placeholder="Nombre corto..."
             className="h-7 w-40 text-xs"
           />
-          <Button type="button" size="sm" onClick={handleConfirmSave} className="h-7 bg-[#00AEC3] px-2.5 text-xs hover:bg-[#0098ad]">
+          <Button type="button" size="sm" onClick={handleConfirmSave} className="h-7 bg-pba-teal px-2.5 text-xs hover:bg-[#0098ad]">
             Guardar
           </Button>
         </div>

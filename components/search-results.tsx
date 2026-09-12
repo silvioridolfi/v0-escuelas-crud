@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Network, GraduationCap, Users, Calendar, Layers, FileSpreadsheet } from "lucide-react"
+import { Building2, MapPin, Mail, Phone, User, Building, AlertTriangle, Wifi, Network, GraduationCap, Users, Calendar, Layers, FileSpreadsheet, List, Map as MapIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { getFedBadgeColor, formatFedDisplay, formatTurno, parsePlanTokens, getPlanTokenBadgeColor } from "@/lib/badge-colors"
 import { splitEstablishmentName } from "@/lib/school-name"
@@ -67,6 +67,15 @@ const LocationMap = dynamic(() => import("@/components/tabs/location-map").then(
   ),
 })
 
+const ResultsMapView = dynamic(() => import("@/components/results-map-view").then((mod) => mod.ResultsMapView), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-[60vh] items-center justify-center rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/10 text-sm text-muted-foreground">
+      Cargando mapa…
+    </div>
+  ),
+})
+
 function StatTileCompact({
   icon: Icon,
   label,
@@ -88,7 +97,7 @@ function StatTileCompact({
         <Icon className={`h-3.5 w-3.5 ${iconColor}`} />
       </div>
       <div className="min-w-0">
-        <p className="text-[9px] uppercase tracking-wide text-slate-400 dark:text-gray-400">{label}</p>
+        <p className="text-2xs uppercase tracking-wide text-slate-400 dark:text-gray-400">{label}</p>
         <p className="break-words text-sm font-semibold leading-tight text-slate-800 dark:text-white">
           {value === null || value === undefined || value === "" ? "—" : value}
         </p>
@@ -101,6 +110,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
   const router = useRouter()
   const [mapResultId, setMapResultId] = useState<string | null>(null)
   const [visibleCount, setVisibleCount] = useState(30)
+  const [viewMode, setViewMode] = useState<"list" | "map">("list")
   const mapResult = results.find((r) => r.id === mapResultId) || null
   const hasMapCoordinates = (r: SearchResult | null) =>
     !!r && typeof r.lat === "number" && typeof r.lon === "number" && !Number.isNaN(r.lat) && !Number.isNaN(r.lon)
@@ -154,23 +164,56 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2 px-1">
         <div className="flex items-center gap-2">
-          <div className="h-1 w-1 rounded-full bg-[#00AEC3]" />
+          <div className="h-1 w-1 rounded-full bg-pba-teal" />
           <p className="text-sm font-medium text-slate-700 dark:text-gray-100">
             {results.length > visibleCount
               ? `${visibleCount} de ${results.length} resultados`
               : `${results.length} resultado${results.length !== 1 ? "s" : ""} encontrado${results.length !== 1 ? "s" : ""}`}
           </p>
         </div>
-        <Button
-          onClick={() => exportResultsToExcel(results)}
-          variant="outline"
-          size="sm"
-          className="gap-1.5 border-slate-300 dark:border-white/20 text-slate-700 dark:text-gray-100 hover:border-[#00AEC3]/50 hover:text-[#00AEC3]"
-        >
-          <FileSpreadsheet className="h-4 w-4" />
-          Exportar a Excel
-        </Button>
+        <div className="flex items-center gap-2">
+          <div className="flex rounded-lg border border-slate-300 dark:border-white/20 p-0.5">
+            <button
+              type="button"
+              onClick={() => setViewMode("list")}
+              className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                viewMode === "list"
+                  ? "bg-pba-teal text-white"
+                  : "text-slate-500 dark:text-gray-300 hover:text-pba-teal"
+              }`}
+            >
+              <List className="h-3.5 w-3.5" />
+              Lista
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode("map")}
+              className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                viewMode === "map"
+                  ? "bg-pba-teal text-white"
+                  : "text-slate-500 dark:text-gray-300 hover:text-pba-teal"
+              }`}
+            >
+              <MapIcon className="h-3.5 w-3.5" />
+              Mapa
+            </button>
+          </div>
+          <Button
+            onClick={() => exportResultsToExcel(results)}
+            variant="outline"
+            size="sm"
+            className="gap-1.5 border-slate-300 dark:border-white/20 text-slate-700 dark:text-gray-100 hover:border-pba-teal/50 hover:text-pba-teal"
+          >
+            <FileSpreadsheet className="h-4 w-4" />
+            Exportar a Excel
+          </Button>
+        </div>
       </div>
+
+      {viewMode === "map" ? (
+        <ResultsMapView results={results} />
+      ) : (
+        <>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {results.slice(0, visibleCount).map((result, index) => {
           const isOrganismo = result.entity_type === "organismo"
@@ -186,11 +229,11 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
             <Card
               key={result.id}
               style={{ animationDelay: `${Math.min(index, 8) * 40}ms`, animationFillMode: "backwards" }}
-              className="relative overflow-hidden border border-slate-200/60 bg-white shadow-sm dark:border-white/10 dark:bg-white/10 dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:border-[#00AEC3]/30 flex flex-col h-full rounded-xl animate-in fade-in slide-in-from-bottom-1 duration-300"
+              className="relative overflow-hidden border border-slate-200/60 bg-white shadow-sm dark:border-white/10 dark:bg-white/10 dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:border-pba-teal/30 flex flex-col h-full rounded-xl animate-in fade-in slide-in-from-bottom-1 duration-300"
             >
               <div
                 className={`absolute top-0 left-0 right-0 h-1 ${
-                  isClosedOrContext ? "bg-red-500" : "bg-gradient-to-r from-[#e81f76] via-[#00AEC3] to-[#417099]"
+                  isClosedOrContext ? "bg-red-500" : "bg-gradient-to-r from-pba-pink via-pba-teal to-pba-blue"
                 }`}
               />
 
@@ -213,7 +256,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                       )}
                     </div>
                     <div className="min-w-0">
-                      <p className="text-[9px] font-medium uppercase tracking-wide text-slate-400 dark:text-gray-400">
+                      <p className="text-2xs font-medium uppercase tracking-wide text-slate-400 dark:text-gray-400">
                         {isOrganismo ? "Código" : isGovernmentBuilding ? "Nivel Central" : "CUE"}
                       </p>
                       <p className="truncate text-base font-bold text-slate-800 dark:text-white">
@@ -222,7 +265,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                     </div>
                   </div>
                   <span
-                    className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide ${
+                    className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-2xs font-semibold uppercase tracking-wide ${
                       isClosedOrContext
                         ? "bg-red-500/10 border-red-500/20 text-red-700 dark:text-red-400"
                         : "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-400"
@@ -302,7 +345,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                 <div className="mx-4 mb-1 rounded-md border border-amber-400/40 bg-amber-50 dark:border-amber-500/30 dark:bg-amber-500/10 px-2.5 py-2">
                   <div className="mb-1.5 flex items-start gap-1.5 text-amber-800 dark:text-amber-300">
                     <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
-                    <span className="text-[11px] font-medium leading-tight">
+                    <span className="text-2xs font-medium leading-tight">
                       Comparte predio con{" "}
                       {result.sharedWith.length === 1 ? "otro establecimiento" : "otros establecimientos"}:
                     </span>
@@ -318,10 +361,10 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                         }}
                         className="block w-full rounded border border-amber-300/70 bg-white px-2 py-1 text-left transition-colors hover:border-amber-500 hover:bg-amber-100/60"
                       >
-                        <span className="line-clamp-2 text-[11px] font-semibold leading-snug text-amber-900 underline">
+                        <span className="line-clamp-2 text-2xs font-semibold leading-snug text-amber-900 underline">
                           {sibling.nombre}
                         </span>
-                        <span className="mt-0.5 block text-[10px] text-amber-700 dark:text-amber-400">CUE {sibling.cue}</span>
+                        <span className="mt-0.5 block text-2xs text-amber-700 dark:text-amber-400">CUE {sibling.cue}</span>
                       </button>
                     ))}
                   </div>
@@ -332,7 +375,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                 <div className="space-y-2.5 text-sm">
                   <div className="space-y-1">
                     <div className="flex items-start gap-2">
-                      <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#00AEC3]" />
+                      <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-pba-teal" />
                       <div className="text-slate-700 dark:text-gray-100 leading-snug">
                         <div className="font-medium">{result.distrito}</div>
                         <div className="text-xs text-slate-600 dark:text-gray-200">{result.ciudad}</div>
@@ -359,16 +402,16 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                             ? result.matricula.toLocaleString("es-AR")
                             : null
                         }
-                        iconColor="text-[#e81f76]"
-                        iconBg="bg-[#e81f76]/10 border border-[#e81f76]/25"
+                        iconColor="text-pba-pink"
+                        iconBg="bg-pba-pink/10 border border-pba-pink/25"
                       />
                       <StatTileCompact icon={Layers} label="Secciones" value={result.secciones} iconColor="text-violet-600 dark:text-violet-400" iconBg="bg-violet-500/10 border border-violet-500/20" />
                       <StatTileCompact
                         icon={Calendar}
                         label="Turno"
                         value={formatTurno(result.turnos)}
-                        iconColor="text-[#417099]"
-                        iconBg="bg-[#417099]/10 border border-[#417099]/25"
+                        iconColor="text-pba-blue"
+                        iconBg="bg-pba-blue/10 border border-pba-blue/25"
                         className="col-span-2"
                       />
                     </div>
@@ -379,7 +422,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                       <div className="text-xs font-medium text-slate-500 dark:text-gray-300 uppercase tracking-wide">Contacto</div>
                       {(result.contacto_nombre || result.contacto_apellido) && (
                         <div className="flex items-start gap-1.5">
-                          <User className="h-3.5 w-3.5 text-[#417099] mt-0.5 shrink-0" />
+                          <User className="h-3.5 w-3.5 text-pba-blue mt-0.5 shrink-0" />
                           <div>
                             <div className="text-sm text-slate-700 dark:text-gray-100 font-medium">
                               {result.contacto_nombre} {result.contacto_apellido}
@@ -410,12 +453,12 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                       {primaryContact &&
                         (primaryContact.nombre || primaryContact.telefono || primaryContact.correo || primaryContact.correo_laboral) && (
                         <div className="border-t border-slate-100 dark:border-white/10 pt-2.5">
-                          <p className="mb-1.5 text-[9px] font-medium uppercase tracking-wide text-slate-400 dark:text-gray-400">
+                          <p className="mb-1.5 text-2xs font-medium uppercase tracking-wide text-slate-400 dark:text-gray-400">
                             Contacto
                           </p>
                           <div className="flex items-start gap-2 rounded-lg border border-slate-100 dark:border-white/10 bg-slate-50/60 dark:border-white/10 dark:bg-white/5 p-2">
-                            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#417099]/10">
-                              <User className="h-3.5 w-3.5 text-[#417099]" />
+                            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-pba-blue/10">
+                              <User className="h-3.5 w-3.5 text-pba-blue" />
                             </div>
                             <div className="min-w-0 space-y-0.5">
                               {(primaryContact.nombre || primaryContact.apellido) && (
@@ -440,7 +483,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                               )}
                               {primaryContact.correo_laboral && (
                                 <p className="flex items-center gap-1 text-xs text-slate-600 dark:text-gray-200" title="Correo laboral personal">
-                                  <Mail className="h-3 w-3 shrink-0 text-[#00AEC3]" />
+                                  <Mail className="h-3 w-3 shrink-0 text-pba-teal" />
                                   <span className="truncate">{primaryContact.correo_laboral}</span>
                                 </p>
                               )}
@@ -458,7 +501,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                       const route = isOrganismo ? `/organismos/${result.id}` : `/establecimientos/${result.id}`
                       router.push(route)
                     }}
-                    className="w-full bg-gradient-to-r from-[#00AEC3] to-[#417099] hover:from-[#00AEC3]/90 hover:to-[#417099]/90 text-white shadow-sm"
+                    className="w-full bg-gradient-to-r from-pba-teal to-pba-blue hover:from-pba-teal/90 hover:to-pba-blue/90 text-white shadow-sm"
                     size="sm"
                   >
                     Ver detalles
@@ -467,7 +510,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                     <Button
                       onClick={() => setMapResultId(result.id)}
                       variant="outline"
-                      className="w-full border-[#417099]/30 text-[#417099] hover:bg-[#417099]/10 hover:text-[#417099]"
+                      className="w-full border-pba-blue/30 text-pba-blue hover:bg-pba-blue/10 hover:text-pba-blue"
                       size="sm"
                     >
                       <MapPin className="h-4 w-4 mr-1.5" />
@@ -486,11 +529,13 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
           <Button
             onClick={() => setVisibleCount((v) => v + 30)}
             variant="outline"
-            className="border-slate-300 dark:border-white/20 text-slate-700 dark:text-gray-100 hover:border-[#00AEC3]/50 hover:text-[#00AEC3]"
+            className="border-slate-300 dark:border-white/20 text-slate-700 dark:text-gray-100 hover:border-pba-teal/50 hover:text-pba-teal"
           >
             Mostrar {Math.min(30, results.length - visibleCount)} más ({results.length - visibleCount} restantes)
           </Button>
         </div>
+      )}
+        </>
       )}
 
       <Dialog open={mapResultId !== null} onOpenChange={(open) => !open && setMapResultId(null)}>

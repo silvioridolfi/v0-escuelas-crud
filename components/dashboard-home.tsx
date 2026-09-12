@@ -17,6 +17,7 @@ import { SearchResults } from "@/components/search-results"
 import { SavedSearches } from "@/components/saved-searches"
 import { QuickFilters } from "@/components/quick-filters"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { NodeNetworkAccent } from "@/components/node-network-accent"
 import type { QuickFilterKey } from "@/lib/quick-filters-config"
 import { useRouter } from "next/navigation"
 import { getFedBadgeColor, formatFedDisplay } from "@/lib/badge-colors"
@@ -213,22 +214,22 @@ const metricCards = (
       setOpenDialog("fed")
     }
   }}
-  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm dark:border-white/10 dark:bg-white/10 dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEC3] lg:min-w-0 lg:shrink"
+  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm dark:border-white/10 dark:bg-white/10 dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pba-teal lg:min-w-0 lg:shrink"
 >
-  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#00AEC3] to-[#417099]" />
+  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pba-teal to-pba-blue" />
   <CardHeader className="pb-3">
     <CardTitle className="flex items-center justify-between gap-2 text-sm font-medium text-slate-600 dark:text-gray-100">
       <span className="flex items-center gap-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#00AEC3]/10">
-          <Building2 className="h-4 w-4 text-[#00AEC3]" />
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-pba-teal/10">
+          <Building2 className="h-4 w-4 text-pba-teal" />
         </div>
         Total Establecimientos
       </span>
-      <ChevronRight className="h-4 w-4 text-slate-400 dark:text-gray-300 transition-transform group-hover:translate-x-0.5 group-hover:text-[#00AEC3]" />
+      <ChevronRight className="h-4 w-4 text-slate-400 dark:text-gray-300 transition-transform group-hover:translate-x-0.5 group-hover:text-pba-teal" />
     </CardTitle>
   </CardHeader>
   <CardContent>
-    <p className="text-4xl font-bold text-[#417099]">
+    <p className="text-4xl font-bold text-pba-blue">
       {metrics.totalEstablecimientos.toLocaleString("es-AR")}
     </p>
     <p className="mt-1 text-xs text-slate-400 dark:text-gray-300">Ver distribución por FED</p>
@@ -275,22 +276,22 @@ const metricCards = (
       setOpenDialog("distritos")
     }
   }}
-  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm dark:border-white/10 dark:bg-white/10 dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#417099] lg:min-w-0 lg:shrink"
+  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm dark:border-white/10 dark:bg-white/10 dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pba-blue lg:min-w-0 lg:shrink"
 >
-  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#417099] to-[#00AEC3]" />
+  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pba-blue to-pba-teal" />
   <CardHeader className="pb-3">
     <CardTitle className="flex items-center justify-between gap-2 text-sm font-medium text-slate-600 dark:text-gray-100">
       <span className="flex items-center gap-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#417099]/10">
-          <MapPin className="h-4 w-4 text-[#417099]" />
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-pba-blue/10">
+          <MapPin className="h-4 w-4 text-pba-blue" />
         </div>
         Distritos
       </span>
-      <ChevronRight className="h-4 w-4 text-slate-400 dark:text-gray-300 transition-transform group-hover:translate-x-0.5 group-hover:text-[#417099]" />
+      <ChevronRight className="h-4 w-4 text-slate-400 dark:text-gray-300 transition-transform group-hover:translate-x-0.5 group-hover:text-pba-blue" />
     </CardTitle>
   </CardHeader>
   <CardContent>
-    <p className="text-4xl font-bold text-[#00AEC3]">{metrics.uniqueDistritos}</p>
+    <p className="text-4xl font-bold text-pba-teal">{metrics.uniqueDistritos}</p>
     <p className="mt-1 text-xs text-slate-400 dark:text-gray-300">Ver establecimientos por distrito</p>
   </CardContent>
 </Card>
@@ -305,22 +306,22 @@ const metricCards = (
       setOpenDialog("matricula")
     }
   }}
-  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm dark:border-white/10 dark:bg-white/10 dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e81f76] lg:min-w-0 lg:shrink"
+  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm dark:border-white/10 dark:bg-white/10 dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pba-pink lg:min-w-0 lg:shrink"
 >
-  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#e81f76] to-[#417099]" />
+  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pba-pink to-pba-blue" />
   <CardHeader className="pb-3">
     <CardTitle className="flex items-center justify-between gap-2 text-sm font-medium text-slate-600 dark:text-gray-100">
       <span className="flex items-center gap-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#e81f76]/10">
-          <Users className="h-4 w-4 text-[#e81f76]" />
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-pba-pink/10">
+          <Users className="h-4 w-4 text-pba-pink" />
         </div>
         Matrícula Total
       </span>
-      <ChevronRight className="h-4 w-4 text-slate-400 dark:text-gray-300 transition-transform group-hover:translate-x-0.5 group-hover:text-[#e81f76]" />
+      <ChevronRight className="h-4 w-4 text-slate-400 dark:text-gray-300 transition-transform group-hover:translate-x-0.5 group-hover:text-pba-pink" />
     </CardTitle>
   </CardHeader>
   <CardContent>
-    <p className="text-4xl font-bold text-[#e81f76]">{metrics.matriculaTotal.toLocaleString("es-AR")}</p>
+    <p className="text-4xl font-bold text-pba-pink">{metrics.matriculaTotal.toLocaleString("es-AR")}</p>
     <p className="mt-1 text-xs text-slate-400 dark:text-gray-300">Ver por género</p>
   </CardContent>
 </Card>
@@ -332,12 +333,13 @@ const metricCards = (
   return (
     <div className="flex min-h-screen flex-col bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       <header
-        className="border-b border-blue-200 shadow-lg"
+        className="relative overflow-hidden border-b border-blue-200 shadow-lg"
         style={{
-          background: "linear-gradient(90deg, #e81f76 0%, #417099 50%, #00aec3 100%)",
+          background: "linear-gradient(90deg, var(--color-pba-pink) 0%, var(--color-pba-blue) 50%, var(--color-pba-teal) 100%)",
         }}
       >
-        <div className="container mx-auto px-4 py-4 sm:py-6">
+        <NodeNetworkAccent variant="onColor" className="pointer-events-none absolute inset-0 h-full w-full" />
+        <div className="container relative mx-auto px-4 py-4 sm:py-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3 sm:gap-4">
               <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-xl shadow-md sm:h-12 sm:w-12">
@@ -359,7 +361,7 @@ const metricCards = (
               <ThemeToggle />
               <Button
                 onClick={() => router.push("/establecimientos/nuevo")}
-                className="bg-[#e81f76] hover:bg-[#c71963] text-white shadow-lg"
+                className="bg-pba-pink hover:bg-[#c71963] text-white shadow-lg"
               >
                 <Plus className="h-4 w-4 sm:mr-2" />
                 <span className="hidden sm:inline">Nuevo Establecimiento</span>
@@ -384,7 +386,7 @@ const metricCards = (
               <p className="mt-1 text-xs text-slate-400 dark:text-gray-300">Datos actualizados según Mapa Escolar</p>
             </div>
             <Link href="/mapa">
-              <Button variant="outline" size="sm" className="gap-1.5 border-slate-300 dark:border-white/20 text-slate-600 dark:text-gray-100 hover:border-[#00AEC3]/50 hover:text-[#00AEC3]">
+              <Button variant="outline" size="sm" className="gap-1.5 border-slate-300 dark:border-white/20 text-slate-600 dark:text-gray-100 hover:border-pba-teal/50 hover:text-pba-teal">
                 <Map className="h-4 w-4" />
                 Ver mapa general
               </Button>
@@ -401,9 +403,9 @@ const metricCards = (
               className="mb-2 flex w-full items-center justify-between rounded-lg border border-slate-300 dark:border-white/20 bg-white dark:bg-white/10 px-3 py-2 text-sm font-medium text-slate-700 dark:text-gray-100 sm:hidden"
             >
               <span className="flex items-center gap-2">
-                <SlidersHorizontal className="h-4 w-4 text-[#00AEC3]" />
+                <SlidersHorizontal className="h-4 w-4 text-pba-teal" />
                 Accesos rápidos
-                {activeQuickFilter && <span className="h-1.5 w-1.5 rounded-full bg-[#e81f76]" />}
+                {activeQuickFilter && <span className="h-1.5 w-1.5 rounded-full bg-pba-pink" />}
               </span>
               <ChevronDown className={`h-4 w-4 transition-transform ${quickFiltersOpen ? "rotate-180" : ""}`} />
             </button>
@@ -427,7 +429,7 @@ const metricCards = (
           </div>
 
           <Card className="relative overflow-hidden rounded-xl border border-slate-200/60 shadow-sm bg-white dark:border-white/10 dark:shadow-lg dark:bg-white/10 dark:backdrop-blur-sm">
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#00AEC3] to-[#e81f76]" />
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pba-teal to-pba-pink" />
             <CardContent className="pt-6 pb-6 bg-slate-50/50 dark:bg-white/5">
               <div className="flex flex-col gap-2 sm:flex-row">
                 <div className="relative flex-1">
@@ -444,7 +446,7 @@ const metricCards = (
                     disabled={isSearching}
                   />
                   {mounted && !searchTerm && (
-                    <kbd className="pointer-events-none absolute right-3 top-1/2 hidden -translate-y-1/2 rounded border border-slate-300 dark:border-white/20 bg-slate-50 dark:bg-white/10 px-1.5 py-0.5 text-[10px] font-medium text-slate-400 dark:text-gray-400 sm:inline-block">
+                    <kbd className="pointer-events-none absolute right-3 top-1/2 hidden -translate-y-1/2 rounded border border-slate-300 dark:border-white/20 bg-slate-50 dark:bg-white/10 px-1.5 py-0.5 text-2xs font-medium text-slate-400 dark:text-gray-400 sm:inline-block">
                       {isMac ? "⌘K" : "Ctrl+K"}
                     </kbd>
                   )}
@@ -453,7 +455,7 @@ const metricCards = (
                   <Button
                     onClick={() => handleSearch()}
                     disabled={isSearching || !searchTerm.trim()}
-                    className="flex-1 bg-[#00AEC3] hover:bg-[#0098ad] text-white shadow-md hover:shadow-lg transition-shadow sm:flex-none"
+                    className="flex-1 bg-pba-teal hover:bg-[#0098ad] text-white shadow-md hover:shadow-lg transition-shadow sm:flex-none"
                   >
                     {isSearching ? "Buscando..." : "Buscar"}
                   </Button>
@@ -494,7 +496,7 @@ const metricCards = (
               <AccordionItem value="metrics" className="border-b-0">
                 <AccordionTrigger className="hover:no-underline">
                   <div className="text-left">
-                    <h2 className="text-lg font-semibold text-[#417099]">Ver métricas</h2>
+                    <h2 className="text-lg font-semibold text-pba-blue">Ver métricas</h2>
                     <p className="text-sm font-normal text-slate-600 dark:text-gray-100">Resumen estadístico del sistema</p>
                   </div>
                 </AccordionTrigger>
@@ -508,7 +510,7 @@ const metricCards = (
           {/* Desktop: siempre visibles, apiladas verticalmente */}
           <div className="hidden rounded-xl border border-slate-200/60 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-white/10 dark:backdrop-blur-sm dark:shadow-lg lg:block">
             <div className="mb-4">
-              <h2 className="text-lg font-semibold text-[#417099]">Métricas Generales</h2>
+              <h2 className="text-lg font-semibold text-pba-blue">Métricas Generales</h2>
               <p className="text-sm text-slate-600 dark:text-gray-100">Resumen estadístico del sistema</p>
             </div>
             <div className="flex flex-col gap-4">{metricCards}</div>
@@ -520,7 +522,7 @@ const metricCards = (
         {hasSearched && (
           <section>
             <div className="mb-4">
-              <h2 className="text-lg font-semibold text-[#417099]">Resultados</h2>
+              <h2 className="text-lg font-semibold text-pba-blue">Resultados</h2>
               <p className="text-sm text-slate-600 dark:text-gray-100">Establecimientos encontrados</p>
             </div>
             <SearchResults results={results} isSearching={isSearching} />
@@ -530,7 +532,11 @@ const metricCards = (
         {!hasSearched && (
           <section>
             <Card className="relative overflow-hidden border-2 border-dashed border-slate-300/60 shadow-sm bg-slate-50/30 dark:border-white/20 dark:shadow-lg dark:bg-white/5 dark:backdrop-blur-sm">
-              <CardContent className="flex min-h-[300px] items-center justify-center">
+              <NodeNetworkAccent
+                variant="light"
+                className="pointer-events-none absolute inset-0 h-full w-full opacity-40 dark:opacity-20"
+              />
+              <CardContent className="relative flex min-h-[300px] items-center justify-center">
                 <div className="text-center">
                   <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-slate-100/50 border border-slate-200 dark:bg-white/10 dark:border-white/10">
                     <Search className="h-10 w-10 text-slate-400 dark:text-gray-300" />
@@ -550,7 +556,7 @@ const metricCards = (
       <Dialog open={openDialog === "fed"} onOpenChange={(open) => !open && setOpenDialog(null)}>
         <DialogContent className="max-w-[calc(100%-1.5rem)] sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle className="text-[#417099]">Establecimientos por FED</DialogTitle>
+            <DialogTitle className="text-pba-blue">Establecimientos por FED</DialogTitle>
             <DialogDescription>Cantidad de establecimientos asignados a cada FED</DialogDescription>
           </DialogHeader>
           <div className="max-h-[60vh] space-y-2 overflow-y-auto pr-1">
@@ -585,7 +591,7 @@ const metricCards = (
                     setSearchTerm(item.fed)
                     handleSearch(item.fed)
                   }}
-                  className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-md border border-slate-200 dark:border-white/10 bg-slate-50/50 dark:bg-white/5 px-3 py-2.5 text-left transition-colors hover:border-[#417099]/40 hover:bg-slate-100"
+                  className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-md border border-slate-200 dark:border-white/10 bg-slate-50/50 dark:bg-white/5 px-3 py-2.5 text-left transition-colors hover:border-pba-blue/40 hover:bg-slate-100"
                 >
                   {rowContent}
                 </button>
@@ -616,7 +622,7 @@ const metricCards = (
       <Dialog open={openDialog === "distritos"} onOpenChange={(open) => !open && setOpenDialog(null)}>
         <DialogContent className="max-w-[calc(100%-1.5rem)] sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle className="text-[#00AEC3]">Establecimientos por Distrito</DialogTitle>
+            <DialogTitle className="text-pba-teal">Establecimientos por Distrito</DialogTitle>
             <DialogDescription>Cantidad de establecimientos en cada distrito</DialogDescription>
           </DialogHeader>
           <div className="max-h-[60vh] space-y-2 overflow-y-auto pr-1">
@@ -629,10 +635,10 @@ const metricCards = (
                   setSearchTerm(item.distrito)
                   handleSearch(item.distrito)
                 }}
-                className="flex w-full items-center justify-between gap-3 rounded-md border border-slate-200 dark:border-white/10 bg-slate-50/50 dark:bg-white/5 px-3 py-2 text-left transition-colors hover:border-[#00AEC3]/40 hover:bg-slate-100"
+                className="flex w-full items-center justify-between gap-3 rounded-md border border-slate-200 dark:border-white/10 bg-slate-50/50 dark:bg-white/5 px-3 py-2 text-left transition-colors hover:border-pba-teal/40 hover:bg-slate-100"
               >
                 <span className="text-sm font-medium text-slate-700 dark:text-gray-100">{item.distrito}</span>
-                <span className="text-sm font-semibold text-[#417099]">
+                <span className="text-sm font-semibold text-pba-blue">
                   {item.count.toLocaleString("es-AR")} {item.count === 1 ? "establecimiento" : "establecimientos"}
                 </span>
               </button>
@@ -644,31 +650,31 @@ const metricCards = (
       <Dialog open={openDialog === "matricula"} onOpenChange={(open) => !open && setOpenDialog(null)}>
         <DialogContent className="max-w-[calc(100%-1.5rem)] sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-[#e81f76]">Matrícula por Género</DialogTitle>
+            <DialogTitle className="text-pba-pink">Matrícula por Género</DialogTitle>
             <DialogDescription>Distribución de la matrícula total por género</DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div className="rounded-md border border-slate-200 dark:border-white/10 bg-slate-50/50 dark:bg-white/5 px-4 py-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-slate-700 dark:text-gray-100">Varones</span>
-                <span className="text-lg font-bold text-[#417099]">
+                <span className="text-lg font-bold text-pba-blue">
                   {metrics.matriculaByGender.varones.toLocaleString("es-AR")}
                 </span>
               </div>
               <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-slate-200">
-                <div className="h-full rounded-full bg-[#417099]" style={{ width: `${varonesPct}%` }} />
+                <div className="h-full rounded-full bg-pba-blue" style={{ width: `${varonesPct}%` }} />
               </div>
               <p className="mt-1 text-xs text-slate-400 dark:text-gray-300">{varonesPct.toFixed(1)}% del total</p>
             </div>
             <div className="rounded-md border border-slate-200 dark:border-white/10 bg-slate-50/50 dark:bg-white/5 px-4 py-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-slate-700 dark:text-gray-100">Mujeres</span>
-                <span className="text-lg font-bold text-[#e81f76]">
+                <span className="text-lg font-bold text-pba-pink">
                   {metrics.matriculaByGender.mujeres.toLocaleString("es-AR")}
                 </span>
               </div>
               <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-slate-200">
-                <div className="h-full rounded-full bg-[#e81f76]" style={{ width: `${mujeresPct}%` }} />
+                <div className="h-full rounded-full bg-pba-pink" style={{ width: `${mujeresPct}%` }} />
               </div>
               <p className="mt-1 text-xs text-slate-400 dark:text-gray-300">{mujeresPct.toFixed(1)}% del total</p>
             </div>
