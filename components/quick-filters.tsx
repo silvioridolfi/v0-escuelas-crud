@@ -67,7 +67,7 @@ export function QuickFilters({
             {isActive ? <X className="h-3 w-3" /> : <Icon className="h-3.5 w-3.5" />}
             {label}
             {count !== undefined && (
-              <span className="ml-0.5 rounded-full bg-white/60 dark:bg-white/10 px-1.5 text-2xs font-semibold">
+              <span className="ml-0.5 rounded-full bg-white/60 dark:bg-card px-1.5 text-2xs font-semibold">
                 {loadingFilter === key ? "…" : count}
               </span>
             )}

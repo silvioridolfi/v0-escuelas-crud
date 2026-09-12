@@ -60,7 +60,7 @@ export function SavedSearches({
       {saved.map((s) => (
         <span
           key={s.term}
-          className="group inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white dark:bg-white/10 px-3 py-1 text-xs text-slate-700 dark:text-gray-100 shadow-sm"
+          className="group inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white dark:bg-card px-3 py-1 text-xs text-slate-700 dark:text-gray-100 shadow-sm"
         >
           <button
             type="button"

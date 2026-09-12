@@ -25,7 +25,7 @@ export function EstablishmentHero({
               <p className="text-2xs font-medium uppercase tracking-wide text-slate-400 dark:text-gray-400">CUE</p>
               <p className="text-sm font-semibold text-slate-800 dark:text-white">{establecimiento.cue}</p>
             </div>
-            <div className="h-6 w-px bg-slate-200 dark:bg-white/20" />
+            <div className="h-6 w-px bg-slate-200 dark:bg-accent" />
             <div>
               <p className="text-2xs font-medium uppercase tracking-wide text-slate-400 dark:text-gray-400">Distrito</p>
               <p className="text-sm font-semibold text-slate-800 dark:text-white">{establecimiento.distrito}</p>

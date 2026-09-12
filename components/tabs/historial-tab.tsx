@@ -56,9 +56,9 @@ export function HistorialTab({ establecimientoId }: { establecimientoId: string 
   return (
     <div className="space-y-4 py-4">
       {groups.map((group) => (
-        <div key={group.key} className="rounded-lg border border-slate-200 bg-white dark:bg-white/10 p-4">
+        <div key={group.key} className="rounded-lg border border-slate-200 bg-white dark:bg-card p-4">
           <div className="mb-3 flex items-center justify-between">
-            <span className="rounded-full bg-slate-100 dark:bg-white/10 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-gray-200">
+            <span className="rounded-full bg-slate-100 dark:bg-card px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-gray-200">
               {group.seccion}
             </span>
             <span className="text-xs text-slate-400">{formatFecha(group.created_at)}</span>

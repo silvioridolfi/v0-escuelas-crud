@@ -61,7 +61,7 @@ async function exportResultsToExcel(results: SearchResult[]) {
 const LocationMap = dynamic(() => import("@/components/tabs/location-map").then((mod) => mod.LocationMap), {
   ssr: false,
   loading: () => (
-    <div className="flex h-full items-center justify-center bg-slate-100 dark:bg-white/10 text-sm text-muted-foreground">
+    <div className="flex h-full items-center justify-center bg-slate-100 dark:bg-card text-sm text-muted-foreground">
       Cargando mapa…
     </div>
   ),
@@ -70,7 +70,7 @@ const LocationMap = dynamic(() => import("@/components/tabs/location-map").then(
 const ResultsMapView = dynamic(() => import("@/components/results-map-view").then((mod) => mod.ResultsMapView), {
   ssr: false,
   loading: () => (
-    <div className="flex h-[60vh] items-center justify-center rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/10 text-sm text-muted-foreground">
+    <div className="flex h-[60vh] items-center justify-center rounded-lg border border-slate-200 dark:border-border bg-slate-100 dark:bg-card text-sm text-muted-foreground">
       Cargando mapa…
     </div>
   ),
@@ -92,7 +92,7 @@ function StatTileCompact({
   className?: string
 }) {
   return (
-    <div className={`flex items-center gap-2 rounded-lg border border-slate-100 dark:border-white/10 bg-slate-50/60 dark:border-white/10 dark:bg-white/5 p-2 ${className}`}>
+    <div className={`flex items-center gap-2 rounded-lg border border-slate-100 dark:border-border bg-slate-50/60 dark:border-border dark:bg-surface-subtle p-2 ${className}`}>
       <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md ${iconBg}`}>
         <Icon className={`h-3.5 w-3.5 ${iconColor}`} />
       </div>
@@ -128,15 +128,15 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
           <div
             key={i}
             style={{ animationDelay: `${i * 60}ms` }}
-            className="animate-pulse rounded-xl border border-slate-200/60 bg-white dark:border-white/10 dark:bg-white/10 p-5 shadow-sm"
+            className="animate-pulse rounded-xl border border-slate-200/60 bg-white dark:border-border dark:bg-card p-5 shadow-sm"
           >
-            <div className="mb-3 h-4 w-20 rounded-full bg-slate-100 dark:bg-white/10" />
-            <div className="mb-2 h-5 w-3/4 rounded bg-slate-200 dark:bg-white/20" />
-            <div className="mb-4 h-4 w-1/2 rounded bg-slate-100 dark:bg-white/10" />
+            <div className="mb-3 h-4 w-20 rounded-full bg-slate-100 dark:bg-card" />
+            <div className="mb-2 h-5 w-3/4 rounded bg-slate-200 dark:bg-accent" />
+            <div className="mb-4 h-4 w-1/2 rounded bg-slate-100 dark:bg-card" />
             <div className="space-y-2">
-              <div className="h-3 w-full rounded bg-slate-100 dark:bg-white/10" />
-              <div className="h-3 w-5/6 rounded bg-slate-100 dark:bg-white/10" />
-              <div className="h-3 w-2/3 rounded bg-slate-100 dark:bg-white/10" />
+              <div className="h-3 w-full rounded bg-slate-100 dark:bg-card" />
+              <div className="h-3 w-5/6 rounded bg-slate-100 dark:bg-card" />
+              <div className="h-3 w-2/3 rounded bg-slate-100 dark:bg-card" />
             </div>
           </div>
         ))}
@@ -146,10 +146,10 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
 
   if (results.length === 0) {
     return (
-      <Card className="rounded-xl border border-slate-200/60 shadow-sm bg-white dark:border-white/10 dark:shadow-lg dark:bg-white/10 dark:backdrop-blur-sm">
+      <Card className="rounded-xl border border-slate-200/60 shadow-sm bg-white dark:border-border dark:shadow-lg dark:bg-card dark:backdrop-blur-sm">
         <CardContent className="flex min-h-[200px] items-center justify-center">
           <div className="text-center">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-white/10 border border-slate-200 dark:border-white/20">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-card border border-slate-200 dark:border-border-strong">
               <Building2 className="h-8 w-8 text-slate-400 dark:text-gray-400" />
             </div>
             <p className="text-lg font-medium text-slate-700 dark:text-gray-100">No se encontraron establecimientos</p>
@@ -172,7 +172,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex rounded-lg border border-slate-300 dark:border-white/20 p-0.5">
+          <div className="flex rounded-lg border border-slate-300 dark:border-border-strong p-0.5">
             <button
               type="button"
               onClick={() => setViewMode("list")}
@@ -202,7 +202,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
             onClick={() => exportResultsToExcel(results)}
             variant="outline"
             size="sm"
-            className="gap-1.5 border-slate-300 dark:border-white/20 text-slate-700 dark:text-gray-100 hover:border-pba-teal/50 hover:text-pba-teal"
+            className="gap-1.5 border-slate-300 dark:border-border-strong text-slate-700 dark:text-gray-100 hover:border-pba-teal/50 hover:text-pba-teal"
           >
             <FileSpreadsheet className="h-4 w-4" />
             Exportar a Excel
@@ -229,7 +229,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
             <Card
               key={result.id}
               style={{ animationDelay: `${Math.min(index, 8) * 40}ms`, animationFillMode: "backwards" }}
-              className="relative overflow-hidden border border-slate-200/60 bg-white shadow-sm dark:border-white/10 dark:bg-white/10 dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:border-pba-teal/30 flex flex-col h-full rounded-xl animate-in fade-in slide-in-from-bottom-1 duration-300"
+              className="relative overflow-hidden border border-slate-200/60 bg-white shadow-sm dark:border-border dark:bg-card dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:border-pba-teal/30 flex flex-col h-full rounded-xl animate-in fade-in slide-in-from-bottom-1 duration-300"
             >
               <div
                 className={`absolute top-0 left-0 right-0 h-1 ${
@@ -288,7 +288,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                 <div className="flex flex-wrap gap-2 mt-2">
                   {isOrganismo ? (
                     <>
-                      <Badge variant="outline" className="border-slate-300 dark:border-white/20 text-slate-700 dark:text-gray-100 text-xs">
+                      <Badge variant="outline" className="border-slate-300 dark:border-border-strong text-slate-700 dark:text-gray-100 text-xs">
                         {result.tipo_organizacion}
                       </Badge>
                       {isRegional && (
@@ -307,7 +307,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                   ) : (
                     <>
                       {!isGovernmentBuilding && result.predio && (
-                        <Badge variant="outline" className="border-slate-300 dark:border-white/20 text-slate-600 dark:text-gray-200 font-mono text-xs">
+                        <Badge variant="outline" className="border-slate-300 dark:border-border-strong text-slate-600 dark:text-gray-200 font-mono text-xs">
                           PREDIO {result.predio}
                         </Badge>
                       )}
@@ -385,7 +385,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                   </div>
 
                   {!isOrganismo && !isGovernmentBuilding && (
-                    <div className="grid grid-cols-2 gap-2 border-t border-slate-100 dark:border-white/10 pt-2.5">
+                    <div className="grid grid-cols-2 gap-2 border-t border-slate-100 dark:border-border pt-2.5">
                       <StatTileCompact icon={Users} label="Nivel" value={result.nivel} iconColor="text-teal-600 dark:text-teal-400" iconBg="bg-teal-500/10 border border-teal-500/20" />
                       <StatTileCompact
                         icon={GraduationCap}
@@ -418,7 +418,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                   )}
 
                   {isOrganismo ? (
-                    <div className="space-y-1.5 pt-1 border-t border-slate-200 dark:border-white/20">
+                    <div className="space-y-1.5 pt-1 border-t border-slate-200 dark:border-border-strong">
                       <div className="text-xs font-medium text-slate-500 dark:text-gray-300 uppercase tracking-wide">Contacto</div>
                       {(result.contacto_nombre || result.contacto_apellido) && (
                         <div className="flex items-start gap-1.5">
@@ -452,11 +452,11 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                     <>
                       {primaryContact &&
                         (primaryContact.nombre || primaryContact.telefono || primaryContact.correo || primaryContact.correo_laboral) && (
-                        <div className="border-t border-slate-100 dark:border-white/10 pt-2.5">
+                        <div className="border-t border-slate-100 dark:border-border pt-2.5">
                           <p className="mb-1.5 text-2xs font-medium uppercase tracking-wide text-slate-400 dark:text-gray-400">
                             Contacto
                           </p>
-                          <div className="flex items-start gap-2 rounded-lg border border-slate-100 dark:border-white/10 bg-slate-50/60 dark:border-white/10 dark:bg-white/5 p-2">
+                          <div className="flex items-start gap-2 rounded-lg border border-slate-100 dark:border-border bg-slate-50/60 dark:border-border dark:bg-surface-subtle p-2">
                             <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-pba-blue/10">
                               <User className="h-3.5 w-3.5 text-pba-blue" />
                             </div>
@@ -529,7 +529,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
           <Button
             onClick={() => setVisibleCount((v) => v + 30)}
             variant="outline"
-            className="border-slate-300 dark:border-white/20 text-slate-700 dark:text-gray-100 hover:border-pba-teal/50 hover:text-pba-teal"
+            className="border-slate-300 dark:border-border-strong text-slate-700 dark:text-gray-100 hover:border-pba-teal/50 hover:text-pba-teal"
           >
             Mostrar {Math.min(30, results.length - visibleCount)} más ({results.length - visibleCount} restantes)
           </Button>
@@ -540,7 +540,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
 
       <Dialog open={mapResultId !== null} onOpenChange={(open) => !open && setMapResultId(null)}>
         <DialogContent className="max-w-[calc(100%-1.5rem)] p-0 sm:max-w-2xl">
-          <DialogHeader className="px-4 pt-4 pb-3 pr-14 text-left border-b border-slate-200 dark:border-white/20">
+          <DialogHeader className="px-4 pt-4 pb-3 pr-14 text-left border-b border-slate-200 dark:border-border-strong">
               <DialogTitle className="text-sm font-semibold text-slate-800 dark:text-white text-balance leading-snug">
                 Ubicación: {mapResult?.nombre}
               </DialogTitle>

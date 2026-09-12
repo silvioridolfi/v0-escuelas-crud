@@ -22,7 +22,7 @@ export function StatTile({
   className?: string
 }) {
   return (
-    <div className={`rounded-lg border border-slate-100 bg-slate-50/60 dark:border-white/10 dark:bg-white/5 p-3 ${className}`}>
+    <div className={`rounded-lg border border-slate-100 bg-slate-50/60 dark:border-border dark:bg-surface-subtle p-3 ${className}`}>
       <div className={`mb-2 flex h-8 w-8 items-center justify-center rounded-md ${iconBg}`}>
         <Icon className={`h-4 w-4 ${iconColor}`} />
       </div>
