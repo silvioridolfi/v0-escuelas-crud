@@ -427,7 +427,7 @@ export function ConnectivityTab({
       )}
 
       {isEditing && (
-        <Button onClick={handleSave} disabled={isSaving} className="bg-pba-purple hover:bg-[#0098ad]">
+        <Button onClick={handleSave} disabled={isSaving} className="bg-pba-purple hover:bg-pba-purple/90">
           {isSaving ? "Guardando..." : "Guardar Cambios"}
         </Button>
       )}

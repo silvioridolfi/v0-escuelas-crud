@@ -169,7 +169,7 @@ export function ContactTab({
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold">Contactos Registrados</h3>
             {isEditMode && !isCreating && !editingId && (
-              <Button onClick={startCreating} size="sm" className="bg-pba-pink hover:bg-[#c71963]">
+              <Button onClick={startCreating} size="sm" className="bg-pba-pink hover:bg-pba-pink/90">
                 <Plus className="mr-2 h-4 w-4" />
                 Agregar Contacto
               </Button>
@@ -304,7 +304,7 @@ export function ContactTab({
                   : "Activá el modo de edición para agregar un contacto"}
               </CardDescription>
               {isEditMode && (
-                <Button onClick={startCreating} className="bg-pba-pink hover:bg-[#c71963]">
+                <Button onClick={startCreating} className="bg-pba-pink hover:bg-pba-pink/90">
                   <Plus className="mr-2 h-4 w-4" />
                   Crear Contacto
                 </Button>
@@ -413,7 +413,7 @@ function ContactForm({
         <Button
           onClick={onSave}
           disabled={isSaving || correoLaboralInvalido}
-          className="bg-pba-purple hover:bg-[#0098ad]"
+          className="bg-pba-purple hover:bg-pba-purple/90"
         >
           {isSaving ? "Guardando..." : isEditing ? "Guardar Cambios" : "Crear Contacto"}
         </Button>

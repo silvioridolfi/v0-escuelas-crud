@@ -111,7 +111,7 @@ export function SavedSearches({
             placeholder="Nombre corto..."
             className="h-7 w-40 text-xs"
           />
-          <Button type="button" size="sm" onClick={handleConfirmSave} className="h-7 bg-pba-purple px-2.5 text-xs hover:bg-[#0098ad]">
+          <Button type="button" size="sm" onClick={handleConfirmSave} className="h-7 bg-pba-purple px-2.5 text-xs hover:bg-pba-purple/90">
             Guardar
           </Button>
         </div>

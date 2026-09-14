@@ -314,7 +314,7 @@ export function CreateEstablishmentForm() {
                     <Button type="button" variant="outline" onClick={() => router.push("/")} disabled={isSaving}>
                       Cancelar
                     </Button>
-                    <Button type="submit" disabled={isSaving} className="bg-pba-pink hover:bg-[#c71963]">
+                    <Button type="submit" disabled={isSaving} className="bg-pba-pink hover:bg-pba-pink/90">
                       {isSaving ? "Creando..." : "Crear Establecimiento"}
                     </Button>
                   </div>

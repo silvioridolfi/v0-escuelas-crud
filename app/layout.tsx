@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next"
 import { Toaster } from "@/components/ui/toaster"
 import { SiteFooter } from "@/components/site-footer"
 import { ThemeProvider } from "@/components/theme-provider"
+import { BackToTopButton } from "@/components/back-to-top-button"
 import "./globals.css"
 
 const encodeSans = Encode_Sans({
@@ -41,6 +42,7 @@ export default function RootLayout({
           {children}
           <SiteFooter />
           <Toaster />
+          <BackToTopButton />
           <Analytics />
         </ThemeProvider>
       </body>

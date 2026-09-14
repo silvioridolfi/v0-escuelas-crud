@@ -360,7 +360,7 @@ const metricCards = (
               <ThemeToggle />
               <Button
                 onClick={() => router.push("/establecimientos/nuevo")}
-                className="bg-pba-pink hover:bg-[#c71963] text-white shadow-lg"
+                className="bg-pba-pink hover:bg-pba-pink/90 text-white shadow-lg"
               >
                 <Plus className="h-4 w-4 sm:mr-2" />
                 <span className="hidden sm:inline">Nuevo Establecimiento</span>
@@ -454,7 +454,7 @@ const metricCards = (
                   <Button
                     onClick={() => handleSearch()}
                     disabled={isSearching || !searchTerm.trim()}
-                    className="flex-1 bg-pba-purple hover:bg-[#0098ad] text-white shadow-md hover:shadow-lg transition-shadow sm:flex-none"
+                    className="flex-1 bg-pba-purple hover:bg-pba-purple/90 text-white shadow-md hover:shadow-lg transition-shadow sm:flex-none"
                   >
                     {isSearching ? "Buscando..." : "Buscar"}
                   </Button>
@@ -462,7 +462,7 @@ const metricCards = (
                     <Button
                       onClick={handleClearSearch}
                       variant="outline"
-                      className="flex-1 border-slate-300 dark:border-border-strong hover:bg-slate-100 shadow-sm bg-transparent sm:flex-none"
+                      className="flex-1 border-slate-300 dark:border-border-strong text-slate-700 dark:text-gray-100 hover:bg-slate-100 dark:hover:bg-accent shadow-sm bg-transparent sm:flex-none"
                     >
                       Limpiar
                     </Button>
