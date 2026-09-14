@@ -177,7 +177,7 @@ export function ContactTab({
           </div>
 
           {contactos.map((contacto) => (
-            <Card key={contacto.id} className={editingId === contacto.id ? "border-pba-teal" : ""}>
+            <Card key={contacto.id} className={editingId === contacto.id ? "border-pba-purple" : ""}>
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div>
@@ -257,7 +257,7 @@ export function ContactTab({
                   )}
                   {contacto.correo_laboral && (
                     <p>
-                      <span className="font-medium text-pba-teal">Correo laboral:</span> {contacto.correo_laboral}
+                      <span className="font-medium text-pba-purple">Correo laboral:</span> {contacto.correo_laboral}
                     </p>
                   )}
                 </CardContent>
@@ -413,7 +413,7 @@ function ContactForm({
         <Button
           onClick={onSave}
           disabled={isSaving || correoLaboralInvalido}
-          className="bg-pba-teal hover:bg-[#0098ad]"
+          className="bg-pba-purple hover:bg-[#0098ad]"
         >
           {isSaving ? "Guardando..." : isEditing ? "Guardar Cambios" : "Crear Contacto"}
         </Button>

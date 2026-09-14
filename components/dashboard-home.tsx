@@ -214,18 +214,18 @@ const metricCards = (
       setOpenDialog("fed")
     }
   }}
-  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm dark:border-border dark:bg-card dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pba-teal lg:min-w-0 lg:shrink"
+  className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm dark:border-border dark:bg-card dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pba-purple lg:min-w-0 lg:shrink"
 >
-  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pba-teal to-pba-blue" />
+  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pba-blue to-pba-purple" />
   <CardHeader className="pb-3">
     <CardTitle className="flex items-center justify-between gap-2 text-sm font-medium text-slate-600 dark:text-gray-100">
       <span className="flex items-center gap-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-pba-teal/10">
-          <Building2 className="h-4 w-4 text-pba-teal" />
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-pba-purple/10">
+          <Building2 className="h-4 w-4 text-pba-purple" />
         </div>
         Total Establecimientos
       </span>
-      <ChevronRight className="h-4 w-4 text-slate-400 dark:text-gray-300 transition-transform group-hover:translate-x-0.5 group-hover:text-pba-teal" />
+      <ChevronRight className="h-4 w-4 text-slate-400 dark:text-gray-300 transition-transform group-hover:translate-x-0.5 group-hover:text-pba-purple" />
     </CardTitle>
   </CardHeader>
   <CardContent>
@@ -278,7 +278,7 @@ const metricCards = (
   }}
   className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm dark:border-border dark:bg-card dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pba-blue lg:min-w-0 lg:shrink"
 >
-  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pba-blue to-pba-teal" />
+  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pba-blue to-pba-purple" />
   <CardHeader className="pb-3">
     <CardTitle className="flex items-center justify-between gap-2 text-sm font-medium text-slate-600 dark:text-gray-100">
       <span className="flex items-center gap-2">
@@ -291,7 +291,7 @@ const metricCards = (
     </CardTitle>
   </CardHeader>
   <CardContent>
-    <p className="text-4xl font-bold text-pba-teal">{metrics.uniqueDistritos}</p>
+    <p className="text-4xl font-bold text-pba-purple">{metrics.uniqueDistritos}</p>
     <p className="mt-1 text-xs text-slate-400 dark:text-gray-300">Ver establecimientos por distrito</p>
   </CardContent>
 </Card>
@@ -308,7 +308,7 @@ const metricCards = (
   }}
   className="group relative min-w-[240px] shrink-0 overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm dark:border-border dark:bg-card dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pba-pink lg:min-w-0 lg:shrink"
 >
-  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pba-pink to-pba-blue" />
+  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pba-blue to-pba-pink" />
   <CardHeader className="pb-3">
     <CardTitle className="flex items-center justify-between gap-2 text-sm font-medium text-slate-600 dark:text-gray-100">
       <span className="flex items-center gap-2">
@@ -335,7 +335,7 @@ const metricCards = (
       <header
         className="relative overflow-hidden border-b border-blue-200 shadow-lg"
         style={{
-          background: "linear-gradient(90deg, var(--color-pba-pink) 0%, var(--color-pba-blue) 50%, var(--color-pba-teal) 100%)",
+          background: "linear-gradient(135deg, var(--color-pba-blue) 0%, var(--color-pba-purple) 55%, var(--color-pba-pink) 100%)",
         }}
       >
         <NodeNetworkAccent variant="onColor" className="pointer-events-none absolute inset-0 h-full w-full" />
@@ -386,7 +386,7 @@ const metricCards = (
               <p className="mt-1 text-xs text-slate-400 dark:text-gray-300">Datos actualizados según Mapa Escolar</p>
             </div>
             <Link href="/mapa">
-              <Button variant="outline" size="sm" className="gap-1.5 border-slate-300 dark:border-border-strong text-slate-600 dark:text-gray-100 hover:border-pba-teal/50 hover:text-pba-teal">
+              <Button variant="outline" size="sm" className="gap-1.5 border-slate-300 dark:border-border-strong text-slate-600 dark:text-gray-100 hover:border-pba-purple/50 hover:text-pba-purple">
                 <Map className="h-4 w-4" />
                 Ver mapa general
               </Button>
@@ -403,7 +403,7 @@ const metricCards = (
               className="mb-2 flex w-full items-center justify-between rounded-lg border border-slate-300 dark:border-border-strong bg-white dark:bg-card px-3 py-2 text-sm font-medium text-slate-700 dark:text-gray-100 sm:hidden"
             >
               <span className="flex items-center gap-2">
-                <SlidersHorizontal className="h-4 w-4 text-pba-teal" />
+                <SlidersHorizontal className="h-4 w-4 text-pba-purple" />
                 Accesos rápidos
                 {activeQuickFilter && <span className="h-1.5 w-1.5 rounded-full bg-pba-pink" />}
               </span>
@@ -429,7 +429,7 @@ const metricCards = (
           </div>
 
           <Card className="relative overflow-hidden rounded-xl border border-slate-200/60 shadow-sm bg-white dark:border-border dark:shadow-lg dark:bg-card dark:backdrop-blur-sm">
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pba-teal to-pba-pink" />
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pba-purple to-pba-pink" />
             <CardContent className="pt-6 pb-6 bg-slate-50/50 dark:bg-surface-subtle">
               <div className="flex flex-col gap-2 sm:flex-row">
                 <div className="relative flex-1">
@@ -455,7 +455,7 @@ const metricCards = (
                   <Button
                     onClick={() => handleSearch()}
                     disabled={isSearching || !searchTerm.trim()}
-                    className="flex-1 bg-pba-teal hover:bg-[#0098ad] text-white shadow-md hover:shadow-lg transition-shadow sm:flex-none"
+                    className="flex-1 bg-pba-purple hover:bg-[#0098ad] text-white shadow-md hover:shadow-lg transition-shadow sm:flex-none"
                   >
                     {isSearching ? "Buscando..." : "Buscar"}
                   </Button>
@@ -622,7 +622,7 @@ const metricCards = (
       <Dialog open={openDialog === "distritos"} onOpenChange={(open) => !open && setOpenDialog(null)}>
         <DialogContent className="max-w-[calc(100%-1.5rem)] sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle className="text-pba-teal">Establecimientos por Distrito</DialogTitle>
+            <DialogTitle className="text-pba-purple">Establecimientos por Distrito</DialogTitle>
             <DialogDescription>Cantidad de establecimientos en cada distrito</DialogDescription>
           </DialogHeader>
           <div className="max-h-[60vh] space-y-2 overflow-y-auto pr-1">
@@ -635,7 +635,7 @@ const metricCards = (
                   setSearchTerm(item.distrito)
                   handleSearch(item.distrito)
                 }}
-                className="flex w-full items-center justify-between gap-3 rounded-md border border-slate-200 dark:border-border bg-slate-50/50 dark:bg-surface-subtle px-3 py-2 text-left transition-colors hover:border-pba-teal/40 hover:bg-slate-100"
+                className="flex w-full items-center justify-between gap-3 rounded-md border border-slate-200 dark:border-border bg-slate-50/50 dark:bg-surface-subtle px-3 py-2 text-left transition-colors hover:border-pba-purple/40 hover:bg-slate-100"
               >
                 <span className="text-sm font-medium text-slate-700 dark:text-gray-100">{item.distrito}</span>
                 <span className="text-sm font-semibold text-pba-blue">

@@ -164,7 +164,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2 px-1">
         <div className="flex items-center gap-2">
-          <div className="h-1 w-1 rounded-full bg-pba-teal" />
+          <div className="h-1 w-1 rounded-full bg-pba-purple" />
           <p className="text-sm font-medium text-slate-700 dark:text-gray-100">
             {results.length > visibleCount
               ? `${visibleCount} de ${results.length} resultados`
@@ -178,8 +178,8 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
               onClick={() => setViewMode("list")}
               className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
                 viewMode === "list"
-                  ? "bg-pba-teal text-white"
-                  : "text-slate-500 dark:text-gray-300 hover:text-pba-teal"
+                  ? "bg-pba-purple text-white"
+                  : "text-slate-500 dark:text-gray-300 hover:text-pba-purple"
               }`}
             >
               <List className="h-3.5 w-3.5" />
@@ -190,8 +190,8 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
               onClick={() => setViewMode("map")}
               className={`flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
                 viewMode === "map"
-                  ? "bg-pba-teal text-white"
-                  : "text-slate-500 dark:text-gray-300 hover:text-pba-teal"
+                  ? "bg-pba-purple text-white"
+                  : "text-slate-500 dark:text-gray-300 hover:text-pba-purple"
               }`}
             >
               <MapIcon className="h-3.5 w-3.5" />
@@ -202,7 +202,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
             onClick={() => exportResultsToExcel(results)}
             variant="outline"
             size="sm"
-            className="gap-1.5 border-slate-300 dark:border-border-strong text-slate-700 dark:text-gray-100 hover:border-pba-teal/50 hover:text-pba-teal"
+            className="gap-1.5 border-slate-300 dark:border-border-strong text-slate-700 dark:text-gray-100 hover:border-pba-purple/50 hover:text-pba-purple"
           >
             <FileSpreadsheet className="h-4 w-4" />
             Exportar a Excel
@@ -229,11 +229,11 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
             <Card
               key={result.id}
               style={{ animationDelay: `${Math.min(index, 8) * 40}ms`, animationFillMode: "backwards" }}
-              className="relative overflow-hidden border border-slate-200/60 bg-white shadow-sm dark:border-border dark:bg-card dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:border-pba-teal/30 flex flex-col h-full rounded-xl animate-in fade-in slide-in-from-bottom-1 duration-300"
+              className="relative overflow-hidden border border-slate-200/60 bg-white shadow-sm dark:border-border dark:bg-card dark:backdrop-blur-sm dark:shadow-lg transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:border-pba-purple/30 flex flex-col h-full rounded-xl animate-in fade-in slide-in-from-bottom-1 duration-300"
             >
               <div
                 className={`absolute top-0 left-0 right-0 h-1 ${
-                  isClosedOrContext ? "bg-red-500" : "bg-gradient-to-r from-pba-pink via-pba-teal to-pba-blue"
+                  isClosedOrContext ? "bg-red-500" : "bg-gradient-to-r from-pba-blue via-pba-purple to-pba-pink"
                 }`}
               />
 
@@ -375,7 +375,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                 <div className="space-y-2.5 text-sm">
                   <div className="space-y-1">
                     <div className="flex items-start gap-2">
-                      <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-pba-teal" />
+                      <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-pba-purple" />
                       <div className="text-slate-700 dark:text-gray-100 leading-snug">
                         <div className="font-medium">{result.distrito}</div>
                         <div className="text-xs text-slate-600 dark:text-gray-200">{result.ciudad}</div>
@@ -483,7 +483,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                               )}
                               {primaryContact.correo_laboral && (
                                 <p className="flex items-center gap-1 text-xs text-slate-600 dark:text-gray-200" title="Correo laboral personal">
-                                  <Mail className="h-3 w-3 shrink-0 text-pba-teal" />
+                                  <Mail className="h-3 w-3 shrink-0 text-pba-purple" />
                                   <span className="truncate">{primaryContact.correo_laboral}</span>
                                 </p>
                               )}
@@ -501,7 +501,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
                       const route = isOrganismo ? `/organismos/${result.id}` : `/establecimientos/${result.id}`
                       router.push(route)
                     }}
-                    className="w-full bg-gradient-to-r from-pba-teal to-pba-blue hover:from-pba-teal/90 hover:to-pba-blue/90 text-white shadow-sm"
+                    className="w-full bg-gradient-to-r from-pba-blue to-pba-purple hover:from-pba-blue/90 hover:to-pba-purple/90 text-white shadow-sm"
                     size="sm"
                   >
                     Ver detalles
@@ -529,7 +529,7 @@ export function SearchResults({ results, isSearching }: { results: SearchResult[
           <Button
             onClick={() => setVisibleCount((v) => v + 30)}
             variant="outline"
-            className="border-slate-300 dark:border-border-strong text-slate-700 dark:text-gray-100 hover:border-pba-teal/50 hover:text-pba-teal"
+            className="border-slate-300 dark:border-border-strong text-slate-700 dark:text-gray-100 hover:border-pba-purple/50 hover:text-pba-purple"
           >
             Mostrar {Math.min(30, results.length - visibleCount)} más ({results.length - visibleCount} restantes)
           </Button>

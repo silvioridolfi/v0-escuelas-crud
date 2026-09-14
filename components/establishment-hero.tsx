@@ -50,7 +50,7 @@ export function EstablishmentHero({
       {/* Nombre + dirección */}
       <h2 className="mt-4 text-xl font-bold leading-tight text-slate-900 dark:text-white sm:text-2xl">{establecimiento.nombre}</h2>
       <p className="mt-1.5 flex items-start gap-1.5 text-sm text-slate-600 dark:text-gray-200">
-        <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-pba-teal" />
+        <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-pba-purple" />
         {[establecimiento.direccion, establecimiento.ciudad, establecimiento.distrito].filter(Boolean).join(", ")}
       </p>
     </div>

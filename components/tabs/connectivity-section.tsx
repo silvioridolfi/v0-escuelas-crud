@@ -75,7 +75,7 @@ export function ConnectivitySection({
                 icon={Network}
                 label="Piso tecnológico"
                 value={establecimiento.plan_piso_tecnologico}
-                color="var(--color-pba-teal)"
+                color="var(--color-pba-purple)"
               />
             </div>
           ) : (

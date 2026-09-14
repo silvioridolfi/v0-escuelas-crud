@@ -52,7 +52,7 @@
   --card-foreground: oklch(0.97 0.005 240);
   --popover: oklch(0.23 0.028 235);
   --popover-foreground: oklch(0.97 0.005 240);
-  --primary: oklch(0.6 0.13 200);
+  --primary: #cd2b7b;
   --primary-foreground: oklch(0.98 0.005 240);
   --secondary: oklch(0.26 0.026 235);
   --secondary-foreground: oklch(0.97 0.005 240);
@@ -70,7 +70,7 @@
      paleta. */
   --surface-subtle: oklch(0.18 0.026 235);
   --border-strong: oklch(1 0 0 / 20%);
-  --ring: oklch(0.72 0.12 200);
+  --ring: #cd2b7b;
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -78,7 +78,7 @@
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.18 0.026 235);
   --sidebar-foreground: oklch(0.97 0.005 240);
-  --sidebar-primary: oklch(0.6 0.13 200);
+  --sidebar-primary: #cd2b7b;
   --sidebar-primary-foreground: oklch(0.98 0.005 240);
   --sidebar-accent: oklch(0.26 0.026 235);
   --sidebar-accent-foreground: oklch(0.97 0.005 240);
@@ -130,9 +130,12 @@
   /* Colores oficiales de la Provincia de Buenos Aires -- antes escritos a
      mano como hex en 143 lugares distintos del código. Ahora un solo
      lugar: bg-pba-teal, text-pba-blue, border-pba-pink/20, etc. */
-  --color-pba-teal: #00aec3;
-  --color-pba-blue: #417099;
-  --color-pba-pink: #e81f76;
+  /* Paleta oficial DTE (nueva, reemplaza la anterior con cian/azul/rosa):
+     degradé oficial linear-gradient(135deg, #03466e 0%, #623b75 55%, #cd2b7b 100%).
+     pba-teal se renombra a pba-purple: la nueva paleta no tiene cian/teal. */
+  --color-pba-purple: #623b75;
+  --color-pba-blue: #03466e;
+  --color-pba-pink: #cd2b7b;
 
   /* Paso de tipografía "micro" para etiquetas chicas (CUE, DISTRITO,
      NIVEL...) -- antes convivían 3 tamaños sueltos e inconsistentes
