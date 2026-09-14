@@ -17,8 +17,8 @@ export function NodeNetworkAccent({
   const isOnColor = variant === "onColor"
   const dotColors = isOnColor
     ? ["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"]
-    : ["#00AEC3", "#00AEC3", "#417099", "#e81f76", "#00AEC3", "#417099"]
-  const lineColor = isOnColor ? "#ffffff" : "#417099"
+    : ["#03466e", "#03466e", "#623b75", "#cd2b7b", "#03466e", "#623b75"]
+  const lineColor = isOnColor ? "#ffffff" : "#623b75"
   const lineOpacity = isOnColor ? 0.35 : 0.25
   const dotOpacity = isOnColor ? 0.9 : 1
 

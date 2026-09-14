@@ -118,7 +118,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
   return (
     <>
       {/* Header */}
-      <header className="border-b border-blue-200 bg-gradient-to-r from-pba-blue to-pba-teal shadow-lg">
+      <header className="border-b border-blue-200 bg-gradient-to-r from-pba-blue to-pba-purple shadow-lg">
         <div className="container mx-auto px-4 py-4 sm:py-6">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-start gap-3 sm:items-center sm:gap-4">

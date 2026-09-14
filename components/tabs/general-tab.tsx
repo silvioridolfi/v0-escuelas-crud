@@ -137,7 +137,7 @@ export function GeneralTab({
             <Label htmlFor="predio" className="flex items-center gap-2">
               Predio
               {predioUnlocked ? (
-                <Pencil className="h-3 w-3 text-pba-teal" />
+                <Pencil className="h-3 w-3 text-pba-purple" />
               ) : (
                 <button
                   type="button"
@@ -150,7 +150,7 @@ export function GeneralTab({
                       setIsEditing(true)
                     }
                   }}
-                  className="inline-flex items-center text-muted-foreground hover:text-pba-teal"
+                  className="inline-flex items-center text-muted-foreground hover:text-pba-purple"
                   title="Desbloquear Predio para editar"
                   aria-label="Desbloquear Predio para editar"
                 >
@@ -313,7 +313,7 @@ export function GeneralTab({
       </div>
 
       {isEditing && (
-        <Button onClick={handleSave} disabled={isSaving} className="bg-pba-teal hover:bg-[#0098ad]">
+        <Button onClick={handleSave} disabled={isSaving} className="bg-pba-purple hover:bg-[#0098ad]">
           {isSaving ? "Guardando..." : "Guardar Cambios"}
         </Button>
       )}

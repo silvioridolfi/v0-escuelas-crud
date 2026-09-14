@@ -57,7 +57,7 @@ export function ObservationsTab({ establecimiento }: { establecimiento: Establec
       )}
 
       {isEditing && (
-        <Button onClick={handleSave} disabled={isSaving} className="bg-pba-teal hover:bg-[#0098ad]">
+        <Button onClick={handleSave} disabled={isSaving} className="bg-pba-purple hover:bg-[#0098ad]">
           {isSaving ? "Guardando..." : "Guardar Cambios"}
         </Button>
       )}

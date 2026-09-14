@@ -28,7 +28,7 @@ function pinIcon(color: string) {
   })
 }
 
-const iconEstablecimiento = pinIcon("var(--color-pba-teal)")
+const iconEstablecimiento = pinIcon("var(--color-pba-purple)")
 const iconOrganismo = pinIcon("#6366f1")
 
 // Centro aproximado de La Plata
@@ -95,7 +95,7 @@ export function GeneralMap({ points }: { points: MapPoint[] }) {
 
         <div className="ml-auto flex items-center gap-3 text-xs text-slate-500 dark:text-gray-300">
           <span className="flex items-center gap-1.5">
-            <span className="inline-block h-2.5 w-2.5 rounded-full bg-pba-teal" />
+            <span className="inline-block h-2.5 w-2.5 rounded-full bg-pba-purple" />
             Establecimientos
           </span>
           <span className="flex items-center gap-1.5">
@@ -120,12 +120,12 @@ export function GeneralMap({ points }: { points: MapPoint[] }) {
                   {p.distrito && <p className="text-xs text-slate-500 dark:text-gray-300">{p.distrito}</p>}
                   {p.fed_a_cargo && <p className="text-xs text-slate-500 dark:text-gray-300">FED: {p.fed_a_cargo}</p>}
                   {p.entity_type === "establecimiento" && (
-                    <Link href={`/establecimientos/${p.id}`} className="text-xs font-medium text-pba-teal hover:underline">
+                    <Link href={`/establecimientos/${p.id}`} className="text-xs font-medium text-pba-purple hover:underline">
                       Ver ficha →
                     </Link>
                   )}
                   {p.entity_type === "organismo" && (
-                    <Link href={`/organismos/${p.id}`} className="text-xs font-medium text-pba-teal hover:underline">
+                    <Link href={`/organismos/${p.id}`} className="text-xs font-medium text-pba-purple hover:underline">
                       Ver ficha →
                     </Link>
                   )}

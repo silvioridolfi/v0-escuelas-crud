@@ -20,7 +20,7 @@ const COLORS: Record<QuickFilterKey, string> = {
   contexto: "text-red-700 dark:text-red-400 bg-red-500/10 border-red-500/20 hover:bg-red-500/20",
   sin_fed: "text-amber-700 dark:text-amber-400 bg-amber-500/10 border-amber-500/20 hover:bg-amber-500/20",
   sin_contacto: "text-orange-700 dark:text-orange-400 bg-orange-500/10 border-orange-500/20 hover:bg-orange-500/20",
-  nuevos: "text-pba-teal bg-pba-teal/10 border-pba-teal/30 hover:bg-pba-teal/20",
+  nuevos: "text-pba-purple bg-pba-purple/10 border-pba-purple/30 hover:bg-pba-purple/20",
 }
 
 export function QuickFilters({
@@ -60,7 +60,7 @@ export function QuickFilters({
             type="button"
             onClick={() => handleClick(key)}
             disabled={loadingFilter === key}
-            className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pba-teal focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 ${
+            className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pba-purple focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 ${
               isActive ? `${COLORS[key]} ring-2 ring-offset-1` : `${COLORS[key]} opacity-80 hover:opacity-100`
             }`}
           >

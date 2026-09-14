@@ -30,7 +30,6 @@ import { deleteEstablishment } from "@/app/actions/delete-establishment"
 import type { Establecimiento } from "@/lib/establecimiento"
 import { EstablishmentHero } from "@/components/establishment-hero"
 import { ThemeToggle } from "@/components/theme-toggle"
-import { NodeNetworkAccent } from "@/components/node-network-accent"
 
 type Contacto = {
   id: string
@@ -82,7 +81,7 @@ export function EstablishmentEditor({
 
   const allTabsConfig = [
     { value: "general", label: "General", icon: FileText, color: "text-pba-blue", bgColor: "bg-pba-blue/10", showForGovBuilding: true },
-    { value: "connectivity", label: "Conectividad", icon: Wifi, color: "text-pba-teal", bgColor: "bg-pba-teal/10", showForGovBuilding: false },
+    { value: "connectivity", label: "Conectividad", icon: Wifi, color: "text-pba-purple", bgColor: "bg-pba-purple/10", showForGovBuilding: false },
     { value: "academic", label: "Académico", icon: GraduationCap, color: "text-pba-pink", bgColor: "bg-pba-pink/10", showForGovBuilding: false },
     { value: "contact", label: "Contacto", icon: Users, color: "text-pba-blue", bgColor: "bg-pba-blue/10", showForGovBuilding: true },
     { value: "location", label: "Ubicación", icon: MapPin, color: "text-emerald-600", bgColor: "bg-emerald-50", showForGovBuilding: true },
@@ -104,7 +103,7 @@ export function EstablishmentEditor({
             aria-selected={isActive}
             aria-controls={`panel-${tab.value}`}
             onClick={() => setActiveTab(tab.value)}
-            className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2.5 text-xs font-medium transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pba-teal focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 ${
+            className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2.5 text-xs font-medium transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pba-purple focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 ${
               isActive
                 ? `${tab.color} ${tab.bgColor}`
                 : "text-slate-400 hover:bg-slate-50 hover:text-slate-600 dark:text-gray-400 dark:hover:bg-accent dark:hover:text-gray-100"
@@ -121,8 +120,7 @@ export function EstablishmentEditor({
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       {/* Header */}
-      <header className="relative overflow-hidden border-b border-blue-200 bg-gradient-to-r from-pba-blue to-pba-teal shadow-lg">
-        <NodeNetworkAccent variant="onColor" className="pointer-events-none absolute inset-0 h-full w-full" />
+      <header className="relative overflow-hidden border-b border-blue-200 bg-gradient-to-r from-pba-blue to-pba-purple shadow-lg">
         <div className="container relative mx-auto px-4 py-4 sm:py-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
             <div className="flex items-start gap-3 sm:items-center sm:gap-4">
@@ -164,7 +162,7 @@ export function EstablishmentEditor({
 
       <div id="main-content" className="container mx-auto px-4 py-6 sm:py-8">
         <Card className={`overflow-hidden rounded-xl border bg-white dark:bg-card dark:backdrop-blur-sm shadow-sm dark:shadow-lg ${isClosedOrContext ? "border-red-200 dark:border-red-500/30" : "border-slate-200 dark:border-border"}`}>
-          <div className={`h-1 ${isClosedOrContext ? "bg-red-500" : "bg-gradient-to-r from-pba-pink via-pba-teal to-pba-blue"}`} />
+          <div className={`h-1 ${isClosedOrContext ? "bg-red-500" : "bg-gradient-to-r from-pba-blue via-pba-purple to-pba-pink"}`} />
 
           <CardContent className="p-5 sm:p-6">
             <EstablishmentHero establecimiento={establecimiento} centerSlot={tabNav} />

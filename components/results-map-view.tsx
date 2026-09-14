@@ -17,7 +17,7 @@ function pinIcon(color: string) {
   return L.divIcon({ html: svg, className: "", iconSize: [26, 36], iconAnchor: [13, 36], popupAnchor: [0, -32] })
 }
 
-const iconEstablecimiento = pinIcon("var(--color-pba-teal)")
+const iconEstablecimiento = pinIcon("var(--color-pba-purple)")
 const iconOrganismo = pinIcon("#6366f1")
 const iconCerrada = pinIcon("#ef4444")
 
@@ -85,7 +85,7 @@ export function ResultsMapView({ results }: { results: SearchResult[] }) {
                   {isOrganismo && p.codigo && <p className="text-xs text-slate-500 dark:text-gray-300">Código: {p.codigo}</p>}
                   {p.distrito && <p className="text-xs text-slate-500 dark:text-gray-300">{p.distrito}</p>}
                   {p.fed_a_cargo && <p className="text-xs text-slate-500 dark:text-gray-300">FED: {p.fed_a_cargo}</p>}
-                  <Link href={href} className="text-xs font-medium text-pba-teal hover:underline">
+                  <Link href={href} className="text-xs font-medium text-pba-purple hover:underline">
                     Ver ficha →
                   </Link>
                 </div>

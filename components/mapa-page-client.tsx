@@ -4,7 +4,6 @@ import dynamic from "next/dynamic"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
-import { NodeNetworkAccent } from "@/components/node-network-accent"
 import { ArrowLeft, Map } from "lucide-react"
 import type { MapPoint } from "@/app/actions/get-map-points"
 
@@ -20,8 +19,7 @@ const GeneralMap = dynamic(() => import("@/components/general-map").then((mod) =
 export function MapaPageClient({ points }: { points: MapPoint[] }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
-      <header className="relative overflow-hidden border-b border-blue-200 bg-gradient-to-r from-pba-blue to-pba-teal shadow-lg">
-        <NodeNetworkAccent variant="onColor" className="pointer-events-none absolute inset-0 h-full w-full" />
+      <header className="relative overflow-hidden border-b border-blue-200 bg-gradient-to-r from-pba-blue to-pba-purple shadow-lg">
         <div className="container relative mx-auto flex flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:py-6">
           <div className="flex min-w-0 items-center gap-4">
             <Link href="/">
