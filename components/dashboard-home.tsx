@@ -338,7 +338,6 @@ const metricCards = (
           background: "linear-gradient(135deg, var(--color-pba-blue) 0%, var(--color-pba-purple) 55%, var(--color-pba-pink) 100%)",
         }}
       >
-        <NodeNetworkAccent variant="onColor" className="pointer-events-none absolute inset-0 h-full w-full" />
         <div className="container relative mx-auto px-4 py-4 sm:py-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex min-w-0 items-center gap-3 sm:gap-4">

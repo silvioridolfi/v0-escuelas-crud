@@ -30,7 +30,6 @@ import { deleteEstablishment } from "@/app/actions/delete-establishment"
 import type { Establecimiento } from "@/lib/establecimiento"
 import { EstablishmentHero } from "@/components/establishment-hero"
 import { ThemeToggle } from "@/components/theme-toggle"
-import { NodeNetworkAccent } from "@/components/node-network-accent"
 
 type Contacto = {
   id: string
@@ -122,7 +121,6 @@ export function EstablishmentEditor({
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       {/* Header */}
       <header className="relative overflow-hidden border-b border-blue-200 bg-gradient-to-r from-pba-blue to-pba-purple shadow-lg">
-        <NodeNetworkAccent variant="onColor" className="pointer-events-none absolute inset-0 h-full w-full" />
         <div className="container relative mx-auto px-4 py-4 sm:py-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
             <div className="flex items-start gap-3 sm:items-center sm:gap-4">
