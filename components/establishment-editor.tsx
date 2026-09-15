@@ -118,7 +118,7 @@ export function EstablishmentEditor({
   )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:bg-background">
       {/* Header */}
       <header className="relative overflow-hidden border-b border-blue-200 bg-gradient-to-r from-pba-blue to-pba-purple shadow-lg">
         <div className="container relative mx-auto px-4 py-4 sm:py-6">

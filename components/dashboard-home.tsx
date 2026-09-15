@@ -331,7 +331,7 @@ const metricCards = (
 
   
   return (
-    <div className="flex min-h-screen flex-col bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div className="flex min-h-screen flex-col bg-white dark:bg-background">
       <header
         className="relative overflow-hidden border-b border-blue-200 shadow-lg"
         style={{
