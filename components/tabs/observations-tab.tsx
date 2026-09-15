@@ -53,7 +53,7 @@ export function ObservationsTab({ establecimiento }: { establecimiento: Establec
       </div>
 
       {message && (
-        <p className={`text-sm ${message.includes("Error") ? "text-red-600" : "text-green-600"}`}>{message}</p>
+        <p className={`text-sm ${message.includes("Error") ? "text-red-600 dark:text-red-400" : "text-green-600 dark:text-green-400"}`}>{message}</p>
       )}
 
       {isEditing && (

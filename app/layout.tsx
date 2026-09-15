@@ -38,7 +38,7 @@ export default function RootLayout({
         >
           Saltar al contenido principal
         </a>
-        <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light" enableSystem={false} disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
           {children}
           <SiteFooter />
           <Toaster />

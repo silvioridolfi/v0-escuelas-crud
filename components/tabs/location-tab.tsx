@@ -25,7 +25,7 @@ export function LocationTab({ establecimiento }: { establecimiento: Establecimie
 
   return (
     <div className="space-y-6 py-4">
-      <div className="border-b-2 border-gray-300 pb-2 mb-4">
+      <div className="border-b-2 border-gray-300 dark:border-border-strong pb-2 mb-4">
         <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Ubicación</h3>
       </div>
 
@@ -50,8 +50,8 @@ export function LocationTab({ establecimiento }: { establecimiento: Establecimie
           />
         </div>
       ) : (
-        <div className="flex h-64 flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-slate-300 bg-slate-50 dark:bg-surface-subtle text-center">
-          <AlertTriangle className="h-8 w-8 text-amber-500" />
+        <div className="flex h-64 flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-slate-300 dark:border-border-strong bg-slate-50 dark:bg-surface-subtle text-center">
+          <AlertTriangle className="h-8 w-8 text-amber-500 dark:text-amber-400" />
           <p className="text-sm font-medium text-foreground">Sin coordenadas registradas</p>
           <p className="text-xs text-muted-foreground">
             Este establecimiento no cuenta con latitud y longitud para mostrar en el mapa.

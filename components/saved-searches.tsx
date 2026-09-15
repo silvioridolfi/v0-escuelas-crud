@@ -60,7 +60,7 @@ export function SavedSearches({
       {saved.map((s) => (
         <span
           key={s.term}
-          className="group inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white dark:bg-card px-3 py-1 text-xs text-slate-700 dark:text-gray-100 shadow-sm"
+          className="group inline-flex items-center gap-1.5 rounded-full border border-slate-200 dark:border-border bg-white dark:bg-card px-3 py-1 text-xs text-slate-700 dark:text-gray-100 shadow-sm"
         >
           <button
             type="button"
@@ -73,7 +73,7 @@ export function SavedSearches({
           <button
             type="button"
             onClick={() => handleRemove(s.term)}
-            className="text-slate-300 hover:text-red-500"
+            className="text-slate-300 dark:text-gray-400 hover:text-red-500"
             title="Quitar de guardados"
             aria-label={`Quitar "${s.name}" de búsquedas guardadas`}
           >
@@ -91,7 +91,7 @@ export function SavedSearches({
             setNewName(currentTerm.trim())
             setIsNaming(true)
           }}
-          className="h-7 gap-1.5 border-dashed border-slate-300 px-2.5 text-xs text-slate-500 dark:text-gray-300 hover:border-pba-purple/50 hover:text-pba-purple"
+          className="h-7 gap-1.5 border-dashed border-slate-300 dark:border-border-strong px-2.5 text-xs text-slate-500 dark:text-gray-300 hover:border-pba-purple/50 hover:text-pba-purple"
         >
           <Star className="h-3 w-3" />
           Guardar búsqueda

@@ -16,6 +16,7 @@ import { searchEstablecimientos, getAllOrganismos, type SearchResult } from "@/a
 import { SearchResults } from "@/components/search-results"
 import { SavedSearches } from "@/components/saved-searches"
 import { QuickFilters } from "@/components/quick-filters"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { NodeNetworkAccent } from "@/components/node-network-accent"
 import type { QuickFilterKey } from "@/lib/quick-filters-config"
 import { useRouter } from "next/navigation"
@@ -330,7 +331,7 @@ const metricCards = (
 
   
   return (
-    <div className="flex min-h-screen flex-col bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div className="flex min-h-screen flex-col bg-white dark:bg-background">
       <header
         className="relative overflow-hidden border-b border-blue-200 shadow-lg"
         style={{
@@ -356,6 +357,7 @@ const metricCards = (
               </div>
             </div>
             <div className="flex shrink-0 items-center justify-end gap-3">
+              <ThemeToggle />
               <Button
                 onClick={() => router.push("/establecimientos/nuevo")}
                 className="bg-pba-pink hover:bg-pba-pink/90 text-white shadow-lg"
@@ -588,7 +590,7 @@ const metricCards = (
                     setSearchTerm(item.fed)
                     handleSearch(item.fed)
                   }}
-                  className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-md border border-slate-200 dark:border-border bg-slate-50/50 dark:bg-surface-subtle px-3 py-2.5 text-left transition-colors hover:border-pba-blue/40 hover:bg-slate-100"
+                  className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-md border border-slate-200 dark:border-border bg-slate-50/50 dark:bg-surface-subtle px-3 py-2.5 text-left transition-colors hover:border-pba-blue/40 hover:bg-slate-100 dark:hover:bg-accent"
                 >
                   {rowContent}
                 </button>
@@ -632,7 +634,7 @@ const metricCards = (
                   setSearchTerm(item.distrito)
                   handleSearch(item.distrito)
                 }}
-                className="flex w-full items-center justify-between gap-3 rounded-md border border-slate-200 dark:border-border bg-slate-50/50 dark:bg-surface-subtle px-3 py-2 text-left transition-colors hover:border-pba-purple/40 hover:bg-slate-100"
+                className="flex w-full items-center justify-between gap-3 rounded-md border border-slate-200 dark:border-border bg-slate-50/50 dark:bg-surface-subtle px-3 py-2 text-left transition-colors hover:border-pba-purple/40 hover:bg-slate-100 dark:hover:bg-accent"
               >
                 <span className="text-sm font-medium text-slate-700 dark:text-gray-100">{item.distrito}</span>
                 <span className="text-sm font-semibold text-pba-blue">
@@ -658,7 +660,7 @@ const metricCards = (
                   {metrics.matriculaByGender.varones.toLocaleString("es-AR")}
                 </span>
               </div>
-              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-slate-200">
+              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-white/20">
                 <div className="h-full rounded-full bg-pba-blue" style={{ width: `${varonesPct}%` }} />
               </div>
               <p className="mt-1 text-xs text-slate-400 dark:text-gray-300">{varonesPct.toFixed(1)}% del total</p>
@@ -670,7 +672,7 @@ const metricCards = (
                   {metrics.matriculaByGender.mujeres.toLocaleString("es-AR")}
                 </span>
               </div>
-              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-slate-200">
+              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-white/20">
                 <div className="h-full rounded-full bg-pba-pink" style={{ width: `${mujeresPct}%` }} />
               </div>
               <p className="mt-1 text-xs text-slate-400 dark:text-gray-300">{mujeresPct.toFixed(1)}% del total</p>

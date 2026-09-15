@@ -4,6 +4,7 @@ import type React from "react"
 import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -128,30 +129,35 @@ export function CreateEstablishmentForm() {
   }
 
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:bg-background">
       {/* Header */}
       <header className="border-b border-blue-200 bg-gradient-to-r from-pba-blue to-pba-purple shadow-lg">
         <div className="container mx-auto px-4 py-4 sm:py-6">
-          <div className="flex items-start gap-3 sm:items-center sm:gap-4">
-            <Button
-              onClick={() => router.push("/")}
-              variant="ghost"
-              size="icon"
-              className="shrink-0 text-white hover:bg-white/20"
-              aria-label="Volver al buscador"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <div className="flex items-start gap-3 sm:items-center">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/90 shadow-md">
-                <Building2 className="h-6 w-6 text-pba-blue" />
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex min-w-0 items-start gap-3 sm:items-center sm:gap-4">
+              <Button
+                onClick={() => router.push("/")}
+                variant="ghost"
+                size="icon"
+                className="shrink-0 text-white hover:bg-white/20"
+                aria-label="Volver al buscador"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              <div className="flex min-w-0 items-start gap-3 sm:items-center">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/90 shadow-md">
+                  <Building2 className="h-6 w-6 text-pba-blue" />
+                </div>
+                <div className="min-w-0">
+                  <h1 className="text-lg font-bold leading-tight text-white sm:text-2xl">Nueva Entidad</h1>
+                  <p className="text-sm text-white/90 text-balance">
+                    Crear establecimiento educativo u organismo descentralizado
+                  </p>
+                </div>
               </div>
-              <div>
-                <h1 className="text-lg font-bold leading-tight text-white sm:text-2xl">Nueva Entidad</h1>
-                <p className="text-sm text-white/90 text-balance">
-                  Crear establecimiento educativo u organismo descentralizado
-                </p>
-              </div>
+            </div>
+            <div className="shrink-0">
+              <ThemeToggle />
             </div>
           </div>
         </div>
@@ -188,7 +194,7 @@ export function CreateEstablishmentForm() {
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-2">
                       <Label htmlFor="cue">
-                        CUE <span className="text-red-500">*</span>
+                        CUE <span className="text-red-500 dark:text-red-400">*</span>
                       </Label>
                       <Input
                         id="cue"
@@ -213,7 +219,7 @@ export function CreateEstablishmentForm() {
 
                     <div className="space-y-2 md:col-span-2">
                       <Label htmlFor="nombre">
-                        Nombre <span className="text-red-500">*</span>
+                        Nombre <span className="text-red-500 dark:text-red-400">*</span>
                       </Label>
                       <Input
                         id="nombre"
@@ -225,7 +231,7 @@ export function CreateEstablishmentForm() {
 
                     <div className="space-y-2">
                       <Label htmlFor="distrito">
-                        Distrito <span className="text-red-500">*</span>
+                        Distrito <span className="text-red-500 dark:text-red-400">*</span>
                       </Label>
                       <Select
                         required
@@ -247,7 +253,7 @@ export function CreateEstablishmentForm() {
 
                     <div className="space-y-2">
                       <Label htmlFor="ciudad">
-                        Ciudad <span className="text-red-500">*</span>
+                        Ciudad <span className="text-red-500 dark:text-red-400">*</span>
                       </Label>
                       <Input
                         id="ciudad"
@@ -259,7 +265,7 @@ export function CreateEstablishmentForm() {
 
                     <div className="space-y-2 md:col-span-2">
                       <Label htmlFor="direccion">
-                        Dirección <span className="text-red-500">*</span>
+                        Dirección <span className="text-red-500 dark:text-red-400">*</span>
                       </Label>
                       <Input
                         id="direccion"
@@ -308,7 +314,7 @@ export function CreateEstablishmentForm() {
                     </div>
                   </div>
 
-                  {error && <p className="text-sm text-red-600">{error}</p>}
+                  {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
 
                   <div className="flex gap-3">
                     <Button type="button" variant="outline" onClick={() => router.push("/")} disabled={isSaving}>
@@ -327,7 +333,7 @@ export function CreateEstablishmentForm() {
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-2">
                       <Label htmlFor="codigo">
-                        Código Provincial <span className="text-red-500">*</span>
+                        Código Provincial <span className="text-red-500 dark:text-red-400">*</span>
                       </Label>
                       <Input
                         id="codigo"
@@ -341,7 +347,7 @@ export function CreateEstablishmentForm() {
 
                     <div className="space-y-2">
                       <Label htmlFor="tipo_org">
-                        Tipo de Organización <span className="text-red-500">*</span>
+                        Tipo de Organización <span className="text-red-500 dark:text-red-400">*</span>
                       </Label>
                       <Select
                         required
@@ -373,7 +379,7 @@ export function CreateEstablishmentForm() {
 
                     <div className="space-y-2">
                       <Label htmlFor="distrito_org">
-                        Distrito <span className="text-red-500">*</span>
+                        Distrito <span className="text-red-500 dark:text-red-400">*</span>
                       </Label>
                       <Select
                         required
@@ -395,7 +401,7 @@ export function CreateEstablishmentForm() {
 
                     <div className="space-y-2">
                       <Label htmlFor="localidad">
-                        Localidad <span className="text-red-500">*</span>
+                        Localidad <span className="text-red-500 dark:text-red-400">*</span>
                       </Label>
                       <Input
                         id="localidad"
@@ -407,7 +413,7 @@ export function CreateEstablishmentForm() {
 
                     <div className="space-y-2 md:col-span-2">
                       <Label htmlFor="domicilio">
-                        Domicilio <span className="text-red-500">*</span>
+                        Domicilio <span className="text-red-500 dark:text-red-400">*</span>
                       </Label>
                       <Input
                         id="domicilio"
@@ -466,7 +472,7 @@ export function CreateEstablishmentForm() {
                     </div>
                   </div>
 
-                  {error && <p className="text-sm text-red-600">{error}</p>}
+                  {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
 
                   <div className="flex gap-3">
                     <Button type="button" variant="outline" onClick={() => router.push("/")} disabled={isSaving}>
@@ -482,6 +488,6 @@ export function CreateEstablishmentForm() {
           </CardContent>
         </Card>
       </div>
-    </>
+    </div>
   )
 }

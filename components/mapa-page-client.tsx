@@ -3,13 +3,14 @@
 import dynamic from "next/dynamic"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { ArrowLeft, Map } from "lucide-react"
 import type { MapPoint } from "@/app/actions/get-map-points"
 
 const GeneralMap = dynamic(() => import("@/components/general-map").then((mod) => mod.GeneralMap), {
   ssr: false,
   loading: () => (
-    <div className="flex h-[70vh] items-center justify-center rounded-lg border border-slate-200 bg-slate-100 dark:bg-card text-sm text-muted-foreground">
+    <div className="flex h-[70vh] items-center justify-center rounded-lg border border-slate-200 dark:border-border bg-slate-100 dark:bg-card text-sm text-muted-foreground">
       Cargando mapa…
     </div>
   ),
@@ -17,7 +18,7 @@ const GeneralMap = dynamic(() => import("@/components/general-map").then((mod) =
 
 export function MapaPageClient({ points }: { points: MapPoint[] }) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:bg-background">
       <header className="relative overflow-hidden border-b border-blue-200 bg-gradient-to-r from-pba-blue to-pba-purple shadow-lg">
         <div className="container relative mx-auto flex flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:py-6">
           <div className="flex min-w-0 items-center gap-4">
@@ -33,6 +34,9 @@ export function MapaPageClient({ points }: { points: MapPoint[] }) {
                 <p className="text-sm text-white/90">Todos los establecimientos y organismos, con filtros por distrito y FED</p>
               </div>
             </div>
+          </div>
+          <div className="shrink-0">
+            <ThemeToggle />
           </div>
         </div>
       </header>

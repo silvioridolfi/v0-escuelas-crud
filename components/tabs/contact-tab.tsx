@@ -184,7 +184,7 @@ export function ContactTab({
                     <CardTitle className="flex items-center gap-2 text-base">
                       {contacto.nombre} {contacto.apellido}
                       {contacto.es_principal && (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-2xs font-semibold text-amber-800">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 dark:bg-amber-500/15 px-2 py-0.5 text-2xs font-semibold text-amber-800 dark:text-amber-300">
                           <Star className="h-2.5 w-2.5 fill-amber-500 text-amber-500" />
                           Principal
                         </span>
@@ -199,7 +199,7 @@ export function ContactTab({
                           onClick={() => handleSetPrincipal(contacto.id)}
                           size="icon"
                           variant="ghost"
-                          className="h-8 w-8 text-amber-500 hover:text-amber-600"
+                          className="h-8 w-8 text-amber-500 hover:text-amber-600 dark:hover:text-amber-400"
                           disabled={isSaving}
                           title="Marcar como contacto principal"
                           aria-label="Marcar como contacto principal"
@@ -220,7 +220,7 @@ export function ContactTab({
                         onClick={() => handleDelete(contacto.id)}
                         size="icon"
                         variant="ghost"
-                        className="h-8 w-8 text-red-600"
+                        className="h-8 w-8 text-red-600 dark:text-red-400"
                         disabled={isSaving}
                         aria-label={`Eliminar contacto ${contacto.nombre || ""}`}
                       >
@@ -315,7 +315,7 @@ export function ContactTab({
       )}
 
       {message && contactos.length > 0 && !isCreating && !editingId && (
-        <p className={`text-sm ${message.includes("Error") ? "text-red-600" : "text-green-600"}`}>{message}</p>
+        <p className={`text-sm ${message.includes("Error") ? "text-red-600 dark:text-red-400" : "text-green-600 dark:text-green-400"}`}>{message}</p>
       )}
     </div>
   )
@@ -399,14 +399,14 @@ function ContactForm({
             onChange={(e) => setFormData({ ...formData, correo_laboral: e.target.value })}
             className={correoLaboralInvalido ? "border-red-400 focus-visible:ring-red-400" : ""}
           />
-          <p className={`text-xs ${correoLaboralInvalido ? "text-red-600" : "text-muted-foreground"}`}>
+          <p className={`text-xs ${correoLaboralInvalido ? "text-red-600 dark:text-red-400" : "text-muted-foreground"}`}>
             Tiene que terminar en @abc.gob.ar (o dejarlo vacío)
           </p>
         </div>
       </div>
 
       {message && (
-        <p className={`text-sm ${message.includes("Error") ? "text-red-600" : "text-green-600"}`}>{message}</p>
+        <p className={`text-sm ${message.includes("Error") ? "text-red-600 dark:text-red-400" : "text-green-600 dark:text-green-400"}`}>{message}</p>
       )}
 
       <div className="flex gap-2">

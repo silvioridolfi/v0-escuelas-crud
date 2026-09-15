@@ -89,7 +89,7 @@ export function GeneralMap({ points }: { points: MapPoint[] }) {
           </SelectContent>
         </Select>
 
-        <Badge variant="outline" className="border-slate-300 text-slate-600 dark:text-gray-200">
+        <Badge variant="outline" className="border-slate-300 dark:border-border-strong text-slate-600 dark:text-gray-200">
           {filtered.length.toLocaleString("es-AR")} puntos
         </Badge>
 
@@ -105,7 +105,7 @@ export function GeneralMap({ points }: { points: MapPoint[] }) {
         </div>
       </div>
 
-      <div className="h-[70vh] w-full overflow-hidden rounded-lg border border-slate-200 shadow-sm">
+      <div className="h-[70vh] w-full overflow-hidden rounded-lg border border-slate-200 dark:border-border shadow-sm">
         <MapContainer center={DEFAULT_CENTER} zoom={11} scrollWheelZoom style={{ height: "100%", width: "100%" }} className="z-0">
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

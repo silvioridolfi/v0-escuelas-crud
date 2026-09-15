@@ -29,6 +29,7 @@ import { splitEstablishmentName } from "@/lib/school-name"
 import { deleteEstablishment } from "@/app/actions/delete-establishment"
 import type { Establecimiento } from "@/lib/establecimiento"
 import { EstablishmentHero } from "@/components/establishment-hero"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 type Contacto = {
   id: string
@@ -117,7 +118,7 @@ export function EstablishmentEditor({
   )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:bg-background">
       {/* Header */}
       <header className="relative overflow-hidden border-b border-blue-200 bg-gradient-to-r from-pba-blue to-pba-purple shadow-lg">
         <div className="container relative mx-auto px-4 py-4 sm:py-6">
@@ -144,6 +145,7 @@ export function EstablishmentEditor({
               </div>
             </div>
             <div className="flex shrink-0 items-center justify-end gap-3 sm:ml-auto">
+              <ThemeToggle />
               <Button
                 onClick={() => setShowDeleteDialog(true)}
                 variant="destructive"
@@ -213,13 +215,13 @@ export function EstablishmentEditor({
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-red-600">¿Eliminar Establecimiento?</AlertDialogTitle>
+            <AlertDialogTitle className="text-red-600 dark:text-red-400">¿Eliminar Establecimiento?</AlertDialogTitle>
             <AlertDialogDescription className="space-y-2">
               <p>Estás por eliminar permanentemente el siguiente establecimiento:</p>
               <p className="font-semibold text-foreground">
                 {establecimiento.nombre} (CUE: {establecimiento.cue})
               </p>
-              <p className="font-bold text-red-600">
+              <p className="font-bold text-red-600 dark:text-red-400">
                 Esta acción eliminará todos los registros de la base de datos y no se puede deshacer.
               </p>
             </AlertDialogDescription>

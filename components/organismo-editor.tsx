@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -116,12 +117,12 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
   }
 
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:bg-background">
       {/* Header */}
       <header className="border-b border-blue-200 bg-gradient-to-r from-pba-blue to-pba-purple shadow-lg">
         <div className="container mx-auto px-4 py-4 sm:py-6">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex items-start gap-3 sm:items-center sm:gap-4">
+            <div className="flex min-w-0 items-start gap-3 sm:items-center sm:gap-4">
               <Button
                 onClick={() => router.push("/")}
                 variant="ghost"
@@ -131,17 +132,17 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
-              <div className="flex items-start gap-3 sm:items-center">
+              <div className="flex min-w-0 items-start gap-3 sm:items-center">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/90 shadow-md">
                   <Building className="h-6 w-6 text-pba-blue" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <h1 className="text-lg font-bold leading-tight text-white text-balance sm:text-2xl">
                     {organismo.nombre || organismo.tipo_organizacion}
                   </h1>
                   <div className="flex flex-wrap items-center gap-2">
                     <p className="text-sm text-white/90">Código Provincial: {organismo.codigo}</p>
-                    <Badge variant="outline" className="border-white/50 bg-white/90 text-slate-700 dark:text-gray-100">
+                    <Badge variant="outline" className="border-white/50 bg-white/90 text-slate-700">
                       {organismo.tipo_organizacion}
                     </Badge>
                     {organismo.subtipo_organizacion === "Jefatura Regional" && (
@@ -154,7 +155,8 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+            <div className="flex shrink-0 flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+              <ThemeToggle />
               <Button
                 onClick={() => setIsEditing((prev) => !prev)}
                 variant={isEditing ? "secondary" : "outline"}
@@ -200,7 +202,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
       </header>
 
       {isEditing && (
-        <div className="border-b border-amber-200 bg-amber-50 px-4 py-2 text-center text-sm font-medium text-amber-800 sm:text-left">
+        <div className="border-b border-amber-200 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 px-4 py-2 text-center text-sm font-medium text-amber-800 dark:text-amber-300 sm:text-left">
           Modo de edición activo: los campos son editables. Recordá guardar los cambios al finalizar.
         </div>
       )}
@@ -295,7 +297,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                 </div>
               </div>
 
-              <div className="border-t-2 border-gray-300 pt-6">
+              <div className="border-t-2 border-gray-300 dark:border-border-strong pt-6">
                 <h2 className="text-lg font-semibold mb-4 text-foreground">Contacto</h2>
                 <div className="grid gap-6 md:grid-cols-2">
                   <div className="space-y-2">
@@ -351,7 +353,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                 </div>
               </div>
 
-              <div className="border-t-2 border-gray-300 pt-6">
+              <div className="border-t-2 border-gray-300 dark:border-border-strong pt-6">
                 <h2 className="text-lg font-semibold mb-4 text-foreground">Ubicación</h2>
                 <div className="grid gap-6 md:grid-cols-2">
                   <div className="space-y-2">
@@ -384,13 +386,13 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                   formData.longitud &&
                   !isNaN(Number(formData.latitud)) &&
                   !isNaN(Number(formData.longitud)) && (
-                    <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
-                      <p className="text-sm text-blue-800">
+                    <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/30 rounded-md">
+                      <p className="text-sm text-blue-800 dark:text-blue-300">
                         <a
                           href={`https://www.openstreetmap.org/?mlat=${formData.latitud}&mlon=${formData.longitud}#map=17/${formData.latitud}/${formData.longitud}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="underline hover:text-blue-600"
+                          className="underline hover:text-blue-600 dark:hover:text-blue-200"
                         >
                           Ver ubicación en OpenStreetMap
                         </a>
@@ -399,7 +401,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                   )}
               </div>
 
-              <div className="border-t-2 border-gray-300 pt-6">
+              <div className="border-t-2 border-gray-300 dark:border-border-strong pt-6">
                 <h2 className="text-lg font-semibold mb-4 text-foreground">Observaciones</h2>
                 <div className="space-y-2">
                   <Label htmlFor="observaciones">Notas adicionales</Label>
@@ -421,13 +423,13 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-red-600">¿Eliminar Organismo Descentralizado?</AlertDialogTitle>
+            <AlertDialogTitle className="text-red-600 dark:text-red-400">¿Eliminar Organismo Descentralizado?</AlertDialogTitle>
             <AlertDialogDescription className="space-y-2">
               <p>Estás por eliminar permanentemente el siguiente organismo:</p>
               <p className="font-semibold text-foreground">
                 {organismo.nombre || organismo.tipo_organizacion} (Código: {organismo.codigo})
               </p>
-              <p className="font-bold text-red-600">
+              <p className="font-bold text-red-600 dark:text-red-400">
                 Esta acción eliminará todos los registros de la base de datos y no se puede deshacer.
               </p>
             </AlertDialogDescription>
@@ -444,6 +446,6 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </>
+    </div>
   )
 }
