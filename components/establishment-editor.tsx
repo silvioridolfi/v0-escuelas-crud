@@ -29,7 +29,6 @@ import { splitEstablishmentName } from "@/lib/school-name"
 import { deleteEstablishment } from "@/app/actions/delete-establishment"
 import type { Establecimiento } from "@/lib/establecimiento"
 import { EstablishmentHero } from "@/components/establishment-hero"
-import { ThemeToggle } from "@/components/theme-toggle"
 
 type Contacto = {
   id: string
@@ -145,7 +144,6 @@ export function EstablishmentEditor({
               </div>
             </div>
             <div className="flex shrink-0 items-center justify-end gap-3 sm:ml-auto">
-              <ThemeToggle />
               <Button
                 onClick={() => setShowDeleteDialog(true)}
                 variant="destructive"

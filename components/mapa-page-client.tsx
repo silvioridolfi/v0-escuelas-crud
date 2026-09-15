@@ -3,7 +3,6 @@
 import dynamic from "next/dynamic"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { ThemeToggle } from "@/components/theme-toggle"
 import { ArrowLeft, Map } from "lucide-react"
 import type { MapPoint } from "@/app/actions/get-map-points"
 
@@ -34,9 +33,6 @@ export function MapaPageClient({ points }: { points: MapPoint[] }) {
                 <p className="text-sm text-white/90">Todos los establecimientos y organismos, con filtros por distrito y FED</p>
               </div>
             </div>
-          </div>
-          <div className="shrink-0">
-            <ThemeToggle />
           </div>
         </div>
       </header>
