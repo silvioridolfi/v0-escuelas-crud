@@ -16,7 +16,6 @@ import { searchEstablecimientos, getAllOrganismos, type SearchResult } from "@/a
 import { SearchResults } from "@/components/search-results"
 import { SavedSearches } from "@/components/saved-searches"
 import { QuickFilters } from "@/components/quick-filters"
-import { ThemeToggle } from "@/components/theme-toggle"
 import { NodeNetworkAccent } from "@/components/node-network-accent"
 import type { QuickFilterKey } from "@/lib/quick-filters-config"
 import { useRouter } from "next/navigation"
@@ -357,7 +356,6 @@ const metricCards = (
               </div>
             </div>
             <div className="flex shrink-0 items-center justify-end gap-3">
-              <ThemeToggle />
               <Button
                 onClick={() => router.push("/establecimientos/nuevo")}
                 className="bg-pba-pink hover:bg-pba-pink/90 text-white shadow-lg"
