@@ -117,7 +117,7 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
   }
 
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:bg-background">
       {/* Header */}
       <header className="border-b border-blue-200 bg-gradient-to-r from-pba-blue to-pba-purple shadow-lg">
         <div className="container mx-auto px-4 py-4 sm:py-6">
@@ -386,13 +386,13 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
                   formData.longitud &&
                   !isNaN(Number(formData.latitud)) &&
                   !isNaN(Number(formData.longitud)) && (
-                    <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
-                      <p className="text-sm text-blue-800">
+                    <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/30 rounded-md">
+                      <p className="text-sm text-blue-800 dark:text-blue-300">
                         <a
                           href={`https://www.openstreetmap.org/?mlat=${formData.latitud}&mlon=${formData.longitud}#map=17/${formData.latitud}/${formData.longitud}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="underline hover:text-blue-600"
+                          className="underline hover:text-blue-600 dark:hover:text-blue-200"
                         >
                           Ver ubicación en OpenStreetMap
                         </a>
@@ -446,6 +446,6 @@ export function OrganismoEditor({ organismo }: { organismo: Organismo }) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </>
+    </div>
   )
 }

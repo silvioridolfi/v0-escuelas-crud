@@ -129,7 +129,7 @@ export function CreateEstablishmentForm() {
   }
 
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:bg-background">
       {/* Header */}
       <header className="border-b border-blue-200 bg-gradient-to-r from-pba-blue to-pba-purple shadow-lg">
         <div className="container mx-auto px-4 py-4 sm:py-6">
@@ -488,6 +488,6 @@ export function CreateEstablishmentForm() {
           </CardContent>
         </Card>
       </div>
-    </>
+    </div>
   )
 }
