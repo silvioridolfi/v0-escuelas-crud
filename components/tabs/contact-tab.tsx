@@ -374,6 +374,8 @@ function ContactForm({
           <Label htmlFor="telefono">Teléfono</Label>
           <Input
             id="telefono"
+            type="tel"
+            inputMode="numeric"
             value={formData.telefono}
             onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
           />
