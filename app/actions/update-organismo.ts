@@ -23,7 +23,7 @@ type UpdateOrganismoData = {
 export async function updateOrganismoDescentralizado(id: string, data: UpdateOrganismoData) {
   const supabase = createAdminClient()
 
-  const { error } = await supabase
+  const { data: updated, error } = await supabase
     .from("organismos_descentralizados")
     .update({
       codigo: data.codigo,
@@ -43,12 +43,20 @@ export async function updateOrganismoDescentralizado(id: string, data: UpdateOrg
       updated_at: new Date().toISOString(),
     })
     .eq("id", id)
+    .select("id")
 
   if (error) {
     console.error("Error updating organismo:", error)
     return {
       success: false,
       error: "Error al actualizar el organismo",
+    }
+  }
+
+  if (!updated || updated.length === 0) {
+    return {
+      success: false,
+      error: "No se encontró el organismo a actualizar",
     }
   }
 

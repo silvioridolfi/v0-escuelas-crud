@@ -58,7 +58,7 @@ export async function updateContact(
 ) {
   const supabase = createAdminClient()
 
-  const { error } = await supabase
+  const { data: updated, error } = await supabase
     .from("contactos")
     .update({
       nombre: data.nombre || null,
@@ -69,9 +69,14 @@ export async function updateContact(
       correo_laboral: data.correo_laboral || null,
     })
     .eq("id", id)
+    .select("id")
 
   if (error) {
     return { success: false, error: error.message }
+  }
+
+  if (!updated || updated.length === 0) {
+    return { success: false, error: "No se encontró el contacto a actualizar" }
   }
 
   revalidatePath(`/establecimientos/[id]`, "page")
@@ -81,10 +86,14 @@ export async function updateContact(
 export async function deleteContact(id: string) {
   const supabase = createAdminClient()
 
-  const { error } = await supabase.from("contactos").delete().eq("id", id)
+  const { data: deleted, error } = await supabase.from("contactos").delete().eq("id", id).select("id")
 
   if (error) {
     return { success: false, error: error.message }
+  }
+
+  if (!deleted || deleted.length === 0) {
+    return { success: false, error: "No se encontró el contacto a eliminar" }
   }
 
   revalidatePath(`/establecimientos/[id]`, "page")
@@ -108,10 +117,18 @@ export async function setPrincipalContact(id: string, cue: number) {
     return { success: false, error: clearError.message }
   }
 
-  const { error: setError } = await supabase.from("contactos").update({ es_principal: true }).eq("id", id)
+  const { data: updated, error: setError } = await supabase
+    .from("contactos")
+    .update({ es_principal: true })
+    .eq("id", id)
+    .select("id")
 
   if (setError) {
     return { success: false, error: setError.message }
+  }
+
+  if (!updated || updated.length === 0) {
+    return { success: false, error: "No se encontró el contacto a marcar como principal" }
   }
 
   revalidatePath(`/establecimientos/[id]`, "page")

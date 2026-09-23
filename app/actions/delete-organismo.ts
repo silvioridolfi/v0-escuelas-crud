@@ -8,11 +8,19 @@ export async function deleteOrganismo(id: string) {
     const supabase = createAdminClient()
 
     // Delete the organismo
-    const { error } = await supabase.from("organismos_descentralizados").delete().eq("id", id)
+    const { data: deleted, error } = await supabase
+      .from("organismos_descentralizados")
+      .delete()
+      .eq("id", id)
+      .select("id")
 
     if (error) {
       console.error("Error deleting organismo:", error)
       return { success: false, error: error.message }
+    }
+
+    if (!deleted || deleted.length === 0) {
+      return { success: false, error: "No se encontró el organismo a eliminar" }
     }
 
     // Revalidate paths

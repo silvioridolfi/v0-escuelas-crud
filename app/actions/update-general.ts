@@ -56,10 +56,14 @@ export async function updateGeneral(
     ambito: data.ambito,
   }
 
-  const { error } = await supabase.from("establecimientos").update(after).eq("id", id)
+  const { data: updated, error } = await supabase.from("establecimientos").update(after).eq("id", id).select("id")
 
   if (error) {
     return { success: false, error: error.message }
+  }
+
+  if (!updated || updated.length === 0) {
+    return { success: false, error: "No se encontró el establecimiento a actualizar" }
   }
 
   if (before) {

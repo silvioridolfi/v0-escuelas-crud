@@ -8,11 +8,15 @@ export async function deleteEstablishment(id: string) {
     const supabase = createAdminClient()
 
     // Delete the establishment
-    const { error } = await supabase.from("establecimientos").delete().eq("id", id)
+    const { data: deleted, error } = await supabase.from("establecimientos").delete().eq("id", id).select("id")
 
     if (error) {
       console.error("Error deleting establishment:", error)
       return { success: false, error: error.message }
+    }
+
+    if (!deleted || deleted.length === 0) {
+      return { success: false, error: "No se encontró el establecimiento a eliminar" }
     }
 
     // Revalidate paths
